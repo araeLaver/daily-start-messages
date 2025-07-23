@@ -195,9 +195,9 @@ chore: 빌드 업무 수정, 패키지 매니저 수정
 
 ## 📞 연락처
 
-- **이메일**: contact@dailystart.app
-- **이슈 트래커**: [GitHub Issues](https://github.com/yourusername/daily-start-messages/issues)
-- **토론**: [GitHub Discussions](https://github.com/yourusername/daily-start-messages/discussions)
+- **이메일**: kimdan2@nate.com
+<!-- - **이슈 트래커**: [GitHub Issues](https://github.com/yourusername/daily-start-messages/issues)
+- **토론**: [GitHub Discussions](https://github.com/yourusername/daily-start-messages/discussions) -->
 
 ---
 
