@@ -1,7 +1,7 @@
 {
-  "name": "하루의 시작",
-  "short_name": "하루시작",
-  "description": "새로운 하루를 시작하는 따뜻하고 힘이 되는 메시지를 만나보세요",
+  "name": "모닝",
+  "short_name": "모닝",
+  "description": "새로운 아침을 시작하는 따뜻하고 힘이 되는 메시지를 만나보세요",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f8fafc",
