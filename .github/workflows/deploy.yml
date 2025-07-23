@@ -1,0 +1,163 @@
+name: 🚀 Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # 코드 품질 검사
+  lint-and-test:
+    name: 📝 Code Quality Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Validate HTML
+        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        with:
+          root: ./
+          format: text
+
+      - name: 🎨 Validate CSS
+        run: |
+          npm install -g css-validator
+          css-validator styles.css
+
+      - name: 📋 Validate JSON
+        run: |
+          python -m json.tool messages.json > /dev/null
+          python -m json.tool manifest.json > /dev/null
+          echo "✅ JSON files are valid"
+
+      - name: 🔧 Check PWA Manifest
+        run: |
+          node -e "
+            const manifest = require('./manifest.json');
+            const required = ['name', 'short_name', 'start_url', 'display', 'theme_color', 'background_color', 'icons'];
+            const missing = required.filter(field => !manifest[field]);
+            if (missing.length > 0) {
+              console.error('❌ Missing required manifest fields:', missing);
+              process.exit(1);
+            }
+            console.log('✅ PWA manifest is valid');
+          "
+
+  # 배포 환경별 분기
+  deploy-preview:
+    name: 🔍 Deploy Preview
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    needs: lint-and-test
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        
+      - name: 🚀 Deploy to Netlify Preview
+        uses: nwtgck/actions-netlify@v2.0
+        with:
+          publish-dir: './.'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Preview Deploy from PR #${{ github.event.number }}"
+          alias: pr-${{ github.event.number }}
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+  deploy-production:
+    name: 🌟 Deploy to Production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: lint-and-test
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🎯 Generate Build Info
+        run: |
+          echo "BUILD_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_ENV
+          echo "COMMIT_SHA=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
+
+      - name: 📝 Update Build Info in HTML
+        run: |
+          sed -i "s/<!-- BUILD_INFO -->/<!-- Build: $BUILD_NUMBER | Commit: $COMMIT_SHA | Time: $BUILD_TIME -->/g" index.html
+
+      - name: 🚀 Deploy to Netlify Production
+        uses: nwtgck/actions-netlify@v2.0
+        with:
+          publish-dir: './.'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "🚀 Production Deploy - Build ${{ env.BUILD_NUMBER }}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: 📱 Update PWA Cache Version
+        run: |
+          # 서비스 워커의 캐시 버전 업데이트
+          sed -i "s/const CACHE_NAME = 'daily-quotes-v1'/const CACHE_NAME = 'daily-quotes-v${{ env.BUILD_NUMBER }}'/g" service-worker.js
+
+  # 품질 체크 (배포 후)
+  post-deploy-check:
+    name: 🔍 Post-Deploy Quality Check
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: 🌐 Check Website Status
+        run: |
+          sleep 30  # 배포 완료 대기
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://daily-start-messages.netlify.app)
+          if [ $response -eq 200 ]; then
+            echo "✅ Website is accessible"
+          else
+            echo "❌ Website returned status code: $response"
+            exit 1
+          fi
+
+      - name: 📱 Check PWA Manifest
+        run: |
+          curl -s https://daily-start-messages.netlify.app/manifest.json | python -m json.tool > /dev/null
+          echo "✅ PWA manifest is accessible and valid"
+
+      - name: 🔧 Check Service Worker
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://daily-start-messages.netlify.app/service-worker.js)
+          if [ $response -eq 200 ]; then
+            echo "✅ Service worker is accessible"
+          else
+            echo "❌ Service worker not found"
+            exit 1
+          fi
+
+  # 알림 (성공/실패)
+  notify:
+    name: 📢 Deployment Notification
+    runs-on: ubuntu-latest
+    needs: [deploy-production, post-deploy-check]
+    if: always() && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: 🎉 Success Notification
+        if: needs.deploy-production.result == 'success' && needs.post-deploy-check.result == 'success'
+        run: |
+          echo "🎉 Deployment successful!"
+          echo "🌐 Live URL: https://daily-start-messages.netlify.app"
+          echo "📱 PWA: Ready for installation"
+          echo "🔍 All quality checks passed"
+
+      - name: ❌ Failure Notification
+        if: needs.deploy-production.result == 'failure' || needs.post-deploy-check.result == 'failure'
+        run: |
+          echo "❌ Deployment failed!"
+          echo "🔍 Check the logs for details"
+          exit 1

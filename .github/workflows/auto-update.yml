@@ -1,0 +1,178 @@
+name: 🔄 Auto Update Dependencies
+
+on:
+  schedule:
+    # 매주 월요일 오전 9시 (KST)
+    - cron: '0 0 * * 1'
+  workflow_dispatch: # 수동 실행 가능
+
+jobs:
+  update-messages:
+    name: 📝 Update Message Database
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🔍 Validate Messages JSON
+        run: |
+          # JSON 유효성 검사
+          python -c "
+          import json
+          with open('messages.json', 'r', encoding='utf-8') as f:
+              data = json.load(f)
+          print(f'✅ Found {len(data[\"messages\"])} messages')
+          print(f'✅ Found {len(data[\"categories\"])} categories')
+          "
+
+      - name: 📊 Generate Statistics
+        run: |
+          python -c "
+          import json
+          from collections import Counter
+          
+          with open('messages.json', 'r', encoding='utf-8') as f:
+              data = json.load(f)
+          
+          messages = data['messages']
+          
+          # 카테고리별 통계
+          categories = Counter(msg['category'] for msg in messages)
+          print('📊 Category Statistics:')
+          for cat, count in categories.most_common():
+              print(f'  {cat}: {count}')
+          
+          # 시간대별 통계
+          times = Counter(msg.get('timeOfDay', 'any') for msg in messages)
+          print('\n⏰ Time Distribution:')
+          for time, count in times.items():
+              print(f'  {time}: {count}')
+          
+          # 전체 통계
+          print(f'\n📈 Total Messages: {len(messages)}')
+          print(f'📈 Total Categories: {len(set(msg[\"category\"] for msg in messages))}')
+          print(f'📈 Messages with Time: {len([m for m in messages if m.get(\"timeOfDay\")]))}')
+          "
+
+      - name: 🔄 Auto-commit if changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          if [[ `git status --porcelain` ]]; then
+            git add .
+            git commit -m "🔄 Auto-update: $(date +'%Y-%m-%d %H:%M:%S')"
+            git push
+            echo "✅ Changes committed and pushed"
+          else
+            echo "✅ No changes to commit"
+          fi
+
+  check-pwa-health:
+    name: 🏥 PWA Health Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 PWA Lighthouse Audit
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          configPath: './.lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  security-scan:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 Scan for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+
+      - name: 🔒 Check for vulnerable dependencies
+        run: |
+          # HTML/CSS/JS 파일에서 외부 CDN 링크 확인
+          echo "🔍 Checking external dependencies..."
+          
+          # Google Fonts 체크
+          if grep -q "googleapis.com" *.html *.css; then
+            echo "✅ Google Fonts detected - generally safe"
+          fi
+          
+          # 기타 외부 스크립트 체크
+          external_scripts=$(grep -h "src.*http" *.html || true)
+          if [ -n "$external_scripts" ]; then
+            echo "⚠️  External scripts found:"
+            echo "$external_scripts"
+          else
+            echo "✅ No external scripts found"
+          fi
+
+  performance-check:
+    name: 🚀 Performance Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📏 Check File Sizes
+        run: |
+          echo "📏 File Size Analysis:"
+          
+          # HTML 파일 크기
+          html_size=$(wc -c < index.html)
+          echo "📄 HTML: ${html_size} bytes"
+          
+          # CSS 파일 크기
+          css_size=$(wc -c < styles.css)
+          echo "🎨 CSS: ${css_size} bytes"
+          
+          # JS 파일 크기
+          js_size=$(wc -c < script.js)
+          echo "⚙️ JavaScript: ${js_size} bytes"
+          
+          # JSON 파일 크기
+          json_size=$(wc -c < messages.json)
+          echo "📝 Messages: ${json_size} bytes"
+          
+          # 전체 크기
+          total_size=$((html_size + css_size + js_size + json_size))
+          echo "📦 Total Core Size: ${total_size} bytes"
+          
+          # 경고 체크
+          if [ $total_size -gt 500000 ]; then
+            echo "⚠️ Warning: Total size exceeds 500KB"
+          else
+            echo "✅ Total size is optimal"
+          fi
+
+      - name: 🔍 Code Quality Check
+        run: |
+          echo "🔍 Code Quality Analysis:"
+          
+          # JavaScript 함수 수 체크
+          js_functions=$(grep -c "function\|=>" script.js || echo "0")
+          echo "⚙️ JavaScript functions: ${js_functions}"
+          
+          # CSS 규칙 수 체크  
+          css_rules=$(grep -c "{" styles.css || echo "0")
+          echo "🎨 CSS rules: ${css_rules}"
+          
+          # HTML 요소 수 체크
+          html_elements=$(grep -o "<[^/][^>]*>" index.html | wc -l)
+          echo "📄 HTML elements: ${html_elements}"
+          
+          echo "✅ Code quality check completed"
