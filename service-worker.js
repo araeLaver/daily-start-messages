@@ -1,6 +1,6 @@
 // 서비스 워커 버전 및 캐시 이름
-const CACHE_NAME = 'daily-quotes-v1';
-const RUNTIME_CACHE = 'runtime-cache-v1';
+const CACHE_NAME = 'morning-app-v2';
+const RUNTIME_CACHE = 'runtime-cache-v2';
 
 // 캐시할 파일 목록
 const STATIC_FILES = [
@@ -8,8 +8,9 @@ const STATIC_FILES = [
     '/index.html',
     '/styles.css',
     '/script.js',
-    '/quotes.json',
+    '/messages.json',
     '/manifest.json',
+    '/data-management.js',
     'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap'
 ];
 
