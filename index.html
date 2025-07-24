@@ -30,6 +30,17 @@
         
         <main class="main-content">
             <div class="quote-container">
+                <div class="category-filter">
+                    <select id="categoryFilter" class="category-select" aria-label="카테고리 선택">
+                        <option value="all">🌟 모든 카테고리</option>
+                        <option value="새로운 시작">🌅 새로운 시작</option>
+                        <option value="동기부여">💪 동기부여</option>
+                        <option value="감사">🙏 감사</option>
+                        <option value="위로">🤗 위로</option>
+                        <option value="성찰">💭 성찰</option>
+                        <option value="희망">✨ 희망</option>
+                    </select>
+                </div>
                 <div class="quote-card" id="quoteCard">
                     <div class="loading" id="loading">
                         <div class="loading-spinner"></div>
@@ -112,21 +123,51 @@
             </div>
             <div class="modal-body">
                 <div class="simple-settings">
-                    <div class="setting-row">
-                        <span>🌙 다크모드</span>
-                        <input type="checkbox" id="darkModeToggle" class="simple-toggle" aria-label="다크모드 활성화">
+                    <div class="setting-section">
+                        <h3 class="setting-section-title">👤 개인화</h3>
+                        <div class="setting-row">
+                            <span>📝 이름</span>
+                            <input type="text" id="userNameInput" class="text-input" placeholder="이름을 입력하세요" maxlength="10">
+                        </div>
+                        <div class="setting-row">
+                            <span>🎨 테마</span>
+                            <select id="themeSelect" class="theme-select">
+                                <option value="default">기본</option>
+                                <option value="spring">🌸 봄</option>
+                                <option value="summer">☀️ 여름</option>
+                                <option value="autumn">🍂 가을</option>
+                                <option value="winter">❄️ 겨울</option>
+                            </select>
+                        </div>
+                        <div class="setting-row">
+                            <span>📱 표시 방식</span>
+                            <select id="displayModeSelect" class="display-mode-select">
+                                <option value="card">카드형</option>
+                                <option value="minimal">미니멀</option>
+                                <option value="typewriter">타이핑</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="setting-row">
-                        <span>🔔 알림</span>
-                        <input type="checkbox" id="notificationToggle" class="simple-toggle" aria-label="알림 활성화">
+                    
+                    <div class="setting-section">
+                        <h3 class="setting-section-title">⚙️ 기본 설정</h3>
+                        <div class="setting-row">
+                            <span>🌙 다크모드</span>
+                            <input type="checkbox" id="darkModeToggle" class="simple-toggle" aria-label="다크모드 활성화">
+                        </div>
+                        <div class="setting-row">
+                            <span>🔔 알림</span>
+                            <input type="checkbox" id="notificationToggle" class="simple-toggle" aria-label="알림 활성화">
+                        </div>
+                        <div class="setting-row" id="notificationTimeRow" style="display: none;">
+                            <span>⏰ 알림 시간</span>
+                            <input type="time" id="notificationTime" value="08:00" class="time-input">
+                        </div>
                     </div>
-                    <div class="setting-row" id="notificationTimeRow" style="display: none;">
-                        <span>⏰ 알림 시간</span>
-                        <input type="time" id="notificationTime" value="08:00" class="time-input">
-                    </div>
+                    
                     <div class="app-info">
                         <p>매일 새로운 메시지로 좋은 하루를 시작하세요</p>
-                        <small>버전 2.0 - 향상된 기능</small>
+                        <small>버전 2.5 - 개인화 기능</small>
                     </div>
                 </div>
             </div>

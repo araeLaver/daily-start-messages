@@ -6,7 +6,11 @@ let isWidgetMode = new URLSearchParams(window.location.search).has('widget');
 let settings = JSON.parse(localStorage.getItem('settings')) || {
     darkMode: false,
     notifications: false,
-    notificationTime: '08:00'
+    notificationTime: '08:00',
+    selectedCategory: 'all',
+    userName: '',
+    theme: 'default',
+    displayMode: 'card'
 };
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 let messageHistory = JSON.parse(localStorage.getItem('messageHistory')) || [];
@@ -51,7 +55,11 @@ const elements = {
     historyEmpty: document.getElementById('historyEmpty'),
     historyList: document.getElementById('historyList'),
     historyCount: document.getElementById('historyCount'),
-    clearHistoryBtn: document.getElementById('clearHistoryBtn')
+    clearHistoryBtn: document.getElementById('clearHistoryBtn'),
+    categoryFilter: document.getElementById('categoryFilter'),
+    userNameInput: document.getElementById('userNameInput'),
+    themeSelect: document.getElementById('themeSelect'),
+    displayModeSelect: document.getElementById('displayModeSelect')
 };
 
 // 애플리케이션 초기화
@@ -139,6 +147,14 @@ function setupEventListeners() {
     // 히스토리 관련
     elements.clearHistoryBtn.addEventListener('click', clearHistory);
     
+    // 카테고리 필터
+    elements.categoryFilter.addEventListener('change', handleCategoryChange);
+    
+    // 개인화 설정
+    elements.userNameInput.addEventListener('input', updateUserName);
+    elements.themeSelect.addEventListener('change', changeTheme);
+    elements.displayModeSelect.addEventListener('change', changeDisplayMode);
+    
     // 설정 관련
     elements.darkModeToggle.addEventListener('change', toggleDarkMode);
     elements.notificationToggle.addEventListener('change', toggleNotifications);
@@ -203,6 +219,11 @@ function displayCurrentTime() {
         greeting = '🌙 늦은 시간이네요';
     }
     
+    // 사용자 이름이 있으면 개인화된 인사말
+    if (settings.userName) {
+        greeting += `, ${settings.userName}님`;
+    }
+    
     elements.timeGreeting.textContent = greeting;
 }
 
@@ -230,13 +251,20 @@ function displayRandomMessage() {
     }
     
     setTimeout(() => {
+        const filteredMessages = getFilteredMessages();
+        
+        if (filteredMessages.length === 0) {
+            showError('선택한 카테고리에 메시지가 없습니다.');
+            return;
+        }
+        
         let randomIndex;
         
         do {
-            randomIndex = Math.floor(Math.random() * messagesData.length);
-        } while (messagesData.length > 1 && messagesData[randomIndex] === currentMessage);
+            randomIndex = Math.floor(Math.random() * filteredMessages.length);
+        } while (filteredMessages.length > 1 && filteredMessages[randomIndex] === currentMessage);
         
-        currentMessage = messagesData[randomIndex];
+        currentMessage = filteredMessages[randomIndex];
         messageCounter++;
         
         showMessage();
@@ -291,6 +319,18 @@ function applySettings() {
     elements.notificationToggle.checked = settings.notifications;
     elements.notificationTime.value = settings.notificationTime;
     elements.notificationTimeRow.style.display = settings.notifications ? 'flex' : 'none';
+    
+    // 카테고리 필터
+    elements.categoryFilter.value = settings.selectedCategory;
+    
+    // 개인화 설정
+    elements.userNameInput.value = settings.userName;
+    elements.themeSelect.value = settings.theme;
+    elements.displayModeSelect.value = settings.displayMode;
+    
+    // 테마 및 표시 방식 적용
+    applyTheme();
+    applyDisplayMode();
 }
 
 // 다크모드 토글
@@ -672,6 +712,117 @@ function clearHistory() {
 
 function saveHistory() {
     localStorage.setItem('messageHistory', JSON.stringify(messageHistory));
+}
+
+// 카테고리 필터 관련 함수들
+function getFilteredMessages() {
+    const selectedCategory = settings.selectedCategory;
+    
+    if (selectedCategory === 'all') {
+        return messagesData;
+    }
+    
+    return messagesData.filter(message => message.category === selectedCategory);
+}
+
+function handleCategoryChange() {
+    settings.selectedCategory = elements.categoryFilter.value;
+    saveSettings();
+    
+    // 카테고리 변경 시 새 메시지 표시
+    displayRandomMessage();
+    
+    const categoryName = elements.categoryFilter.options[elements.categoryFilter.selectedIndex].text;
+    showToast(`${categoryName} 메시지로 변경되었습니다! 🎯`, 'success');
+}
+
+// 개인화 기능들
+function updateUserName() {
+    settings.userName = elements.userNameInput.value.trim();
+    saveSettings();
+    
+    // 인사말 업데이트
+    displayCurrentTime();
+    
+    if (settings.userName) {
+        showToast(`안녕하세요, ${settings.userName}님! 👋`, 'success');
+    }
+}
+
+function changeTheme() {
+    settings.theme = elements.themeSelect.value;
+    saveSettings();
+    applyTheme();
+    
+    const themeName = elements.themeSelect.options[elements.themeSelect.selectedIndex].text;
+    showToast(`${themeName} 테마가 적용되었습니다! 🎨`, 'success');
+}
+
+function changeDisplayMode() {
+    settings.displayMode = elements.displayModeSelect.value;
+    saveSettings();
+    applyDisplayMode();
+    
+    const modeName = elements.displayModeSelect.options[elements.displayModeSelect.selectedIndex].text;
+    showToast(`${modeName}로 변경되었습니다! 📱`, 'success');
+}
+
+function applyTheme() {
+    const root = document.documentElement;
+    
+    // 기존 테마 클래스 제거
+    document.body.classList.remove('theme-spring', 'theme-summer', 'theme-autumn', 'theme-winter');
+    
+    switch (settings.theme) {
+        case 'spring':
+            document.body.classList.add('theme-spring');
+            root.style.setProperty('--primary-color', '#ec4899');
+            root.style.setProperty('--primary-dark', '#db2777');
+            root.style.setProperty('--background', '#fdf2f8');
+            break;
+        case 'summer':
+            document.body.classList.add('theme-summer');
+            root.style.setProperty('--primary-color', '#06b6d4');
+            root.style.setProperty('--primary-dark', '#0891b2');
+            root.style.setProperty('--background', '#f0f9ff');
+            break;
+        case 'autumn':
+            document.body.classList.add('theme-autumn');
+            root.style.setProperty('--primary-color', '#ea580c');
+            root.style.setProperty('--primary-dark', '#c2410c');
+            root.style.setProperty('--background', '#fff7ed');
+            break;
+        case 'winter':
+            document.body.classList.add('theme-winter');
+            root.style.setProperty('--primary-color', '#7c3aed');
+            root.style.setProperty('--primary-dark', '#6d28d9');
+            root.style.setProperty('--background', '#f8fafc');
+            break;
+        default:
+            root.style.setProperty('--primary-color', '#f59e0b');
+            root.style.setProperty('--primary-dark', '#d97706');
+            root.style.setProperty('--background', '#fef3c7');
+    }
+}
+
+function applyDisplayMode() {
+    const quoteCard = document.querySelector('.quote-card');
+    
+    // 기존 표시 모드 클래스 제거
+    quoteCard.classList.remove('display-minimal', 'display-typewriter');
+    
+    switch (settings.displayMode) {
+        case 'minimal':
+            quoteCard.classList.add('display-minimal');
+            break;
+        case 'typewriter':
+            quoteCard.classList.add('display-typewriter');
+            break;
+        case 'card':
+        default:
+            // 기본 카드형은 추가 클래스 없음
+            break;
+    }
 }
 
 // 공유 기능들
