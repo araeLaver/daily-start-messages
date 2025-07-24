@@ -695,7 +695,7 @@ body {
 
 .message-item-header {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 0.5rem;
     gap: 1rem;
