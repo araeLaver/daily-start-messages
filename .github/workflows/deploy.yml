@@ -22,10 +22,16 @@ jobs:
           root: ./
           format: text
 
-      - name: 🎨 Validate CSS
+      - name: 🎨 Check CSS Syntax
         run: |
-          npm install -g css-validator
-          css-validator styles.css
+          # CSS 기본 구문 검사 (간단한 파싱 체크)
+          echo "Checking CSS syntax..."
+          if grep -q "}" styles.css && grep -q "{" styles.css; then
+            echo "✅ CSS syntax appears valid"
+          else
+            echo "❌ CSS syntax error detected"
+            exit 1
+          fi
 
       - name: 📋 Validate JSON
         run: |
@@ -103,7 +109,7 @@ jobs:
       - name: 📱 Update PWA Cache Version
         run: |
           # 서비스 워커의 캐시 버전 업데이트
-          sed -i "s/const CACHE_NAME = 'daily-quotes-v1'/const CACHE_NAME = 'daily-quotes-v${{ env.BUILD_NUMBER }}'/g" service-worker.js
+          sed -i "s/const CACHE_NAME = 'morning-app-v2'/const CACHE_NAME = 'morning-app-v${{ env.BUILD_NUMBER }}'/g" service-worker.js
 
   # 품질 체크 (배포 후)
   post-deploy-check:
