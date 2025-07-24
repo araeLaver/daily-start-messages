@@ -19,7 +19,7 @@ const elements = {
     shareBtn: document.getElementById('shareBtn'),
     settingsBtn: document.getElementById('settingsBtn'),
     dateDisplay: document.getElementById('dateDisplay'),
-    messageCounterDisplay: document.getElementById('messageCounter'),
+    messageCounter: document.getElementById('messageCounter'),
     shareModal: document.getElementById('shareModal'),
     modalClose: document.getElementById('modalClose'),
     sharePreview: document.getElementById('sharePreview'),
@@ -214,7 +214,7 @@ function showMessage() {
 
 // 메시지 카운터 업데이트
 function updateMessageCounter() {
-    elements.messageCounterDisplay.textContent = messageCounter;
+    elements.messageCounter.textContent = messageCounter;
 }
 
 // 설정 적용
