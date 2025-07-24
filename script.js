@@ -172,7 +172,20 @@ async function initApp() {
             setupWidgetMode();
         }
         
-        displayRandomMessage();
+        // 메시지 데이터가 로드된 후 첫 메시지 표시
+        if (messagesData.length > 0 || currentMessage) {
+            displayRandomMessage();
+        } else {
+            // 메시지 로드 실패 시 기본 메시지 직접 표시
+            currentMessage = {
+                id: 0,
+                text: "새로운 하루가 시작됩니다. 오늘도 좋은 하루 되세요! ✨",
+                author: "모닝",
+                category: "새로운 시작"
+            };
+            showMessage();
+        }
+        
         setupNotifications();
         initializeKakao();
         checkWebShareSupport();
@@ -401,20 +414,33 @@ function displayRandomMessage() {
     }
     
     setTimeout(() => {
-        const filteredMessages = getFilteredMessages();
+        let filteredMessages = getFilteredMessages();
         
+        // 필터링된 메시지가 없으면 전체 메시지에서 선택
         if (filteredMessages.length === 0) {
-            showError('선택한 카테고리에 메시지가 없습니다.');
-            return;
+            console.log('필터링된 메시지가 없음, 전체 메시지에서 선택');
+            filteredMessages = messagesData;
         }
         
-        let randomIndex;
+        // 전체 메시지도 없으면 기본 메시지 사용
+        if (filteredMessages.length === 0) {
+            console.log('메시지 데이터가 없음, 기본 메시지 사용');
+            currentMessage = {
+                id: 0,
+                text: "새로운 하루가 시작됩니다. 오늘도 좋은 하루 되세요! ✨",
+                author: "모닝",
+                category: "새로운 시작"
+            };
+        } else {
+            let randomIndex;
+            
+            do {
+                randomIndex = Math.floor(Math.random() * filteredMessages.length);
+            } while (filteredMessages.length > 1 && filteredMessages[randomIndex] === currentMessage);
+            
+            currentMessage = filteredMessages[randomIndex];
+        }
         
-        do {
-            randomIndex = Math.floor(Math.random() * filteredMessages.length);
-        } while (filteredMessages.length > 1 && filteredMessages[randomIndex] === currentMessage);
-        
-        currentMessage = filteredMessages[randomIndex];
         messageCounter++;
         
         showMessage();
