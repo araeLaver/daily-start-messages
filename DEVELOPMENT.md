@@ -376,3 +376,40 @@ docs: README에 배포 가이드 추가
 4. **팀원들과 공유**
 
 **이제 코딩에만 집중하시면 됩니다!** 🚀
+
+
+
+ <!-- 메시지 수정 → git push → 자동 배포!
+
+
+  생성된 파일들
+  daily-quotes-app/
+  ├── .gitignore              # Git 무시 파일
+  ├── .github/workflows/      # GitHub Actions
+  │   ├── deploy.yml          # 자동 배포 파이프라인
+  │   └── auto-update.yml     # 주간 자동 업데이트
+  ├── netlify.toml           # Netlify 설정
+  ├── .lighthouserc.json     # 성능 테스트 설정
+  ├── SETUP.md               # 빠른 설정 가이드
+  ├── DEVELOPMENT.md         # 개발 워크플로우 가이드
+  └── README.md              # 업데이트된 프로젝트 문서
+
+
+Deployed draft to https://688038db346b3cdc8bfc1216--daily-start-messages.netlify.app
+Deployed to production URL: https://daily-start-messages.netlify.app 
+Unique deploy URL: https://68803938f99faa7c20f67905--daily-start-messages.netlify.app
+
+Build logs:         		https://app.netlify.com/projects/daily-start-messages/deploys/68803938f99faa7c20f67905
+Function logs:      		https://app.netlify.com/projects/daily-start-messages/logs/functions
+Edge function Logs: 	https://app.netlify.com/projects/daily-start-messages/logs/edge-functions
+
+Netlify
+Token: nfp_NrYewwM9gpdRV6dRYvx87jRvN9aiaB432ba5
+
+Site ID
+Project ID: 454a747d-7a27-49f6-8e17-797fb9aba170
+ -->
+
+
+
+

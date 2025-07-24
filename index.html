@@ -36,6 +36,11 @@
                         <p>새로운 메시지를 준비하고 있어요...</p>
                     </div>
                     <div class="quote-content" id="quoteContent" style="display: none;">
+                        <div class="quote-header">
+                            <button class="favorite-btn" id="favoriteBtn" aria-label="즐겨찾기 추가/제거">
+                                <span class="favorite-icon">🤍</span>
+                            </button>
+                        </div>
                         <blockquote class="quote-text" id="quoteText"></blockquote>
                         <cite class="quote-author" id="quoteAuthor"></cite>
                         <div class="quote-category" id="quoteCategory"></div>
@@ -54,6 +59,14 @@
                     <button class="btn btn-secondary" id="speakBtn" aria-label="메시지 음성으로 듣기">
                         <span class="btn-icon">🔊</span>
                         음성듣기
+                    </button>
+                    <button class="btn btn-secondary" id="favoritesBtn" aria-label="즐겨찾기 목록 보기">
+                        <span class="btn-icon">⭐</span>
+                        즐겨찾기
+                    </button>
+                    <button class="btn btn-secondary" id="historyBtn" aria-label="메시지 히스토리 보기">
+                        <span class="btn-icon">📚</span>
+                        히스토리
                     </button>
                     <button class="btn btn-secondary" id="settingsBtn" aria-label="앱 설정 열기">
                         <span class="btn-icon">⚙️</span>
@@ -80,9 +93,11 @@
             <div class="modal-body">
                 <div class="share-preview" id="sharePreview"></div>
                 <div class="share-buttons">
-                    <button class="share-btn" id="copyBtn">텍스트 복사</button>
-                    <button class="share-btn" id="twitterBtn">트위터</button>
-                    <button class="share-btn" id="facebookBtn">페이스북</button>
+                    <button class="share-btn" id="copyBtn">📋 텍스트 복사</button>
+                    <button class="share-btn" id="kakaoBtn">💬 카카오톡</button>
+                    <button class="share-btn" id="twitterBtn">🐦 트위터</button>
+                    <button class="share-btn" id="facebookBtn">📘 페이스북</button>
+                    <button class="share-btn" id="webShareBtn" style="display: none;">📱 네이티브 공유</button>
                 </div>
             </div>
         </div>
@@ -117,8 +132,57 @@
             </div>
         </div>
     </div>
+    
+    <!-- 즐겨찾기 모달 -->
+    <div class="modal" id="favoritesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⭐ 즐겨찾기</h2>
+                <button class="modal-close" id="favoritesModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="favorites-container">
+                    <div class="favorites-empty" id="favoritesEmpty" style="display: none;">
+                        <p>아직 즐겨찾기한 메시지가 없습니다.</p>
+                        <small>마음에 드는 메시지에서 🤍 버튼을 눌러보세요!</small>
+                    </div>
+                    <div class="favorites-list" id="favoritesList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 히스토리 모달 -->
+    <div class="modal" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📚 메시지 히스토리</h2>
+                <button class="modal-close" id="historyModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="history-container">
+                    <div class="history-controls">
+                        <div class="history-stats">
+                            <span id="historyCount">0</span>개의 메시지를 확인했습니다
+                        </div>
+                        <button class="clear-history-btn" id="clearHistoryBtn">기록 삭제</button>
+                    </div>
+                    <div class="history-empty" id="historyEmpty" style="display: none;">
+                        <p>아직 확인한 메시지가 없습니다.</p>
+                        <small>메시지를 보면 여기에 기록됩니다!</small>
+                    </div>
+                    <div class="history-list" id="historyList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
  
+    
+    <!-- 카카오 SDK -->
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" 
+            integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" 
+            crossorigin="anonymous"></script>
     
     <script src="script.js"></script>
 </body>
