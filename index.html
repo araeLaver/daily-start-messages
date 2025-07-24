@@ -23,9 +23,21 @@
 <body>
     <div class="app-container">
         <header class="header">
-            <h1 class="title">모닝</h1>
-            <p class="subtitle">새로운 아침을 맞이하는 따뜻한 메시지</p>
-            <div class="time-greeting" id="timeGreeting"></div>
+            <div class="header-content">
+                <div class="header-main">
+                    <h1 class="title">모닝</h1>
+                    <p class="subtitle">새로운 아침을 맞이하는 따뜻한 메시지</p>
+                    <div class="time-greeting" id="timeGreeting"></div>
+                    <div class="seasonal-indicator" title="현재 계절"></div>
+                    <div class="event-indicator" title="활성 이벤트" style="display: none;"></div>
+                </div>
+                <div class="header-tracker">
+                    <button class="tracker-btn" id="habitTrackerBtn" aria-label="습관 트래커 보기">
+                        <span class="tracker-icon">🔥</span>
+                        <span class="tracker-number" id="streakNumber">0</span>
+                    </button>
+                </div>
+            </div>
         </header>
         
         <main class="main-content">
@@ -100,6 +112,18 @@
                     <button class="btn btn-secondary" id="inviteBtn" aria-label="친구 초대하기">
                         <span class="btn-icon">👥</span>
                         초대
+                    </button>
+                    <button class="btn btn-secondary" id="journalBtn" aria-label="일기 작성하기">
+                        <span class="btn-icon">📝</span>
+                        일기
+                    </button>
+                    <button class="btn btn-secondary" id="goalsBtn" aria-label="목표 설정하기">
+                        <span class="btn-icon">🎯</span>
+                        목표
+                    </button>
+                    <button class="btn btn-secondary" id="submitBtn" aria-label="메시지 제출하기">
+                        <span class="btn-icon">✍️</span>
+                        제출
                     </button>
                     <button class="btn btn-secondary" id="settingsBtn" aria-label="앱 설정 열기">
                         <span class="btn-icon">⚙️</span>
@@ -185,11 +209,23 @@
                             <span>⏰ 알림 시간</span>
                             <input type="time" id="notificationTime" value="08:00" class="time-input">
                         </div>
+                        <div class="setting-row">
+                            <span>🌸 계절별 메시지</span>
+                            <input type="checkbox" id="seasonalToggle" class="simple-toggle" aria-label="계절별 메시지 활성화">
+                        </div>
+                        <div class="setting-row">
+                            <span>🎊 특별한 날 메시지</span>
+                            <input type="checkbox" id="specialDayToggle" class="simple-toggle" aria-label="특별한 날 메시지 활성화">
+                        </div>
+                        <div class="setting-row">
+                            <span>📅 이벤트 메시지</span>
+                            <input type="checkbox" id="eventToggle" class="simple-toggle" aria-label="이벤트 메시지 활성화">
+                        </div>
                     </div>
                     
                     <div class="app-info">
                         <p>매일 새로운 메시지로 좋은 하루를 시작하세요</p>
-                        <small>버전 2.5 - 개인화 기능</small>
+                        <small>버전 4.0 - 사용자 제출 시스템</small>
                     </div>
                 </div>
             </div>
@@ -287,6 +323,409 @@
                     <div class="invite-buttons">
                         <button class="btn btn-primary" id="copyInviteBtn">📋 초대 메시지 복사</button>
                         <button class="btn btn-secondary" id="shareInviteBtn">📱 앱으로 공유</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 일기 모달 -->
+    <div class="modal" id="journalModal">
+        <div class="modal-content journal-modal-content">
+            <div class="modal-header">
+                <h2>📝 오늘의 일기</h2>
+                <button class="modal-close" id="journalModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="journal-container">
+                    <div class="journal-inspiration">
+                        <div class="inspiration-header">
+                            <span class="inspiration-icon">💡</span>
+                            <span>오늘의 메시지에서 영감을 받아보세요</span>
+                        </div>
+                        <div class="inspiration-quote" id="inspirationQuote">
+                            메시지를 먼저 확인해주세요
+                        </div>
+                    </div>
+                    
+                    <div class="journal-form">
+                        <div class="journal-date" id="journalDate"></div>
+                        
+                        <div class="mood-selector">
+                            <label class="mood-label">오늘의 기분</label>
+                            <div class="mood-options">
+                                <button class="mood-btn" data-mood="great">😄</button>
+                                <button class="mood-btn" data-mood="good">😊</button>
+                                <button class="mood-btn" data-mood="okay">😐</button>
+                                <button class="mood-btn" data-mood="bad">😔</button>
+                                <button class="mood-btn" data-mood="terrible">😢</button>
+                            </div>
+                        </div>
+                        
+                        <div class="journal-writing">
+                            <label for="journalText" class="journal-text-label">오늘 하루는 어땠나요?</label>
+                            <textarea 
+                                id="journalText" 
+                                class="journal-textarea" 
+                                placeholder="오늘 있었던 일, 느낀 점, 감사한 일 등을 자유롭게 적어보세요...&#10;&#10;예시:&#10;- 오늘 아침 메시지가 정말 마음에 와닿았다&#10;- 새로운 도전을 시작했다&#10;- 가족과 좋은 시간을 보냈다"
+                                rows="8"
+                                maxlength="1000"></textarea>
+                            <div class="char-counter">
+                                <span id="charCount">0</span> / 1000
+                            </div>
+                        </div>
+                        
+                        <div class="journal-actions">
+                            <button class="btn btn-secondary" id="cancelJournalBtn">취소</button>
+                            <button class="btn btn-primary" id="saveJournalBtn">저장하기</button>
+                        </div>
+                    </div>
+                    
+                    <div class="journal-history">
+                        <h3>지난 일기들</h3>
+                        <div class="journal-list" id="journalList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 습관 트래커 모달 -->
+    <div class="modal" id="habitModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📈 습관 트래커</h2>
+                <button class="modal-close" id="habitModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="habit-container">
+                    <div class="habit-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">🔥</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="currentStreak">0</div>
+                                <div class="stat-label">연속 방문</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📅</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="totalDays">0</div>
+                                <div class="stat-label">총 방문일</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📝</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="journalCount">0</div>
+                                <div class="stat-label">작성한 일기</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="habit-calendar">
+                        <h3>이번 달 활동</h3>
+                        <div class="calendar-grid" id="calendarGrid"></div>
+                        <div class="calendar-legend">
+                            <div class="legend-item">
+                                <div class="legend-color active"></div>
+                                <span>활동한 날</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color inactive"></div>
+                                <span>활동하지 않은 날</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 목표 설정 모달 -->
+    <div class="modal" id="goalsModal">
+        <div class="modal-content goals-modal-content">
+            <div class="modal-header">
+                <h2>🎯 목표 설정</h2>
+                <button class="modal-close" id="goalsModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="goals-container">
+                    <div class="goals-tabs">
+                        <button class="goals-tab active" data-tab="weekly">주간 목표</button>
+                        <button class="goals-tab" data-tab="monthly">월간 목표</button>
+                        <button class="goals-tab" data-tab="progress">진행 상황</button>
+                    </div>
+                    
+                    <!-- 주간 목표 탭 -->
+                    <div class="goals-tab-content active" id="weeklyTab">
+                        <div class="goals-inspiration">
+                            <div class="inspiration-text">
+                                "작은 목표들이 모여 큰 성취를 만듭니다" ✨
+                            </div>
+                        </div>
+                        
+                        <div class="goal-form">
+                            <h3>이번 주 목표 설정</h3>
+                            <div class="goal-input-group">
+                                <label for="weeklyGoalText">목표 내용</label>
+                                <input type="text" id="weeklyGoalText" placeholder="예: 매일 30분 운동하기, 책 3페이지 읽기..." maxlength="50">
+                            </div>
+                            <div class="goal-input-group">
+                                <label for="weeklyGoalCategory">카테고리</label>
+                                <select id="weeklyGoalCategory">
+                                    <option value="health">💪 건강</option>
+                                    <option value="study">📚 공부</option>
+                                    <option value="work">💼 업무</option>
+                                    <option value="relationship">👥 관계</option>
+                                    <option value="hobby">🎨 취미</option>
+                                    <option value="other">🌟 기타</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" id="addWeeklyGoalBtn">목표 추가</button>
+                        </div>
+                        
+                        <div class="current-goals">
+                            <h3>이번 주 목표들</h3>
+                            <div class="weekly-goals-list" id="weeklyGoalsList"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 월간 목표 탭 -->
+                    <div class="goals-tab-content" id="monthlyTab">
+                        <div class="goals-inspiration">
+                            <div class="inspiration-text">
+                                "한 달의 여정이 인생을 바꿉니다" 🌙
+                            </div>
+                        </div>
+                        
+                        <div class="goal-form">
+                            <h3>이번 달 목표 설정</h3>
+                            <div class="goal-input-group">
+                                <label for="monthlyGoalText">목표 내용</label>
+                                <input type="text" id="monthlyGoalText" placeholder="예: 새로운 기술 배우기, 10권 책 읽기..." maxlength="50">
+                            </div>
+                            <div class="goal-input-group">
+                                <label for="monthlyGoalCategory">카테고리</label>
+                                <select id="monthlyGoalCategory">
+                                    <option value="health">💪 건강</option>
+                                    <option value="study">📚 공부</option>
+                                    <option value="work">💼 업무</option>
+                                    <option value="relationship">👥 관계</option>
+                                    <option value="hobby">🎨 취미</option>
+                                    <option value="other">🌟 기타</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" id="addMonthlyGoalBtn">목표 추가</button>
+                        </div>
+                        
+                        <div class="current-goals">
+                            <h3>이번 달 목표들</h3>
+                            <div class="monthly-goals-list" id="monthlyGoalsList"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 진행 상황 탭 -->
+                    <div class="goals-tab-content" id="progressTab">
+                        <div class="progress-overview">
+                            <h3>📈 목표 달성 현황</h3>
+                            <div class="progress-stats">
+                                <div class="progress-stat-card">
+                                    <div class="stat-icon">📅</div>
+                                    <div class="stat-info">
+                                        <div class="stat-number" id="weeklyProgress">0%</div>
+                                        <div class="stat-label">주간 달성률</div>
+                                    </div>
+                                </div>
+                                <div class="progress-stat-card">
+                                    <div class="stat-icon">🗓️</div>
+                                    <div class="stat-info">
+                                        <div class="stat-number" id="monthlyProgress">0%</div>
+                                        <div class="stat-label">월간 달성률</div>
+                                    </div>
+                                </div>
+                                <div class="progress-stat-card">
+                                    <div class="stat-icon">🏆</div>
+                                    <div class="stat-info">
+                                        <div class="stat-number" id="completedGoals">0</div>
+                                        <div class="stat-label">완료한 목표</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="achievements">
+                            <h3>🏅 달성한 목표들</h3>
+                            <div class="achievements-list" id="achievementsList"></div>
+                        </div>
+                        
+                        <div class="motivation-message">
+                            <div class="motivation-text" id="motivationText">
+                                목표를 설정하고 달성해보세요! 💪
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 사용자 제출 모달 -->
+    <div class="modal" id="submitModal">
+        <div class="modal-content submit-modal-content">
+            <div class="modal-header">
+                <h2>✍️ 메시지 제출하기</h2>
+                <button class="modal-close" id="submitModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="submit-container">
+                    <div class="submit-tabs">
+                        <button class="submit-tab active" data-tab="create">새 메시지</button>
+                        <button class="submit-tab" data-tab="my-messages">내 메시지</button>
+                        <button class="submit-tab" data-tab="community">커뮤니티</button>
+                    </div>
+                    
+                    <!-- 새 메시지 작성 탭 -->
+                    <div class="submit-tab-content active" id="createTab">
+                        <div class="submit-inspiration">
+                            <div class="inspiration-text">
+                                "당신의 따뜻한 메시지가 다른 사람의 하루를 밝힐 수 있습니다" 💫
+                            </div>
+                        </div>
+                        
+                        <div class="message-form">
+                            <div class="form-group">
+                                <label for="messageText">메시지 내용</label>
+                                <textarea 
+                                    id="messageText" 
+                                    class="message-textarea" 
+                                    placeholder="다른 사람에게 힘이 되는 따뜻한 메시지를 작성해주세요...&#10;&#10;예시:&#10;- 오늘도 최선을 다하는 당신이 자랑스럽습니다&#10;- 작은 걸음도 앞으로 나아가는 것입니다&#10;- 당신의 존재만으로도 세상이 더 밝아집니다"
+                                    rows="6"
+                                    maxlength="200"></textarea>
+                                <div class="char-counter">
+                                    <span id="messageCharCount">0</span> / 200
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="messageAuthor">작성자</label>
+                                    <input type="text" id="messageAuthor" placeholder="익명" maxlength="20">
+                                </div>
+                                <div class="form-group half">
+                                    <label for="messageCategory">카테고리</label>
+                                    <select id="messageCategory">
+                                        <option value="동기부여">💪 동기부여</option>
+                                        <option value="위로">🤗 위로</option>
+                                        <option value="감사">🙏 감사</option>
+                                        <option value="희망">✨ 희망</option>
+                                        <option value="성장">🌱 성장</option>
+                                        <option value="긍정">😊 긍정</option>
+                                        <option value="사랑">❤️ 사랑</option>
+                                        <option value="용기">💪 용기</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="messageTimeOfDay">시간대</label>
+                                    <select id="messageTimeOfDay">
+                                        <option value="">언제나</option>
+                                        <option value="morning">🌅 아침</option>
+                                        <option value="afternoon">☀️ 오후</option>
+                                        <option value="evening">🌆 저녁</option>
+                                        <option value="night">🌙 밤</option>
+                                    </select>
+                                </div>
+                                <div class="form-group half">
+                                    <label for="messageSeason">계절</label>
+                                    <select id="messageSeason">
+                                        <option value="all">모든 계절</option>
+                                        <option value="spring">🌸 봄</option>
+                                        <option value="summer">☀️ 여름</option>
+                                        <option value="autumn">🍂 가을</option>
+                                        <option value="winter">❄️ 겨울</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="submit-actions">
+                                <button class="btn btn-secondary" id="previewMessageBtn">미리보기</button>
+                                <button class="btn btn-primary" id="submitMessageBtn">제출하기</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 내 메시지 탭 -->
+                    <div class="submit-tab-content" id="myMessagesTab">
+                        <div class="my-messages-header">
+                            <h3>📝 내가 작성한 메시지</h3>
+                            <div class="my-messages-stats">
+                                <span id="myMessagesCount">0</span>개의 메시지를 작성했습니다
+                            </div>
+                        </div>
+                        
+                        <div class="my-messages-empty" id="myMessagesEmpty" style="display: none;">
+                            <p>아직 작성한 메시지가 없습니다</p>
+                            <small>새 메시지 탭에서 첫 번째 메시지를 작성해보세요! ✍️</small>
+                        </div>
+                        
+                        <div class="my-messages-list" id="myMessagesList"></div>
+                    </div>
+                    
+                    <!-- 커뮤니티 탭 -->
+                    <div class="submit-tab-content" id="communityTab">
+                        <div class="community-header">
+                            <h3>🌍 커뮤니티 메시지</h3>
+                            <div class="community-stats">
+                                <span id="communityCount">0</span>개의 커뮤니티 메시지
+                            </div>
+                        </div>
+                        
+                        <div class="community-filters">
+                            <select id="communityFilter">
+                                <option value="all">전체 보기</option>
+                                <option value="recent">최신순</option>
+                                <option value="popular">인기순</option>
+                                <option value="my-category">내 관심 카테고리</option>
+                            </select>
+                        </div>
+                        
+                        <div class="community-empty" id="communityEmpty" style="display: none;">
+                            <p>커뮤니티 메시지가 없습니다</p>
+                            <small>첫 번째 메시지를 작성해서 커뮤니티를 시작해보세요! 🌟</small>
+                        </div>
+                        
+                        <div class="community-list" id="communityList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 메시지 미리보기 모달 -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content preview-modal-content">
+            <div class="modal-header">
+                <h2>👀 메시지 미리보기</h2>
+                <button class="modal-close" id="previewModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="preview-container">
+                    <div class="preview-quote-card">
+                        <blockquote class="preview-quote-text" id="previewText"></blockquote>
+                        <cite class="preview-quote-author" id="previewAuthor"></cite>
+                        <div class="preview-quote-category" id="previewCategory"></div>
+                        <div class="preview-quote-meta">
+                            <span id="previewTimeOfDay"></span>
+                            <span id="previewSeason"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-actions">
+                        <button class="btn btn-secondary" id="editMessageBtn">수정하기</button>
+                        <button class="btn btn-primary" id="confirmSubmitBtn">제출 확정</button>
                     </div>
                 </div>
             </div>

@@ -10,12 +10,20 @@ let settings = JSON.parse(localStorage.getItem('settings')) || {
     selectedCategory: 'all',
     userName: '',
     theme: 'default',
-    displayMode: 'card'
+    displayMode: 'card',
+    seasonalMessages: true,
+    specialDayMessages: true,
+    eventMessages: true
 };
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 let messageHistory = JSON.parse(localStorage.getItem('messageHistory')) || [];
 let messageStats = JSON.parse(localStorage.getItem('messageStats')) || {};
 let userReactions = JSON.parse(localStorage.getItem('userReactions')) || {};
+let dailyJournal = JSON.parse(localStorage.getItem('dailyJournal')) || {};
+let habitTracker = JSON.parse(localStorage.getItem('habitTracker')) || {};
+let userGoals = JSON.parse(localStorage.getItem('userGoals')) || [];
+let userMessages = JSON.parse(localStorage.getItem('userMessages')) || [];
+let communityMessages = JSON.parse(localStorage.getItem('communityMessages')) || [];
 
 // DOM 요소
 const elements = {
@@ -47,6 +55,9 @@ const elements = {
     notificationToggle: document.getElementById('notificationToggle'),
     notificationTime: document.getElementById('notificationTime'),
     notificationTimeRow: document.getElementById('notificationTimeRow'),
+    seasonalToggle: document.getElementById('seasonalToggle'),
+    specialDayToggle: document.getElementById('specialDayToggle'),
+    eventToggle: document.getElementById('eventToggle'),
     favoriteBtn: document.getElementById('favoriteBtn'),
     favoritesModal: document.getElementById('favoritesModal'),
     favoritesModalClose: document.getElementById('favoritesModalClose'),
@@ -80,7 +91,71 @@ const elements = {
     fireBtn: document.getElementById('fireBtn'),
     likeCount: document.getElementById('likeCount'),
     heartCount: document.getElementById('heartCount'),
-    fireCount: document.getElementById('fireCount')
+    fireCount: document.getElementById('fireCount'),
+    // 생산성 도구 관련
+    journalBtn: document.getElementById('journalBtn'),
+    habitTrackerBtn: document.getElementById('habitTrackerBtn'),
+    streakNumber: document.getElementById('streakNumber'),
+    journalModal: document.getElementById('journalModal'),
+    journalModalClose: document.getElementById('journalModalClose'),
+    habitModal: document.getElementById('habitModal'),
+    habitModalClose: document.getElementById('habitModalClose'),
+    inspirationQuote: document.getElementById('inspirationQuote'),
+    journalDate: document.getElementById('journalDate'),
+    journalText: document.getElementById('journalText'),
+    charCount: document.getElementById('charCount'),
+    saveJournalBtn: document.getElementById('saveJournalBtn'),
+    cancelJournalBtn: document.getElementById('cancelJournalBtn'),
+    journalList: document.getElementById('journalList'),
+    currentStreak: document.getElementById('currentStreak'),
+    totalDays: document.getElementById('totalDays'),
+    journalCount: document.getElementById('journalCount'),
+    calendarGrid: document.getElementById('calendarGrid'),
+    // 목표 설정 관련
+    goalsBtn: document.getElementById('goalsBtn'),
+    goalsModal: document.getElementById('goalsModal'),
+    goalsModalClose: document.getElementById('goalsModalClose'),
+    weeklyGoalText: document.getElementById('weeklyGoalText'),
+    weeklyGoalCategory: document.getElementById('weeklyGoalCategory'),
+    addWeeklyGoalBtn: document.getElementById('addWeeklyGoalBtn'),
+    weeklyGoalsList: document.getElementById('weeklyGoalsList'),
+    monthlyGoalText: document.getElementById('monthlyGoalText'),
+    monthlyGoalCategory: document.getElementById('monthlyGoalCategory'),
+    addMonthlyGoalBtn: document.getElementById('addMonthlyGoalBtn'),
+    monthlyGoalsList: document.getElementById('monthlyGoalsList'),
+    weeklyProgress: document.getElementById('weeklyProgress'),
+    monthlyProgress: document.getElementById('monthlyProgress'),
+    completedGoals: document.getElementById('completedGoals'),
+    achievementsList: document.getElementById('achievementsList'),
+    motivationText: document.getElementById('motivationText'),
+    // 사용자 제출 관련
+    submitBtn: document.getElementById('submitBtn'),
+    submitModal: document.getElementById('submitModal'),
+    submitModalClose: document.getElementById('submitModalClose'),
+    messageText: document.getElementById('messageText'),
+    messageAuthor: document.getElementById('messageAuthor'),
+    messageCategory: document.getElementById('messageCategory'),
+    messageTimeOfDay: document.getElementById('messageTimeOfDay'),
+    messageSeason: document.getElementById('messageSeason'),
+    messageCharCount: document.getElementById('messageCharCount'),
+    previewMessageBtn: document.getElementById('previewMessageBtn'),
+    submitMessageBtn: document.getElementById('submitMessageBtn'),
+    myMessagesCount: document.getElementById('myMessagesCount'),
+    myMessagesEmpty: document.getElementById('myMessagesEmpty'),
+    myMessagesList: document.getElementById('myMessagesList'),
+    communityCount: document.getElementById('communityCount'),
+    communityEmpty: document.getElementById('communityEmpty'),
+    communityList: document.getElementById('communityList'),
+    communityFilter: document.getElementById('communityFilter'),
+    previewModal: document.getElementById('previewModal'),
+    previewModalClose: document.getElementById('previewModalClose'),
+    previewText: document.getElementById('previewText'),
+    previewAuthor: document.getElementById('previewAuthor'),
+    previewCategory: document.getElementById('previewCategory'),
+    previewTimeOfDay: document.getElementById('previewTimeOfDay'),
+    previewSeason: document.getElementById('previewSeason'),
+    editMessageBtn: document.getElementById('editMessageBtn'),
+    confirmSubmitBtn: document.getElementById('confirmSubmitBtn')
 };
 
 // 애플리케이션 초기화
@@ -101,6 +176,10 @@ async function initApp() {
         setupNotifications();
         initializeKakao();
         checkWebShareSupport();
+        initializeHabitTracker();
+        updateStreakDisplay();
+        initializeGoals();
+        initializeUserSubmissions();
         
     } catch (error) {
         console.error('앱 초기화 실패:', error);
@@ -156,6 +235,10 @@ function setupEventListeners() {
     elements.historyBtn.addEventListener('click', openHistoryModal);
     elements.popularBtn.addEventListener('click', openPopularModal);
     elements.inviteBtn.addEventListener('click', openInviteModal);
+    elements.journalBtn.addEventListener('click', openJournalModal);
+    elements.habitTrackerBtn.addEventListener('click', openHabitModal);
+    elements.goalsBtn.addEventListener('click', openGoalsModal);
+    elements.submitBtn.addEventListener('click', openSubmitModal);
     elements.settingsBtn.addEventListener('click', openSettingsModal);
     
     // 즐겨찾기 관련
@@ -168,6 +251,11 @@ function setupEventListeners() {
     elements.historyModalClose.addEventListener('click', closeHistoryModal);
     elements.popularModalClose.addEventListener('click', closePopularModal);
     elements.inviteModalClose.addEventListener('click', closeInviteModal);
+    elements.journalModalClose.addEventListener('click', closeJournalModal);
+    elements.habitModalClose.addEventListener('click', closeHabitModal);
+    elements.goalsModalClose.addEventListener('click', closeGoalsModal);
+    elements.submitModalClose.addEventListener('click', closeSubmitModal);
+    elements.previewModalClose.addEventListener('click', closePreviewModal);
     
     // 히스토리 관련
     elements.clearHistoryBtn.addEventListener('click', clearHistory);
@@ -187,10 +275,33 @@ function setupEventListeners() {
     elements.copyInviteBtn.addEventListener('click', copyInviteMessage);
     elements.shareInviteBtn.addEventListener('click', shareInviteMessage);
     
+    // 생산성 도구
+    elements.saveJournalBtn.addEventListener('click', saveJournal);
+    elements.cancelJournalBtn.addEventListener('click', closeJournalModal);
+    elements.journalText.addEventListener('input', updateCharCount);
+    elements.addWeeklyGoalBtn.addEventListener('click', addWeeklyGoal);
+    elements.addMonthlyGoalBtn.addEventListener('click', addMonthlyGoal);
+    
+    // 사용자 제출 관련
+    elements.messageText.addEventListener('input', updateMessageCharCount);
+    elements.previewMessageBtn.addEventListener('click', previewMessage);
+    elements.submitMessageBtn.addEventListener('click', submitMessage);
+    elements.editMessageBtn.addEventListener('click', editMessage);
+    elements.confirmSubmitBtn.addEventListener('click', confirmSubmitMessage);
+    elements.communityFilter.addEventListener('change', filterCommunityMessages);
+    
+    // 기분 선택 버튼들
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => selectMood(e.target.dataset.mood));
+    });
+    
     // 설정 관련
     elements.darkModeToggle.addEventListener('change', toggleDarkMode);
     elements.notificationToggle.addEventListener('change', toggleNotifications);
     elements.notificationTime.addEventListener('change', updateNotificationTime);
+    elements.seasonalToggle.addEventListener('change', toggleSeasonalMessages);
+    elements.specialDayToggle.addEventListener('change', toggleSpecialDayMessages);
+    elements.eventToggle.addEventListener('change', toggleEventMessages);
     
     // 공유 버튼들
     elements.copyBtn.addEventListener('click', copyToClipboard);
@@ -210,6 +321,11 @@ function setupEventListeners() {
         if (e.target === elements.historyModal) closeHistoryModal();
         if (e.target === elements.popularModal) closePopularModal();
         if (e.target === elements.inviteModal) closeInviteModal();
+        if (e.target === elements.journalModal) closeJournalModal();
+        if (e.target === elements.habitModal) closeHabitModal();
+        if (e.target === elements.goalsModal) closeGoalsModal();
+        if (e.target === elements.submitModal) closeSubmitModal();
+        if (e.target === elements.previewModal) closePreviewModal();
     });
     
     // 터치 제스처 (스와이프로 새 메시지)
@@ -305,6 +421,7 @@ function displayRandomMessage() {
         updateMessageCounter();
         saveCurrentMessage();
         addToHistory();
+        updateHabitTracker('message');
         
     }, 600);
 }
@@ -365,9 +482,20 @@ function applySettings() {
     elements.themeSelect.value = settings.theme;
     elements.displayModeSelect.value = settings.displayMode;
     
+    // 계절별 메시지 설정
+    elements.seasonalToggle.checked = settings.seasonalMessages;
+    elements.specialDayToggle.checked = settings.specialDayMessages;
+    elements.eventToggle.checked = settings.eventMessages;
+    
     // 테마 및 표시 방식 적용
     applyTheme();
     applyDisplayMode();
+    
+    // 계절 표시기 업데이트
+    updateSeasonalDisplay();
+    
+    // 이벤트 표시기 업데이트
+    updateEventDisplay();
 }
 
 // 다크모드 토글
@@ -416,6 +544,46 @@ function updateNotificationTime() {
         scheduleNotification();
         showToast('알림 시간이 변경되었습니다', 'success');
     }
+}
+
+// 계절별 메시지 토글
+function toggleSeasonalMessages() {
+    settings.seasonalMessages = elements.seasonalToggle.checked;
+    saveSettings();
+    
+    const seasonInfo = getSeasonInfo();
+    const message = settings.seasonalMessages ? 
+        `${seasonInfo.icon} 계절별 메시지가 활성화되었습니다!` :
+        '계절별 메시지가 비활성화되었습니다';
+    
+    showToast(message, 'success');
+}
+
+// 특별한 날 메시지 토글
+function toggleSpecialDayMessages() {
+    settings.specialDayMessages = elements.specialDayToggle.checked;
+    saveSettings();
+    
+    const message = settings.specialDayMessages ? 
+        '🎊 특별한 날 메시지가 활성화되었습니다!' :
+        '특별한 날 메시지가 비활성화되었습니다';
+        
+    showToast(message, 'success');
+}
+
+// 이벤트 메시지 토글
+function toggleEventMessages() {
+    settings.eventMessages = elements.eventToggle.checked;
+    saveSettings();
+    
+    const message = settings.eventMessages ? 
+        '📅 이벤트 메시지가 활성화되었습니다!' :
+        '이벤트 메시지가 비활성화되었습니다';
+        
+    showToast(message, 'success');
+    
+    // 이벤트 표시기 업데이트
+    updateEventDisplay();
 }
 
 
@@ -753,13 +921,44 @@ function saveHistory() {
 
 // 카테고리 필터 관련 함수들
 function getFilteredMessages() {
-    const selectedCategory = settings.selectedCategory;
+    let filtered = messagesData;
     
-    if (selectedCategory === 'all') {
-        return messagesData;
+    // 카테고리 필터링
+    const selectedCategory = settings.selectedCategory;
+    if (selectedCategory !== 'all') {
+        filtered = filtered.filter(message => message.category === selectedCategory);
     }
     
-    return messagesData.filter(message => message.category === selectedCategory);
+    // 계절별 메시지 우선 표시
+    if (settings.seasonalMessages) {
+        const currentSeason = getCurrentSeason();
+        const seasonalMessages = filtered.filter(message => 
+            message.season === currentSeason || message.season === 'all'
+        );
+        
+        // 계절별 메시지가 있으면 70% 확률로 계절 메시지 우선
+        if (seasonalMessages.length > 0 && Math.random() < 0.7) {
+            filtered = seasonalMessages;
+        }
+    }
+    
+    // 특별한 날 메시지 최우선 표시
+    if (settings.specialDayMessages) {
+        const specialDayMessages = getSpecialDayMessages(filtered);
+        if (specialDayMessages.length > 0) {
+            return specialDayMessages; // 특별한 날 메시지가 있으면 무조건 우선
+        }
+    }
+    
+    // 이벤트 메시지 우선 표시
+    if (settings.eventMessages) {
+        const eventMessages = getEventMessages(filtered);
+        if (eventMessages.length > 0 && Math.random() < 0.6) {
+            return eventMessages; // 60% 확률로 이벤트 메시지 우선
+        }
+    }
+    
+    return filtered;
 }
 
 function handleCategoryChange() {
@@ -1060,6 +1259,314 @@ function saveMessageStats() {
 
 function saveUserReactions() {
     localStorage.setItem('userReactions', JSON.stringify(userReactions));
+}
+
+// 생산성 도구 기능들
+let selectedMood = '';
+
+function openJournalModal() {
+    // 오늘의 메시지를 영감 구역에 표시
+    if (currentMessage) {
+        elements.inspirationQuote.textContent = `"${currentMessage.text}" — ${currentMessage.author}`;
+    }
+    
+    // 오늘 날짜 설정
+    const today = new Date().toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+    });
+    elements.journalDate.textContent = today;
+    
+    // 기존 일기가 있다면 로드
+    loadTodayJournal();
+    
+    // 지난 일기들 표시
+    displayJournalHistory();
+    
+    elements.journalModal.style.display = 'block';
+}
+
+function closeJournalModal() {
+    elements.journalModal.style.display = 'none';
+    clearJournalForm();
+}
+
+function loadTodayJournal() {
+    const today = new Date().toDateString();
+    const todayJournal = dailyJournal[today];
+    
+    if (todayJournal) {
+        elements.journalText.value = todayJournal.text || '';
+        selectedMood = todayJournal.mood || '';
+        updateCharCount();
+        
+        // 기분 버튼 선택 상태 복원
+        document.querySelectorAll('.mood-btn').forEach(btn => {
+            btn.classList.toggle('selected', btn.dataset.mood === selectedMood);
+        });
+    }
+}
+
+function clearJournalForm() {
+    elements.journalText.value = '';
+    selectedMood = '';
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    updateCharCount();
+}
+
+function selectMood(mood) {
+    selectedMood = mood;
+    
+    // 모든 기분 버튼의 선택 상태 초기화
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    
+    // 선택된 버튼 활성화
+    document.querySelector(`[data-mood="${mood}"]`).classList.add('selected');
+    
+    // 햅틱 피드백
+    if (navigator.vibrate) {
+        navigator.vibrate(30);
+    }
+}
+
+function updateCharCount() {
+    const textLength = elements.journalText.value.length;
+    elements.charCount.textContent = textLength;
+    
+    // 글자 수에 따른 색상 변경
+    if (textLength > 900) {
+        elements.charCount.style.color = '#ef4444';
+    } else if (textLength > 800) {
+        elements.charCount.style.color = '#f59e0b';
+    } else {
+        elements.charCount.style.color = '#6b7280';
+    }
+}
+
+function saveJournal() {
+    const text = elements.journalText.value.trim();
+    
+    if (!text && !selectedMood) {
+        showToast('일기 내용이나 기분을 선택해주세요', 'warning');
+        return;
+    }
+    
+    const today = new Date().toDateString();
+    const now = new Date();
+    
+    dailyJournal[today] = {
+        text: text,
+        mood: selectedMood,
+        inspirationMessage: currentMessage ? {
+            text: currentMessage.text,
+            author: currentMessage.author
+        } : null,
+        createdAt: now.toISOString(),
+        updatedAt: now.toISOString()
+    };
+    
+    saveDailyJournal();
+    updateHabitTracker('journal');
+    closeJournalModal();
+    
+    showToast('일기가 저장되었습니다! 📝', 'success');
+}
+
+function displayJournalHistory() {
+    const journals = Object.entries(dailyJournal)
+        .sort(([a], [b]) => new Date(b) - new Date(a))
+        .slice(0, 5); // 최근 5개만 표시
+    
+    if (journals.length === 0) {
+        elements.journalList.innerHTML = '<p class="no-journals">아직 작성한 일기가 없습니다</p>';
+        return;
+    }
+    
+    elements.journalList.innerHTML = journals.map(([date, journal]) => {
+        const displayDate = new Date(date).toLocaleDateString('ko-KR', {
+            month: 'short',
+            day: 'numeric',
+            weekday: 'short'
+        });
+        
+        const moodEmoji = {
+            great: '😄',
+            good: '😊',
+            okay: '😐',
+            bad: '😔',
+            terrible: '😢'
+        };
+        
+        return `
+            <div class="journal-history-item">
+                <div class="journal-history-header">
+                    <span class="journal-history-date">${displayDate}</span>
+                    <span class="journal-history-mood">${moodEmoji[journal.mood] || '😐'}</span>
+                </div>
+                <div class="journal-history-preview">
+                    ${journal.text.substring(0, 80)}${journal.text.length > 80 ? '...' : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function openHabitModal() {
+    updateHabitStats();
+    generateHabitCalendar();
+    elements.habitModal.style.display = 'block';
+}
+
+function closeHabitModal() {
+    elements.habitModal.style.display = 'none';
+}
+
+function initializeHabitTracker() {
+    const today = new Date().toDateString();
+    
+    // 오늘 첫 방문이면 습관 트래커 업데이트
+    if (!habitTracker.lastVisit || habitTracker.lastVisit !== today) {
+        updateHabitTracker('visit');
+    }
+}
+
+function updateHabitTracker(activity) {
+    const today = new Date().toDateString();
+    
+    if (!habitTracker.visits) {
+        habitTracker.visits = {};
+    }
+    
+    if (!habitTracker.visits[today]) {
+        habitTracker.visits[today] = {
+            visited: false,
+            journalWritten: false,
+            messagesViewed: 0
+        };
+    }
+    
+    switch (activity) {
+        case 'visit':
+            if (!habitTracker.visits[today].visited) {
+                habitTracker.visits[today].visited = true;
+                habitTracker.lastVisit = today;
+                updateStreakCounter();
+            }
+            break;
+        case 'journal':
+            habitTracker.visits[today].journalWritten = true;
+            break;
+        case 'message':
+            habitTracker.visits[today].messagesViewed++;
+            break;
+    }
+    
+    saveHabitTracker();
+    updateStreakDisplay();
+}
+
+function updateStreakCounter() {
+    let currentStreak = 0;
+    let checkDate = new Date();
+    
+    // 연속 방문일 계산
+    while (true) {
+        const dateStr = checkDate.toDateString();
+        
+        if (habitTracker.visits[dateStr] && habitTracker.visits[dateStr].visited) {
+            currentStreak++;
+            checkDate.setDate(checkDate.getDate() - 1);
+        } else {
+            break;
+        }
+    }
+    
+    habitTracker.currentStreak = currentStreak;
+}
+
+function updateStreakDisplay() {
+    const streak = habitTracker.currentStreak || 0;
+    elements.streakNumber.textContent = streak;
+    
+    // 스트릭에 따른 색상 변경
+    if (streak >= 30) {
+        elements.streakNumber.style.color = '#10b981'; // 초록
+    } else if (streak >= 7) {
+        elements.streakNumber.style.color = '#f59e0b'; // 주황
+    } else {
+        elements.streakNumber.style.color = '#6b7280'; // 회색
+    }
+}
+
+function updateHabitStats() {
+    const totalDays = Object.keys(habitTracker.visits || {}).length;
+    const journalDays = Object.values(habitTracker.visits || {})
+        .filter(day => day.journalWritten).length;
+    
+    elements.currentStreak.textContent = habitTracker.currentStreak || 0;
+    elements.totalDays.textContent = totalDays;
+    elements.journalCount.textContent = journalDays;
+}
+
+function generateHabitCalendar() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    
+    // 이번 달의 첫 날과 마지막 날
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    
+    let calendarHTML = '';
+    
+    // 요일 헤더
+    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+    calendarHTML += '<div class="calendar-header">';
+    weekdays.forEach(day => {
+        calendarHTML += `<div class="calendar-weekday">${day}</div>`;
+    });
+    calendarHTML += '</div>';
+    
+    // 날짜 그리드
+    calendarHTML += '<div class="calendar-days">';
+    
+    // 빈 칸 (이번 달 시작 전)
+    for (let i = 0; i < firstDay.getDay(); i++) {
+        calendarHTML += '<div class="calendar-day empty"></div>';
+    }
+    
+    // 이번 달 날짜들
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+        const date = new Date(year, month, day);
+        const dateStr = date.toDateString();
+        const dayData = habitTracker.visits && habitTracker.visits[dateStr];
+        const isToday = date.toDateString() === today.toDateString();
+        
+        let dayClass = 'calendar-day';
+        if (isToday) dayClass += ' today';
+        if (dayData && dayData.visited) dayClass += ' active';
+        if (dayData && dayData.journalWritten) dayClass += ' journal';
+        
+        calendarHTML += `<div class="${dayClass}" title="${day}일">${day}</div>`;
+    }
+    
+    calendarHTML += '</div>';
+    
+    elements.calendarGrid.innerHTML = calendarHTML;
+}
+
+function saveDailyJournal() {
+    localStorage.setItem('dailyJournal', JSON.stringify(dailyJournal));
+}
+
+function saveHabitTracker() {
+    localStorage.setItem('habitTracker', JSON.stringify(habitTracker));
 }
 
 // 공유 기능들
@@ -1396,6 +1903,984 @@ function handleOfflineMode() {
             showToast('오프라인 모드: 최근 메시지를 표시합니다', 'info');
         }
     }
+}
+
+// === 목표 설정 시스템 ===
+
+// 목표 초기화
+function initializeGoals() {
+    if (!userGoals.weekly) {
+        userGoals.weekly = [];
+    }
+    if (!userGoals.monthly) {
+        userGoals.monthly = [];
+    }
+    if (!userGoals.completed) {
+        userGoals.completed = [];
+    }
+    
+    saveGoals();
+    setupGoalTabs();
+}
+
+// 목표 탭 설정
+function setupGoalTabs() {
+    const tabs = document.querySelectorAll('.goals-tab');
+    const contents = document.querySelectorAll('.goals-tab-content');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // 모든 탭 비활성화
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            // 클릭된 탭 활성화
+            tab.classList.add('active');
+            const targetTab = tab.dataset.tab;
+            document.getElementById(`${targetTab}Tab`).classList.add('active');
+            
+            // 탭별 데이터 업데이트
+            if (targetTab === 'progress') {
+                updateProgressDisplay();
+            }
+        });
+    });
+}
+
+// 목표 모달 열기
+function openGoalsModal() {
+    elements.goalsModal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    updateGoalsDisplay();
+    updateProgressDisplay();
+}
+
+// 목표 모달 닫기
+function closeGoalsModal() {
+    elements.goalsModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// 주간 목표 추가
+function addWeeklyGoal() {
+    const text = elements.weeklyGoalText.value.trim();
+    const category = elements.weeklyGoalCategory.value;
+    
+    if (!text) {
+        showToast('목표 내용을 입력해주세요', 'warning');
+        return;
+    }
+    
+    const goal = {
+        id: Date.now(),
+        text: text,
+        category: category,
+        type: 'weekly',
+        createdAt: new Date().toISOString(),
+        completed: false,
+        progress: 0
+    };
+    
+    userGoals.weekly.push(goal);
+    saveGoals();
+    
+    elements.weeklyGoalText.value = '';
+    updateGoalsDisplay();
+    showToast('주간 목표가 추가되었습니다! 🎯', 'success');
+}
+
+// 월간 목표 추가
+function addMonthlyGoal() {
+    const text = elements.monthlyGoalText.value.trim();
+    const category = elements.monthlyGoalCategory.value;
+    
+    if (!text) {
+        showToast('목표 내용을 입력해주세요', 'warning');
+        return;
+    }
+    
+    const goal = {
+        id: Date.now(),
+        text: text,
+        category: category,
+        type: 'monthly',
+        createdAt: new Date().toISOString(),
+        completed: false,
+        progress: 0
+    };
+    
+    userGoals.monthly.push(goal);
+    saveGoals();
+    
+    elements.monthlyGoalText.value = '';
+    updateGoalsDisplay();
+    showToast('월간 목표가 추가되었습니다! 🎯', 'success');
+}
+
+// 목표 완료 토글
+function toggleGoalCompletion(goalId, type) {
+    const goals = userGoals[type];
+    const goal = goals.find(g => g.id === goalId);
+    
+    if (goal) {
+        goal.completed = !goal.completed;
+        goal.completedAt = goal.completed ? new Date().toISOString() : null;
+        
+        if (goal.completed) {
+            // 완료된 목표를 완료 목록에 추가
+            userGoals.completed.push({...goal});
+            showToast(`목표를 달성했습니다! 🏆`, 'success');
+        }
+        
+        saveGoals();
+        updateGoalsDisplay();
+        updateProgressDisplay();
+    }
+}
+
+// 목표 삭제
+function deleteGoal(goalId, type) {
+    if (confirm('정말로 이 목표를 삭제하시겠습니까?')) {
+        userGoals[type] = userGoals[type].filter(g => g.id !== goalId);
+        saveGoals();
+        updateGoalsDisplay();
+        updateProgressDisplay();
+        showToast('목표가 삭제되었습니다', 'success');
+    }
+}
+
+// 목표 진행도 업데이트
+function updateGoalProgress(goalId, type, progress) {
+    const goals = userGoals[type];
+    const goal = goals.find(g => g.id === goalId);
+    
+    if (goal) {
+        goal.progress = Math.min(100, Math.max(0, progress));
+        if (goal.progress === 100 && !goal.completed) {
+            goal.completed = true;
+            goal.completedAt = new Date().toISOString();
+            userGoals.completed.push({...goal});
+            showToast(`목표를 달성했습니다! 🏆`, 'success');
+        }
+        saveGoals();
+        updateGoalsDisplay();
+        updateProgressDisplay();
+    }
+}
+
+// 목표 표시 업데이트
+function updateGoalsDisplay() {
+    updateWeeklyGoalsDisplay();
+    updateMonthlyGoalsDisplay();
+}
+
+// 주간 목표 표시 업데이트
+function updateWeeklyGoalsDisplay() {
+    const container = elements.weeklyGoalsList;
+    
+    if (userGoals.weekly.length === 0) {
+        container.innerHTML = `
+            <div class="goals-empty">
+                <p>아직 설정된 주간 목표가 없습니다</p>
+                <small>위에서 새로운 목표를 추가해보세요! 🎯</small>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = userGoals.weekly.map(goal => `
+        <div class="goal-item ${goal.completed ? 'completed' : ''}">
+            <div class="goal-header">
+                <div class="goal-category">${getCategoryIcon(goal.category)} ${getCategoryName(goal.category)}</div>
+                <div class="goal-actions">
+                    <button class="goal-action-btn" onclick="deleteGoal(${goal.id}, 'weekly')" title="삭제">🗑️</button>
+                </div>
+            </div>
+            <div class="goal-content">
+                <div class="goal-text">${goal.text}</div>
+                <div class="goal-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${goal.progress || 0}%"></div>
+                    </div>
+                    <div class="progress-controls">
+                        <button class="progress-btn" onclick="updateGoalProgress(${goal.id}, 'weekly', ${(goal.progress || 0) - 25})" ${goal.completed ? 'disabled' : ''}>-25%</button>
+                        <span class="progress-text">${goal.progress || 0}%</span>
+                        <button class="progress-btn" onclick="updateGoalProgress(${goal.id}, 'weekly', ${(goal.progress || 0) + 25})" ${goal.completed ? 'disabled' : ''}>+25%</button>
+                    </div>
+                </div>
+            </div>
+            <div class="goal-footer">
+                <span class="goal-date">시작: ${formatDate(goal.createdAt)}</span>
+                ${goal.completed ? `<span class="goal-completed">✅ 완료</span>` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+// 월간 목표 표시 업데이트
+function updateMonthlyGoalsDisplay() {
+    const container = elements.monthlyGoalsList;
+    
+    if (userGoals.monthly.length === 0) {
+        container.innerHTML = `
+            <div class="goals-empty">
+                <p>아직 설정된 월간 목표가 없습니다</p>
+                <small>위에서 새로운 목표를 추가해보세요! 🎯</small>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = userGoals.monthly.map(goal => `
+        <div class="goal-item ${goal.completed ? 'completed' : ''}">
+            <div class="goal-header">
+                <div class="goal-category">${getCategoryIcon(goal.category)} ${getCategoryName(goal.category)}</div>
+                <div class="goal-actions">
+                    <button class="goal-action-btn" onclick="deleteGoal(${goal.id}, 'monthly')" title="삭제">🗑️</button>
+                </div>
+            </div>
+            <div class="goal-content">
+                <div class="goal-text">${goal.text}</div>
+                <div class="goal-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${goal.progress || 0}%"></div>
+                    </div>
+                    <div class="progress-controls">
+                        <button class="progress-btn" onclick="updateGoalProgress(${goal.id}, 'monthly', ${(goal.progress || 0) - 10})" ${goal.completed ? 'disabled' : ''}>-10%</button>
+                        <span class="progress-text">${goal.progress || 0}%</span>
+                        <button class="progress-btn" onclick="updateGoalProgress(${goal.id}, 'monthly', ${(goal.progress || 0) + 10})" ${goal.completed ? 'disabled' : ''}>+10%</button>
+                    </div>
+                </div>
+            </div>
+            <div class="goal-footer">
+                <span class="goal-date">시작: ${formatDate(goal.createdAt)}</span>
+                ${goal.completed ? `<span class="goal-completed">✅ 완료</span>` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+// 진행 상황 표시 업데이트
+function updateProgressDisplay() {
+    // 주간 달성률 계산
+    const weeklyCompleted = userGoals.weekly.filter(g => g.completed).length;
+    const weeklyTotal = userGoals.weekly.length;
+    const weeklyProgress = weeklyTotal > 0 ? Math.round((weeklyCompleted / weeklyTotal) * 100) : 0;
+    
+    // 월간 달성률 계산
+    const monthlyCompleted = userGoals.monthly.filter(g => g.completed).length;
+    const monthlyTotal = userGoals.monthly.length;
+    const monthlyProgress = monthlyTotal > 0 ? Math.round((monthlyCompleted / monthlyTotal) * 100) : 0;
+    
+    // 전체 완료된 목표 수
+    const totalCompleted = userGoals.completed.length;
+    
+    elements.weeklyProgress.textContent = `${weeklyProgress}%`;
+    elements.monthlyProgress.textContent = `${monthlyProgress}%`;
+    elements.completedGoals.textContent = totalCompleted;
+    
+    // 달성한 목표들 표시
+    updateAchievementsDisplay();
+    
+    // 동기부여 메시지 업데이트
+    updateMotivationMessage(weeklyProgress, monthlyProgress, totalCompleted);
+}
+
+// 달성한 목표들 표시 업데이트
+function updateAchievementsDisplay() {
+    const container = elements.achievementsList;
+    
+    if (userGoals.completed.length === 0) {
+        container.innerHTML = `
+            <div class="achievements-empty">
+                <p>아직 달성한 목표가 없습니다</p>
+                <small>목표를 설정하고 달성해보세요! 💪</small>
+            </div>
+        `;
+        return;
+    }
+    
+    // 최근 달성한 목표 순으로 정렬
+    const sortedAchievements = [...userGoals.completed].sort((a, b) => 
+        new Date(b.completedAt) - new Date(a.completedAt)
+    );
+    
+    container.innerHTML = sortedAchievements.map(goal => `
+        <div class="achievement-item">
+            <div class="achievement-icon">🏆</div>
+            <div class="achievement-content">
+                <div class="achievement-text">${goal.text}</div>
+                <div class="achievement-meta">
+                    <span class="achievement-category">${getCategoryIcon(goal.category)} ${getCategoryName(goal.category)}</span>
+                    <span class="achievement-date">완료: ${formatDate(goal.completedAt)}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 동기부여 메시지 업데이트
+function updateMotivationMessage(weeklyProgress, monthlyProgress, totalCompleted) {
+    let message = '';
+    
+    if (totalCompleted === 0) {
+        message = '목표를 설정하고 달성해보세요! 💪';
+    } else if (totalCompleted < 5) {
+        message = `${totalCompleted}개의 목표를 달성했습니다! 계속 해보세요! 🌟`;
+    } else if (totalCompleted < 10) {
+        message = `훌륭합니다! ${totalCompleted}개의 목표를 달성했어요! 🎉`;
+    } else {
+        message = `놀라워요! ${totalCompleted}개나 달성했네요! 목표 마스터! 👑`;
+    }
+    
+    // 주간/월간 진행률에 따른 추가 메시지
+    if (weeklyProgress >= 80 || monthlyProgress >= 80) {
+        message += '\n거의 다 왔어요! 조금만 더 힘내세요! 🔥';
+    } else if (weeklyProgress >= 50 || monthlyProgress >= 50) {
+        message += '\n절반 이상 달성했습니다! 👍';
+    }
+    
+    elements.motivationText.textContent = message;
+}
+
+// 카테고리 아이콘 가져오기
+function getCategoryIcon(category) {
+    const icons = {
+        health: '💪',
+        study: '📚',
+        work: '💼',
+        relationship: '👥',
+        hobby: '🎨',
+        other: '🌟'
+    };
+    return icons[category] || '🌟';
+}
+
+// 카테고리 이름 가져오기
+function getCategoryName(category) {
+    const names = {
+        health: '건강',
+        study: '공부',
+        work: '업무',
+        relationship: '관계',
+        hobby: '취미',
+        other: '기타'
+    };
+    return names[category] || '기타';
+}
+
+// 날짜 포맷팅
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ko-KR', {
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+// 목표 저장
+function saveGoals() {
+    localStorage.setItem('userGoals', JSON.stringify(userGoals));
+}
+
+// === 계절별 메시지 시스템 ===
+
+// 현재 계절 가져오기
+function getCurrentSeason() {
+    const month = new Date().getMonth() + 1; // 0-11 => 1-12
+    
+    if ([3, 4, 5].includes(month)) {
+        return 'spring';
+    } else if ([6, 7, 8].includes(month)) {
+        return 'summer';
+    } else if ([9, 10, 11].includes(month)) {
+        return 'autumn';
+    } else {
+        return 'winter';
+    }
+}
+
+// 특별한 날 메시지 가져오기
+function getSpecialDayMessages(filtered) {
+    const today = new Date();
+    const monthDay = String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                   String(today.getDate()).padStart(2, '0');
+    
+    return filtered.filter(message => {
+        if (!message.specialDay) return false;
+        
+        // 메시지 데이터에서 특별한 날 정의를 확인
+        const specialDays = {
+            'new-year': ['01-01'],
+            'christmas': ['12-25'], 
+            'children-day': ['05-05']
+        };
+        
+        const dates = specialDays[message.specialDay] || [];
+        return dates.includes(monthDay);
+    });
+}
+
+// 계절 정보 가져오기
+function getSeasonInfo() {
+    const currentSeason = getCurrentSeason();
+    const seasonInfo = {
+        spring: { name: '봄', icon: '🌸', description: '새로운 시작의 계절' },
+        summer: { name: '여름', icon: '☀️', description: '열정과 활력의 계절' },
+        autumn: { name: '가을', icon: '🍂', description: '성찰과 결실의 계절' },
+        winter: { name: '겨울', icon: '❄️', description: '평화와 고요의 계절' }
+    };
+    
+    return seasonInfo[currentSeason];
+}
+
+// 계절별 메시지 표시 상태 업데이트
+function updateSeasonalDisplay() {
+    const seasonInfo = getSeasonInfo();
+    const seasonalIndicator = document.querySelector('.seasonal-indicator');
+    
+    if (seasonalIndicator) {
+        seasonalIndicator.innerHTML = `${seasonInfo.icon} ${seasonInfo.name}`;
+        seasonalIndicator.title = seasonInfo.description;
+    }
+}
+
+// === 이벤트 콘텐츠 시스템 ===
+
+// 이벤트 메시지 가져오기
+function getEventMessages(filtered) {
+    const now = new Date();
+    const eventMessages = [];
+    
+    // 요일별 이벤트 확인
+    const weeklyEvents = checkWeeklyEvents(now);
+    weeklyEvents.forEach(eventTarget => {
+        const messages = filtered.filter(msg => 
+            msg.eventType === 'weekly' && msg.eventTarget === eventTarget
+        );
+        eventMessages.push(...messages);
+    });
+    
+    // 시간대별 이벤트 확인
+    const hourlyEvents = checkHourlyEvents(now);
+    hourlyEvents.forEach(eventTarget => {
+        const messages = filtered.filter(msg => 
+            msg.eventType === 'hourly' && msg.eventTarget === eventTarget
+        );
+        eventMessages.push(...messages);
+    });
+    
+    // 월별 이벤트 확인
+    const monthlyEvents = checkMonthlyEvents(now);
+    monthlyEvents.forEach(eventTarget => {
+        const messages = filtered.filter(msg => 
+            msg.eventType === 'monthly' && msg.eventTarget === eventTarget
+        );
+        eventMessages.push(...messages);
+    });
+    
+    return eventMessages;
+}
+
+// 요일별 이벤트 확인
+function checkWeeklyEvents(date) {
+    const dayOfWeek = date.getDay(); // 0=일요일, 1=월요일, ..., 6=토요일
+    const events = [];
+    
+    if (dayOfWeek === 1) events.push('monday'); // 월요일
+    if (dayOfWeek === 5) events.push('friday'); // 금요일
+    if (dayOfWeek === 0 || dayOfWeek === 6) events.push('weekend'); // 주말
+    
+    return events;
+}
+
+// 시간대별 이벤트 확인
+function checkHourlyEvents(date) {
+    const hour = date.getHours();
+    const events = [];
+    
+    if ([4, 5, 6].includes(hour)) events.push('dawn'); // 새벽
+    if ([12, 13].includes(hour)) events.push('lunch'); // 점심시간
+    if ([15, 16].includes(hour)) events.push('snack-time'); // 간식시간
+    
+    return events;
+}
+
+// 월별 이벤트 확인
+function checkMonthlyEvents(date) {
+    const month = date.getMonth() + 1; // 0-11 => 1-12
+    const dayOfMonth = date.getDate();
+    const events = [];
+    
+    // 특정 월 체크
+    if (month === 1) events.push('january');
+    if (month === 6) events.push('june');
+    if (month === 12) events.push('december');
+    
+    // 월초/월말 체크
+    if ([1, 2, 3].includes(dayOfMonth)) events.push('month-start'); // 월초
+    
+    // 월말 체크 (해당 월의 마지막 3일)
+    const lastDay = new Date(date.getFullYear(), month, 0).getDate();
+    if (dayOfMonth >= lastDay - 2) events.push('month-end'); // 월말
+    
+    return events;
+}
+
+// 현재 활성 이벤트 정보 가져오기
+function getCurrentEvents() {
+    const now = new Date();
+    const events = {
+        weekly: checkWeeklyEvents(now),
+        hourly: checkHourlyEvents(now),
+        monthly: checkMonthlyEvents(now)
+    };
+    
+    return events;
+}
+
+// 이벤트 표시기 업데이트
+function updateEventDisplay() {
+    const events = getCurrentEvents();
+    const eventIndicator = document.querySelector('.event-indicator');
+    
+    if (eventIndicator) {
+        const activeEvents = [
+            ...events.weekly,
+            ...events.hourly, 
+            ...events.monthly
+        ];
+        
+        if (activeEvents.length > 0) {
+            const icons = {
+                'monday': '💪',
+                'friday': '🎉', 
+                'weekend': '☕',
+                'dawn': '🌅',
+                'lunch': '🍽️',
+                'snack-time': '🍪',
+                'january': '🎯',
+                'june': '🌿',
+                'december': '👏',
+                'month-start': '🎯',
+                'month-end': '📊'
+            };
+            
+            const eventIcon = icons[activeEvents[0]] || '📅';
+            eventIndicator.innerHTML = `${eventIcon} 이벤트`;
+            eventIndicator.style.display = 'inline-block';
+        } else {
+            eventIndicator.style.display = 'none';
+        }
+    }
+}
+
+// === 사용자 제출 시스템 ===
+
+// 사용자 제출 시스템 초기화
+function initializeUserSubmissions() {
+    setupSubmitTabs();
+    updateMyMessagesDisplay();
+    updateCommunityDisplay();
+}
+
+// 제출 탭 설정
+function setupSubmitTabs() {
+    const tabs = document.querySelectorAll('.submit-tab');
+    const contents = document.querySelectorAll('.submit-tab-content');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // 모든 탭 비활성화
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            // 클릭된 탭 활성화
+            tab.classList.add('active');
+            const targetTab = tab.dataset.tab;
+            document.getElementById(`${targetTab}Tab`).classList.add('active');
+            
+            // 탭별 데이터 업데이트
+            if (targetTab === 'my-messages') {
+                updateMyMessagesDisplay();
+            } else if (targetTab === 'community') {
+                updateCommunityDisplay();
+            }
+        });
+    });
+}
+
+// 사용자 제출 모달 열기
+function openSubmitModal() {
+    elements.submitModal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    
+    // 사용자 이름이 설정되어 있으면 기본값으로 설정
+    if (settings.userName) {
+        elements.messageAuthor.value = settings.userName;
+    }
+    
+    updateMyMessagesDisplay();
+    updateCommunityDisplay();
+}
+
+// 사용자 제출 모달 닫기
+function closeSubmitModal() {
+    elements.submitModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    resetMessageForm();
+}
+
+// 미리보기 모달 닫기
+function closePreviewModal() {
+    elements.previewModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// 메시지 폼 초기화
+function resetMessageForm() {
+    elements.messageText.value = '';
+    elements.messageAuthor.value = settings.userName || '';
+    elements.messageCategory.value = '동기부여';
+    elements.messageTimeOfDay.value = '';
+    elements.messageSeason.value = 'all';
+    updateMessageCharCount();
+}
+
+// 메시지 글자 수 업데이트
+function updateMessageCharCount() {
+    const count = elements.messageText.value.length;
+    elements.messageCharCount.textContent = count;
+    
+    if (count > 180) {
+        elements.messageCharCount.style.color = '#ef4444';
+    } else if (count > 150) {
+        elements.messageCharCount.style.color = '#f59e0b';
+    } else {
+        elements.messageCharCount.style.color = 'var(--text-secondary)';
+    }
+}
+
+// 메시지 미리보기
+function previewMessage() {
+    const text = elements.messageText.value.trim();
+    if (!text) {
+        showToast('메시지 내용을 입력해주세요', 'warning');
+        return;
+    }
+    
+    const author = elements.messageAuthor.value.trim() || '익명';
+    const category = elements.messageCategory.value;
+    const timeOfDay = elements.messageTimeOfDay.value;
+    const season = elements.messageSeason.value;
+    
+    // 미리보기 모달에 데이터 설정
+    elements.previewText.textContent = text;
+    elements.previewAuthor.textContent = author;
+    elements.previewCategory.textContent = category;
+    
+    // 시간대와 계절 정보 표시
+    const timeText = getTimeOfDayText(timeOfDay);
+    const seasonText = getSeasonText(season);
+    elements.previewTimeOfDay.textContent = timeText;
+    elements.previewSeason.textContent = seasonText;
+    
+    // 미리보기 모달 열기
+    elements.previewModal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+// 시간대 텍스트 가져오기
+function getTimeOfDayText(timeOfDay) {
+    const timeTexts = {
+        'morning': '🌅 아침',
+        'afternoon': '☀️ 오후',
+        'evening': '🌆 저녁',
+        'night': '🌙 밤'
+    };
+    return timeTexts[timeOfDay] || '⏰ 언제나';
+}
+
+// 계절 텍스트 가져오기
+function getSeasonText(season) {
+    const seasonTexts = {
+        'spring': '🌸 봄',
+        'summer': '☀️ 여름',
+        'autumn': '🍂 가을',
+        'winter': '❄️ 겨울'
+    };
+    return seasonTexts[season] || '🌍 모든 계절';
+}
+
+// 미리보기에서 수정하기
+function editMessage() {
+    closePreviewModal();
+    // 제출 모달의 새 메시지 탭으로 돌아감
+    const createTab = document.querySelector('[data-tab="create"]');
+    createTab.click();
+}
+
+// 메시지 제출 (직접)
+function submitMessage() {
+    const text = elements.messageText.value.trim();
+    if (!text) {
+        showToast('메시지 내용을 입력해주세요', 'warning');
+        return;
+    }
+    
+    if (text.length < 10) {
+        showToast('메시지는 최소 10자 이상 입력해주세요', 'warning');
+        return;
+    }
+    
+    previewMessage(); // 미리보기를 먼저 보여줌
+}
+
+// 메시지 제출 확정
+function confirmSubmitMessage() {
+    const message = {
+        id: Date.now(),
+        text: elements.messageText.value.trim(),
+        author: elements.messageAuthor.value.trim() || '익명',
+        category: elements.messageCategory.value,
+        timeOfDay: elements.messageTimeOfDay.value || '',
+        season: elements.messageSeason.value || 'all',
+        createdAt: new Date().toISOString(),
+        userSubmitted: true,
+        approved: true, // 자동 승인 (실제 서비스에서는 검토 후 승인)
+        likes: 0,
+        reports: 0
+    };
+    
+    // 내 메시지에 추가
+    userMessages.push(message);
+    saveUserMessages();
+    
+    // 커뮤니티에도 추가 (공유)
+    communityMessages.push({...message});
+    saveCommunityMessages();
+    
+    // 성공 메시지
+    showToast('메시지가 성공적으로 제출되었습니다! 🎉', 'success');
+    
+    // 모달 닫기 및 폼 초기화
+    closePreviewModal();
+    closeSubmitModal();
+    resetMessageForm();
+    
+    // 디스플레이 업데이트
+    updateMyMessagesDisplay();
+    updateCommunityDisplay();
+}
+
+// 내 메시지 표시 업데이트
+function updateMyMessagesDisplay() {
+    const count = userMessages.length;
+    elements.myMessagesCount.textContent = count;
+    
+    if (count === 0) {
+        elements.myMessagesEmpty.style.display = 'block';
+        elements.myMessagesList.innerHTML = '';
+        return;
+    }
+    
+    elements.myMessagesEmpty.style.display = 'none';
+    
+    // 최신순으로 정렬
+    const sortedMessages = [...userMessages].sort((a, b) => 
+        new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    
+    elements.myMessagesList.innerHTML = sortedMessages.map(message => `
+        <div class="user-message-item">
+            <div class="message-content">
+                <div class="message-text">${message.text}</div>
+                <div class="message-meta">
+                    <span class="message-category">${message.category}</span>
+                    <span class="message-date">${formatDate(message.createdAt)}</span>
+                </div>
+            </div>
+            <div class="message-actions">
+                <button class="message-action-btn" onclick="editUserMessage(${message.id})" title="수정">✏️</button>
+                <button class="message-action-btn" onclick="deleteUserMessage(${message.id})" title="삭제">🗑️</button>
+                <button class="message-action-btn" onclick="shareUserMessage(${message.id})" title="공유">📤</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 커뮤니티 표시 업데이트
+function updateCommunityDisplay() {
+    const count = communityMessages.length;
+    elements.communityCount.textContent = count;
+    
+    if (count === 0) {
+        elements.communityEmpty.style.display = 'block';
+        elements.communityList.innerHTML = '';
+        return;
+    }
+    
+    elements.communityEmpty.style.display = 'none';
+    filterCommunityMessages();
+}
+
+// 커뮤니티 메시지 필터링
+function filterCommunityMessages() {
+    const filter = elements.communityFilter.value;
+    let filteredMessages = [...communityMessages];
+    
+    switch (filter) {
+        case 'recent':
+            filteredMessages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            break;
+        case 'popular':
+            filteredMessages.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+            break;
+        case 'my-category':
+            // 사용자가 자주 선택하는 카테고리 우선
+            const preferredCategories = getPreferredCategories();
+            filteredMessages = filteredMessages.filter(msg => 
+                preferredCategories.includes(msg.category)
+            );
+            break;
+    }
+    
+    elements.communityList.innerHTML = filteredMessages.map(message => `
+        <div class="community-message-item">
+            <div class="message-content">
+                <div class="message-text">${message.text}</div>
+                <div class="message-author">— ${message.author}</div>
+                <div class="message-meta">
+                    <span class="message-category">${message.category}</span>
+                    <span class="message-date">${formatDate(message.createdAt)}</span>
+                </div>
+            </div>
+            <div class="message-stats">
+                <button class="like-community-btn" onclick="likeCommunityMessage(${message.id})">
+                    👍 <span>${message.likes || 0}</span>
+                </button>
+                <button class="use-message-btn" onclick="useCommunityMessage(${message.id})">
+                    사용하기
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 선호 카테고리 가져오기
+function getPreferredCategories() {
+    // 사용자의 즐겨찾기나 히스토리에서 가장 많이 사용된 카테고리 분석
+    const categoryCounts = {};
+    
+    // 즐겨찾기 카테고리 분석
+    favorites.forEach(fav => {
+        categoryCounts[fav.category] = (categoryCounts[fav.category] || 0) + 2; // 즐겨찾기는 가중치 2
+    });
+    
+    // 히스토리 카테고리 분석
+    messageHistory.forEach(hist => {
+        categoryCounts[hist.category] = (categoryCounts[hist.category] || 0) + 1;
+    });
+    
+    // 상위 3개 카테고리 반환
+    return Object.entries(categoryCounts)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 3)
+        .map(([category]) => category);
+}
+
+// 사용자 메시지 수정
+function editUserMessage(messageId) {
+    const message = userMessages.find(m => m.id === messageId);
+    if (!message) return;
+    
+    // 폼에 기존 데이터 설정
+    elements.messageText.value = message.text;
+    elements.messageAuthor.value = message.author;
+    elements.messageCategory.value = message.category;
+    elements.messageTimeOfDay.value = message.timeOfDay || '';
+    elements.messageSeason.value = message.season || 'all';
+    updateMessageCharCount();
+    
+    // 새 메시지 탭으로 이동
+    const createTab = document.querySelector('[data-tab="create"]');
+    createTab.click();
+    
+    showToast('메시지를 수정할 수 있습니다', 'info');
+}
+
+// 사용자 메시지 삭제
+function deleteUserMessage(messageId) {
+    if (confirm('정말로 이 메시지를 삭제하시겠습니까?')) {
+        userMessages = userMessages.filter(m => m.id !== messageId);
+        saveUserMessages();
+        
+        // 커뮤니티에서도 제거
+        communityMessages = communityMessages.filter(m => m.id !== messageId);
+        saveCommunityMessages();
+        
+        updateMyMessagesDisplay();
+        updateCommunityDisplay();
+        showToast('메시지가 삭제되었습니다', 'success');
+    }
+}
+
+// 사용자 메시지 공유
+function shareUserMessage(messageId) {
+    const message = userMessages.find(m => m.id === messageId);
+    if (!message) return;
+    
+    // 공유 텍스트 생성
+    const shareText = `"${message.text}"\n\n— ${message.author}\n\n모닝 앱에서 공유됨`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: '모닝 - 내가 작성한 메시지',
+            text: shareText,
+            url: window.location.href
+        });
+    } else {
+        // 클립보드에 복사
+        navigator.clipboard.writeText(shareText).then(() => {
+            showToast('메시지가 클립보드에 복사되었습니다! 📋', 'success');
+        });
+    }
+}
+
+// 커뮤니티 메시지 좋아요
+function likeCommunityMessage(messageId) {
+    const message = communityMessages.find(m => m.id === messageId);
+    if (!message) return;
+    
+    message.likes = (message.likes || 0) + 1;
+    saveCommunityMessages();
+    updateCommunityDisplay();
+    showToast('좋아요! 👍', 'success');
+}
+
+// 커뮤니티 메시지 사용하기
+function useCommunityMessage(messageId) {
+    const message = communityMessages.find(m => m.id === messageId);
+    if (!message) return;
+    
+    // 현재 메시지로 설정
+    currentMessage = message;
+    showMessage();
+    addToHistory();
+    
+    // 모달 닫기
+    closeSubmitModal();
+    
+    showToast('메시지를 적용했습니다! ✨', 'success');
+}
+
+// 데이터 저장 함수들
+function saveUserMessages() {
+    localStorage.setItem('userMessages', JSON.stringify(userMessages));
+}
+
+function saveCommunityMessages() {
+    localStorage.setItem('communityMessages', JSON.stringify(communityMessages));
 }
 
 // 페이지 로드 시 애플리케이션 초기화

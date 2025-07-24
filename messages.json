@@ -6,6 +6,7 @@
       "author": "하루의 시작",
       "category": "새로운 시작",
       "timeOfDay": "morning",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -14,6 +15,7 @@
       "author": "하루의 시작",
       "category": "성장",
       "timeOfDay": "morning",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -22,6 +24,7 @@
       "author": "벤자민 프랭클린",
       "category": "동기부여",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -30,6 +33,7 @@
       "author": "루이 파스퇴르",
       "category": "성공",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -38,6 +42,7 @@
       "author": "하루의 시작",
       "category": "감사",
       "timeOfDay": "morning",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -46,6 +51,7 @@
       "author": "하루의 시작",
       "category": "여유",
       "timeOfDay": "morning",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -54,6 +60,7 @@
       "author": "하루의 시작",
       "category": "가능성",
       "timeOfDay": "morning",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -62,6 +69,7 @@
       "author": "하루의 시작",
       "category": "휴식",
       "timeOfDay": "afternoon",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -70,6 +78,7 @@
       "author": "하루의 시작",
       "category": "활력",
       "timeOfDay": "afternoon",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -78,6 +87,7 @@
       "author": "하루의 시작",
       "category": "칭찬",
       "timeOfDay": "evening",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -86,6 +96,7 @@
       "author": "하루의 시작",
       "category": "감사",
       "timeOfDay": "evening",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -94,6 +105,7 @@
       "author": "하루의 시작",
       "category": "긍정",
       "timeOfDay": "night",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -102,6 +114,7 @@
       "author": "월트 디즈니",
       "category": "꿈",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -110,6 +123,7 @@
       "author": "월트 디즈니",
       "category": "실행력",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -118,6 +132,7 @@
       "author": "하루의 시작",
       "category": "에너지",
       "timeOfDay": "morning",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -126,6 +141,7 @@
       "author": "토마스 에디슨",
       "category": "인내",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -134,6 +150,7 @@
       "author": "허버드",
       "category": "행복",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -142,6 +159,7 @@
       "author": "하루의 시작",
       "category": "월요일",
       "timeOfDay": "morning",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -150,6 +168,7 @@
       "author": "하루의 시작",
       "category": "화요일",
       "timeOfDay": "morning",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -158,6 +177,7 @@
       "author": "하루의 시작",
       "category": "수요일",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -166,6 +186,7 @@
       "author": "하루의 시작",
       "category": "목요일",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -174,6 +195,7 @@
       "author": "하루의 시작",
       "category": "금요일",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -182,6 +204,7 @@
       "author": "하루의 시작",
       "category": "토요일",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -190,6 +213,7 @@
       "author": "하루의 시작",
       "category": "일요일",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -198,6 +222,7 @@
       "author": "마하트마 간디",
       "category": "변화",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -206,6 +231,7 @@
       "author": "공자",
       "category": "용기",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -214,6 +240,7 @@
       "author": "헨리 포드",
       "category": "믿음",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -222,6 +249,7 @@
       "author": "하루의 시작",
       "category": "건강",
       "timeOfDay": "morning",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -230,6 +258,7 @@
       "author": "하루의 시작",
       "category": "미소",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -238,6 +267,7 @@
       "author": "한국 속담",
       "category": "노력",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -246,6 +276,7 @@
       "author": "한국 속담",
       "category": "시작",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -254,6 +285,7 @@
       "author": "한국 속담",
       "category": "성실함",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -262,6 +294,7 @@
       "author": "하루의 시작",
       "category": "성취",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -270,6 +303,7 @@
       "author": "중국 속담",
       "category": "학습",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -278,6 +312,7 @@
       "author": "소크라테스",
       "category": "우정",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -286,6 +321,7 @@
       "author": "하루의 시작",
       "category": "휴식",
       "timeOfDay": "afternoon",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -294,6 +330,7 @@
       "author": "괴테",
       "category": "시간",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -302,6 +339,7 @@
       "author": "C.S. 루이스",
       "category": "용기",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -310,6 +348,7 @@
       "author": "랄프 왈도 에머슨",
       "category": "자신감",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -318,6 +357,7 @@
       "author": "애비 호프먼",
       "category": "새로운 시작",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -326,6 +366,7 @@
       "author": "하루의 시작",
       "category": "마무리",
       "timeOfDay": "evening",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -334,6 +375,7 @@
       "author": "루이 파스퇴르",
       "category": "기회",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -342,6 +384,7 @@
       "author": "한국 속담",
       "category": "관점",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -350,6 +393,7 @@
       "author": "한국 속담",
       "category": "실패",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -358,6 +402,7 @@
       "author": "한국 속담",
       "category": "꾸준함",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -366,6 +411,7 @@
       "author": "하루의 시작",
       "category": "새벽",
       "timeOfDay": "night",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -374,6 +420,7 @@
       "author": "유베날리스",
       "category": "건강",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -382,6 +429,7 @@
       "author": "멜로디 비티",
       "category": "감사",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -390,6 +438,7 @@
       "author": "빌 키언",
       "category": "현재",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -398,6 +447,7 @@
       "author": "알폰스 카르",
       "category": "사랑",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -406,6 +456,7 @@
       "author": "아리스토텔레스",
       "category": "희망",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -414,6 +465,7 @@
       "author": "존 F. 케네디",
       "category": "도전",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -422,6 +474,7 @@
       "author": "하루의 시작",
       "category": "자기응원",
       "timeOfDay": "morning",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -430,6 +483,7 @@
       "author": "아리스토텔레스",
       "category": "자아성찰",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -438,6 +492,7 @@
       "author": "볼테르",
       "category": "어려움",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -446,6 +501,7 @@
       "author": "찰스 스윈돌",
       "category": "태도",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -454,6 +510,7 @@
       "author": "셰익스피어",
       "category": "희망",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -462,6 +519,7 @@
       "author": "하루의 시작",
       "category": "회상",
       "timeOfDay": "evening",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -470,6 +528,7 @@
       "author": "베이컨",
       "category": "지혜",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -478,6 +537,7 @@
       "author": "뉴턴",
       "category": "겸손",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -486,6 +546,7 @@
       "author": "베이컨",
       "category": "독서",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -494,6 +555,7 @@
       "author": "조시 빌링스",
       "category": "용서",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -502,6 +564,7 @@
       "author": "간디",
       "category": "배움",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -510,6 +573,7 @@
       "author": "헨리 데이빗 소로",
       "category": "오늘",
       "timeOfDay": "",
+      "season": "all",
       "createdAt": "2024-01-01"
     },
     {
@@ -518,6 +582,310 @@
       "author": "하루의 시작",
       "category": "감사",
       "timeOfDay": "night",
+      "season": "all",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 66,
+      "text": "봄이 왔습니다! 새싹처럼 새로운 시작을 해보세요. 🌱",
+      "author": "계절의 메시지",
+      "category": "새로운 시작",
+      "timeOfDay": "morning",
+      "season": "spring",
+      "createdAt": "2024-03-01"
+    },
+    {
+      "id": 67,
+      "text": "벚꽃이 피는 계절, 아름다운 순간들을 놓치지 마세요. 🌸",
+      "author": "계절의 메시지",
+      "category": "아름다움",
+      "timeOfDay": "",
+      "season": "spring",
+      "createdAt": "2024-04-01"
+    },
+    {
+      "id": 68,
+      "text": "따뜻한 봄바람처럼 마음도 따뜻하게 시작해보세요.",
+      "author": "계절의 메시지",
+      "category": "따뜻함",
+      "timeOfDay": "morning",
+      "season": "spring",
+      "createdAt": "2024-03-15"
+    },
+    {
+      "id": 69,
+      "text": "여름의 뜨거운 태양처럼 열정적인 하루를 보내세요! ☀️",
+      "author": "계절의 메시지",
+      "category": "열정",
+      "timeOfDay": "morning",
+      "season": "summer",
+      "createdAt": "2024-06-01"
+    },
+    {
+      "id": 70,
+      "text": "시원한 바다를 생각하며 마음의 여유를 찾아보세요. 🌊",
+      "author": "계절의 메시지",
+      "category": "여유",
+      "timeOfDay": "afternoon",
+      "season": "summer",
+      "createdAt": "2024-07-01"
+    },
+    {
+      "id": 71,
+      "text": "여름밤의 별을 바라보며 꿈을 키워보세요. ⭐",
+      "author": "계절의 메시지",
+      "category": "꿈",
+      "timeOfDay": "night",
+      "season": "summer",
+      "createdAt": "2024-08-01"
+    },
+    {
+      "id": 72,
+      "text": "가을의 단풍처럼 아름다운 변화를 받아들여보세요. 🍂",
+      "author": "계절의 메시지",
+      "category": "변화",
+      "timeOfDay": "",
+      "season": "autumn",
+      "createdAt": "2024-09-01"
+    },
+    {
+      "id": 73,
+      "text": "수확의 계절, 지금까지의 노력이 결실을 맺을 때입니다.",
+      "author": "계절의 메시지",
+      "category": "결실",
+      "timeOfDay": "",
+      "season": "autumn",
+      "createdAt": "2024-10-01"
+    },
+    {
+      "id": 74,
+      "text": "선선한 가을바람과 함께 마음도 정리해보세요.",
+      "author": "계절의 메시지",
+      "category": "성찰",
+      "timeOfDay": "evening",
+      "season": "autumn",
+      "createdAt": "2024-11-01"
+    },
+    {
+      "id": 75,
+      "text": "겨울의 고요함 속에서 내면의 평화를 찾아보세요. ❄️",
+      "author": "계절의 메시지",
+      "category": "평화",
+      "timeOfDay": "",
+      "season": "winter",
+      "createdAt": "2024-12-01"
+    },
+    {
+      "id": 76,
+      "text": "눈 내리는 아침, 새하얀 마음으로 시작해보세요. ⛄",
+      "author": "계절의 메시지",
+      "category": "순수함",
+      "timeOfDay": "morning",
+      "season": "winter",
+      "createdAt": "2024-01-15"
+    },
+    {
+      "id": 77,
+      "text": "따뜻한 차 한 잔으로 마음을 녹여보세요. ☕",
+      "author": "계절의 메시지",
+      "category": "따뜻함",
+      "timeOfDay": "afternoon",
+      "season": "winter",
+      "createdAt": "2024-02-01"
+    },
+    {
+      "id": 78,
+      "text": "새해가 밝았습니다! 새로운 다짐으로 시작하세요. 🎊",
+      "author": "특별한 날",
+      "category": "새해",
+      "timeOfDay": "morning",
+      "season": "winter",
+      "specialDay": "new-year",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 79,
+      "text": "크리스마스의 따뜻한 마음을 나누어보세요. 🎄",
+      "author": "특별한 날",
+      "category": "나눔",
+      "timeOfDay": "",
+      "season": "winter",
+      "specialDay": "christmas",
+      "createdAt": "2024-12-25"
+    },
+    {
+      "id": 80,
+      "text": "어린이날, 어린 시절의 순수한 마음을 되찾아보세요. 👶",
+      "author": "특별한 날",
+      "category": "순수함",
+      "timeOfDay": "",
+      "season": "spring",
+      "specialDay": "children-day",
+      "createdAt": "2024-05-05"
+    },
+    {
+      "id": 81,
+      "text": "월요병을 이겨내세요! 새로운 한 주의 첫 걸음입니다. 💪",
+      "author": "요일별 메시지",
+      "category": "동기부여",
+      "timeOfDay": "morning",
+      "season": "all",
+      "eventType": "weekly",
+      "eventTarget": "monday",
+      "createdAt": "2024-01-08"
+    },
+    {
+      "id": 82,
+      "text": "Happy TGIF! 한 주의 마지막, 오늘도 파이팅! 🎉",
+      "author": "요일별 메시지",
+      "category": "금요일",
+      "timeOfDay": "",
+      "season": "all",
+      "eventType": "weekly",
+      "eventTarget": "friday",
+      "createdAt": "2024-01-12"
+    },
+    {
+      "id": 83,
+      "text": "주말 모닝! 여유로운 하루를 만끽하세요. ☕",
+      "author": "요일별 메시지",
+      "category": "휴식",
+      "timeOfDay": "morning",
+      "season": "all",
+      "eventType": "weekly",
+      "eventTarget": "weekend",
+      "createdAt": "2024-01-13"
+    },
+    {
+      "id": 84,
+      "text": "새벽 5시의 고요함, 세상이 깨어나기 전의 특별한 시간입니다. 🌅",
+      "author": "시간대별 메시지",
+      "category": "새벽",
+      "timeOfDay": "dawn",
+      "season": "all",
+      "eventType": "hourly",
+      "eventTarget": "dawn",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 85,
+      "text": "점심시간! 맛있는 식사와 함께 에너지를 충전하세요. 🍽️",
+      "author": "시간대별 메시지",
+      "category": "휴식",
+      "timeOfDay": "afternoon",
+      "season": "all",
+      "eventType": "hourly",
+      "eventTarget": "lunch",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 86,
+      "text": "오후 3시, 달콤한 간식과 함께 잠시 휴식을 취해보세요. 🍪",
+      "author": "시간대별 메시지",
+      "category": "휴식",
+      "timeOfDay": "afternoon",
+      "season": "all",
+      "eventType": "hourly",
+      "eventTarget": "snack-time",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 87,
+      "text": "1월의 시작! 새로운 목표와 함께 힘찬 한 해를 시작하세요. 🎯",
+      "author": "월별 메시지",
+      "category": "새로운 시작",
+      "timeOfDay": "",
+      "season": "winter",
+      "eventType": "monthly", 
+      "eventTarget": "january",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 88,
+      "text": "6월의 초록, 자연과 함께 마음도 싱그럽게! 🌿",
+      "author": "월별 메시지",
+      "category": "자연",
+      "timeOfDay": "",
+      "season": "summer",
+      "eventType": "monthly",
+      "eventTarget": "june",
+      "createdAt": "2024-06-01"
+    },
+    {
+      "id": 89,
+      "text": "12월의 마무리, 한 해 동안 수고한 자신에게 박수를! 👏",
+      "author": "월별 메시지",
+      "category": "마무리",
+      "timeOfDay": "",
+      "season": "winter",
+      "eventType": "monthly",
+      "eventTarget": "december",
+      "createdAt": "2024-12-01"
+    },
+    {
+      "id": 90,
+      "text": "비 오는 날, 창밖을 바라보며 마음의 여유를 찾아보세요. 🌧️",
+      "author": "날씨별 메시지",
+      "category": "여유",
+      "timeOfDay": "",
+      "season": "all",
+      "eventType": "weather",
+      "eventTarget": "rainy",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 91,
+      "text": "눈 내리는 날, 하얀 세상 속에서 마음도 순수해집니다. ❄️",
+      "author": "날씨별 메시지", 
+      "category": "순수함",
+      "timeOfDay": "",
+      "season": "winter",
+      "eventType": "weather",
+      "eventTarget": "snowy",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 92,
+      "text": "맑은 하늘처럼 오늘도 상쾌한 기분으로! ☀️",
+      "author": "날씨별 메시지",
+      "category": "상쾌함",
+      "timeOfDay": "morning",
+      "season": "all",
+      "eventType": "weather",
+      "eventTarget": "sunny",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 93,
+      "text": "월말 정산, 한 달 동안의 성과를 돌아보는 소중한 시간입니다. 📊",
+      "author": "이벤트 메시지",
+      "category": "성찰",
+      "timeOfDay": "",
+      "season": "all",
+      "eventType": "monthly",
+      "eventTarget": "month-end",
+      "createdAt": "2024-01-31"
+    },
+    {
+      "id": 94,
+      "text": "월초의 새로운 시작! 이번 달 목표를 세워보세요. 🎯",
+      "author": "이벤트 메시지",
+      "category": "목표",
+      "timeOfDay": "",
+      "season": "all",
+      "eventType": "monthly",
+      "eventTarget": "month-start",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 95,
+      "text": "오늘은 보름달이 뜨는 날, 밤하늘을 올려다보세요. 🌕",
+      "author": "천체 이벤트",
+      "category": "자연",
+      "timeOfDay": "night",
+      "season": "all",
+      "eventType": "lunar",
+      "eventTarget": "full-moon",
       "createdAt": "2024-01-01"
     }
   ],
@@ -529,8 +897,94 @@
     "성실함", "성취", "학습", "우정", "시간", "자신감", "마무리", "기회", 
     "관점", "실패", "꾸준함", "새벽", "현재", "사랑", "희망", "도전", 
     "자기응원", "자아성찰", "어려움", "태도", "회상", "지혜", "겸손", 
-    "독서", "용서", "배움", "오늘"
+    "독서", "용서", "배움", "오늘", "아름다움", "따뜻함", "열정", "결실", 
+    "성찰", "평화", "순수함", "새해", "나눔", "자연", "상쾌함", "목표"
   ],
+  "eventTypes": {
+    "weekly": {
+      "name": "요일별 이벤트",
+      "targets": {
+        "monday": { "name": "월요일", "day": 1 },
+        "friday": { "name": "금요일", "day": 5 },
+        "weekend": { "name": "주말", "days": [0, 6] }
+      }
+    },
+    "hourly": {
+      "name": "시간대별 이벤트", 
+      "targets": {
+        "dawn": { "name": "새벽", "hours": [4, 5, 6] },
+        "lunch": { "name": "점심시간", "hours": [12, 13] },
+        "snack-time": { "name": "간식시간", "hours": [15, 16] }
+      }
+    },
+    "monthly": {
+      "name": "월별 이벤트",
+      "targets": {
+        "january": { "name": "1월", "month": 1 },
+        "june": { "name": "6월", "month": 6 },
+        "december": { "name": "12월", "month": 12 },
+        "month-start": { "name": "월초", "dates": [1, 2, 3] },
+        "month-end": { "name": "월말", "lastDays": 3 }
+      }
+    },
+    "weather": {
+      "name": "날씨별 이벤트",
+      "targets": {
+        "rainy": { "name": "비오는 날", "manual": true },
+        "snowy": { "name": "눈오는 날", "manual": true },
+        "sunny": { "name": "맑은 날", "manual": true }
+      }
+    },
+    "lunar": {
+      "name": "천체 이벤트",
+      "targets": {
+        "full-moon": { "name": "보름달", "manual": true }
+      }
+    }
+  },
+  "seasons": {
+    "spring": {
+      "name": "봄",
+      "months": [3, 4, 5],
+      "icon": "🌸",
+      "description": "새로운 시작의 계절"
+    },
+    "summer": {
+      "name": "여름", 
+      "months": [6, 7, 8],
+      "icon": "☀️",
+      "description": "열정과 활력의 계절"
+    },
+    "autumn": {
+      "name": "가을",
+      "months": [9, 10, 11], 
+      "icon": "🍂",
+      "description": "성찰과 결실의 계절"
+    },
+    "winter": {
+      "name": "겨울",
+      "months": [12, 1, 2],
+      "icon": "❄️", 
+      "description": "평화와 고요의 계절"
+    }
+  },
+  "specialDays": {
+    "new-year": {
+      "name": "새해",
+      "dates": ["01-01"],
+      "icon": "🎊"
+    },
+    "christmas": {
+      "name": "크리스마스",
+      "dates": ["12-25"],
+      "icon": "🎄"
+    },
+    "children-day": {
+      "name": "어린이날",
+      "dates": ["05-05"],
+      "icon": "👶"
+    }
+  },
   "timeSlots": {
     "morning": "06:00-11:59",
     "afternoon": "12:00-17:59", 

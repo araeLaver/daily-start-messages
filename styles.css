@@ -103,6 +103,47 @@ body {
     display: inline-block;
 }
 
+.seasonal-indicator {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin-top: 0.3rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    display: inline-block;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.seasonal-indicator:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+}
+
+.event-indicator {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 0.3rem;
+    margin-left: 0.5rem;
+    font-weight: 500;
+    padding: 0.15rem 0.5rem;
+    background: rgba(34, 197, 94, 0.2);
+    border-radius: 10px;
+    display: inline-block;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.event-indicator:hover {
+    background: rgba(34, 197, 94, 0.3);
+    transform: scale(1.05);
+}
+
 /* Main Content */
 .main-content {
     padding: 2rem 1.5rem;
@@ -1321,7 +1362,8 @@ body {
         margin: 0 auto 1rem;
     }
     
-    .action-buttons .btn:nth-child(7) {
+    .action-buttons .btn:nth-child(10),
+    .action-buttons .btn:nth-child(11) {
         grid-column: 1 / -1;
         max-width: 200px;
         margin: 0 auto;
@@ -1395,4 +1437,855 @@ body {
 
 [data-theme="dark"] .modal-content {
     background: var(--card-background);
+}
+
+/* === 목표 설정 모달 스타일 === */
+
+.goals-modal-content {
+    max-width: 800px;
+    width: 95%;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.goals-container {
+    padding: 0;
+}
+
+.goals-tabs {
+    display: flex;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.goals-tab {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.goals-tab:hover {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--primary-color);
+}
+
+.goals-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.goals-tab-content {
+    display: none;
+}
+
+.goals-tab-content.active {
+    display: block;
+}
+
+.goals-inspiration {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.inspiration-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    font-style: italic;
+}
+
+.goal-form {
+    background: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.goal-form h3 {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.goal-input-group {
+    margin-bottom: 1rem;
+}
+
+.goal-input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.goal-input-group input,
+.goal-input-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: white;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+}
+
+.goal-input-group input:focus,
+.goal-input-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.current-goals h3 {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.goals-empty,
+.achievements-empty {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    background: var(--card-background);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.goals-empty p,
+.achievements-empty p {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+}
+
+.goals-empty small,
+.achievements-empty small {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.goal-item {
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.goal-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.goal-item.completed {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.goal-category {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.goal-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.goal-action-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.goal-action-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.goal-content {
+    margin-bottom: 0.75rem;
+}
+
+.goal-text {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.goal-progress {
+    margin-top: 1rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    transition: width 0.3s ease;
+}
+
+.progress-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.progress-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.progress-btn:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.progress-btn:disabled {
+    background: var(--border-color);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.progress-text {
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 45px;
+    text-align: center;
+}
+
+.goal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.goal-date {
+    color: var(--text-muted);
+}
+
+.goal-completed {
+    color: #22c55e;
+    font-weight: 500;
+}
+
+/* 진행 상황 탭 스타일 */
+.progress-overview {
+    margin-bottom: 2rem;
+}
+
+.progress-overview h3 {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.progress-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.progress-stat-card {
+    background: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.progress-stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.progress-stat-card .stat-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.progress-stat-card .stat-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+}
+
+.progress-stat-card .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* 달성한 목표들 스타일 */
+.achievements h3 {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--card-background);
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.achievement-item:hover {
+    transform: translateY(-1px);
+}
+
+.achievement-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.achievement-content {
+    flex: 1;
+}
+
+.achievement-text {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.achievement-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.achievement-category {
+    color: var(--text-secondary);
+}
+
+.achievement-date {
+    color: #22c55e;
+}
+
+/* 동기부여 메시지 */
+.motivation-message {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.motivation-text {
+    font-size: 1rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    line-height: 1.5;
+    white-space: pre-line;
+}
+
+/* 모바일 대응 */
+@media (max-width: 640px) {
+    .goals-modal-content {
+        width: 98%;
+        max-height: 90vh;
+    }
+    
+    .goals-tabs {
+        flex-direction: column;
+    }
+    
+    .goals-tab {
+        border-bottom: 1px solid var(--border-color);
+        border-right: none;
+    }
+    
+    .goals-tab.active {
+        border-bottom-color: var(--primary-color);
+    }
+    
+    .goal-form {
+        padding: 1rem;
+    }
+    
+    .progress-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .progress-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .achievement-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .achievement-meta {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+/* === 사용자 제출 시스템 스타일 === */
+
+.submit-modal-content,
+.preview-modal-content {
+    max-width: 800px;
+    width: 95%;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.submit-container {
+    padding: 0;
+}
+
+.submit-tabs {
+    display: flex;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.submit-tab {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.submit-tab:hover {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--primary-color);
+}
+
+.submit-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.submit-tab-content {
+    display: none;
+}
+
+.submit-tab-content.active {
+    display: block;
+}
+
+.submit-inspiration {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.submit-inspiration .inspiration-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    font-style: italic;
+}
+
+.message-form {
+    background: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group.half {
+    margin-bottom: 0;
+}
+
+.message-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: white;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    resize: vertical;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+.message-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: white;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.char-counter {
+    text-align: right;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.submit-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+/* 내 메시지 및 커뮤니티 스타일 */
+.my-messages-header,
+.community-header {
+    margin-bottom: 1.5rem;
+}
+
+.my-messages-header h3,
+.community-header h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.my-messages-stats,
+.community-stats {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.community-filters {
+    margin-bottom: 1rem;
+}
+
+.community-filters select {
+    width: 200px;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
+}
+
+.my-messages-empty,
+.community-empty {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    background: var(--card-background);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.my-messages-empty p,
+.community-empty p {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+}
+
+.my-messages-empty small,
+.community-empty small {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.user-message-item,
+.community-message-item {
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.user-message-item:hover,
+.community-message-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.message-content {
+    flex: 1;
+}
+
+.message-text {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.message-author {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+.message-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.message-category {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.user-message-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.message-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: 1rem;
+}
+
+.message-action-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.message-action-btn:hover {
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.message-stats {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    align-items: center;
+}
+
+.like-community-btn,
+.use-message-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.like-community-btn:hover {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.use-message-btn {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.use-message-btn:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+/* 미리보기 모달 스타일 */
+.preview-container {
+    text-align: center;
+}
+
+.preview-quote-card {
+    background: var(--card-background);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
+}
+
+.preview-quote-text {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    font-style: normal;
+    line-height: 1.5;
+}
+
+.preview-quote-author {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+}
+
+.preview-quote-category {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.preview-quote-meta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.preview-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* 모바일 대응 */
+@media (max-width: 640px) {
+    .submit-modal-content,
+    .preview-modal-content {
+        width: 98%;
+        max-height: 90vh;
+    }
+    
+    .submit-tabs {
+        flex-direction: column;
+    }
+    
+    .submit-tab {
+        border-bottom: 1px solid var(--border-color);
+        border-right: none;
+    }
+    
+    .submit-tab.active {
+        border-bottom-color: var(--primary-color);
+    }
+    
+    .message-form {
+        padding: 1rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .submit-actions {
+        flex-direction: column;
+    }
+    
+    .user-message-item {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .message-actions {
+        align-self: flex-end;
+        margin-left: 0;
+    }
+    
+    .message-stats {
+        justify-content: center;
+    }
+    
+    .preview-quote-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }
