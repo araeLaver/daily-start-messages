@@ -3,8 +3,7 @@ let messagesData = [];
 let currentMessage = null;
 let messageCounter = 0;
 let settings = JSON.parse(localStorage.getItem('settings')) || {
-    darkMode: false,
-    fontSize: 1.0
+    darkMode: false
 };
 
 // DOM 요소
@@ -28,9 +27,7 @@ const elements = {
     facebookBtn: document.getElementById('facebookBtn'),
     settingsModal: document.getElementById('settingsModal'),
     settingsModalClose: document.getElementById('settingsModalClose'),
-    darkModeToggle: document.getElementById('darkModeToggle'),
-    fontSizeSlider: document.getElementById('fontSizeSlider'),
-    fontSizeValue: document.getElementById('fontSizeValue')
+    darkModeToggle: document.getElementById('darkModeToggle')
 };
 
 // 애플리케이션 초기화
@@ -100,7 +97,6 @@ function setupEventListeners() {
     
     // 설정 관련
     elements.darkModeToggle.addEventListener('change', toggleDarkMode);
-    elements.fontSizeSlider.addEventListener('input', updateFontSize);
     
     // 공유 버튼들
     elements.copyBtn.addEventListener('click', copyToClipboard);
@@ -224,10 +220,6 @@ function applySettings() {
     if (settings.darkMode) {
         document.documentElement.setAttribute('data-theme', 'dark');
     }
-    
-    // 폰트 크기
-    elements.fontSizeSlider.value = settings.fontSize;
-    updateFontSize();
 }
 
 // 다크모드 토글
@@ -243,16 +235,6 @@ function toggleDarkMode() {
     saveSettings();
 }
 
-// 폰트 크기 업데이트
-function updateFontSize() {
-    const fontSize = elements.fontSizeSlider.value;
-    settings.fontSize = parseFloat(fontSize);
-    
-    document.documentElement.style.fontSize = `${fontSize}rem`;
-    elements.fontSizeValue.textContent = `${Math.round(fontSize * 100)}%`;
-    
-    saveSettings();
-}
 
 // 설정 저장
 function saveSettings() {

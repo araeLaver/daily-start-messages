@@ -92,24 +92,14 @@
                 <button class="modal-close" id="settingsModalClose">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="settings-section">
-                    <h3>🎨 테마 설정</h3>
-                    <div class="setting-item">
-                        <label for="darkModeToggle">다크모드</label>
-                        <input type="checkbox" id="darkModeToggle" class="toggle-switch">
+                <div class="simple-settings">
+                    <div class="setting-row">
+                        <span>🌙 다크모드</span>
+                        <input type="checkbox" id="darkModeToggle" class="simple-toggle">
                     </div>
-                    <div class="setting-item">
-                        <label for="fontSizeSlider">글꼴 크기</label>
-                        <input type="range" id="fontSizeSlider" min="0.8" max="1.4" step="0.1" value="1.0" class="slider">
-                        <span id="fontSizeValue">100%</span>
-                    </div>
-                </div>
-                
-                <div class="settings-section">
-                    <h3>📱 앱 정보</h3>
-                    <div class="setting-item">
-                        <p class="stats-text">매일 새로운 메시지로 좋은 하루를 시작하세요</p>
-                        <p class="stats-text">버전: 1.0</p>
+                    <div class="app-info">
+                        <p>매일 새로운 메시지로 좋은 하루를 시작하세요</p>
+                        <small>버전 1.0</small>
                     </div>
                 </div>
             </div>
