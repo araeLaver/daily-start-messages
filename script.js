@@ -14,6 +14,8 @@ let settings = JSON.parse(localStorage.getItem('settings')) || {
 };
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 let messageHistory = JSON.parse(localStorage.getItem('messageHistory')) || [];
+let messageStats = JSON.parse(localStorage.getItem('messageStats')) || {};
+let userReactions = JSON.parse(localStorage.getItem('userReactions')) || {};
 
 // DOM 요소
 const elements = {
@@ -59,7 +61,26 @@ const elements = {
     categoryFilter: document.getElementById('categoryFilter'),
     userNameInput: document.getElementById('userNameInput'),
     themeSelect: document.getElementById('themeSelect'),
-    displayModeSelect: document.getElementById('displayModeSelect')
+    displayModeSelect: document.getElementById('displayModeSelect'),
+    // 소셜 기능 관련
+    popularBtn: document.getElementById('popularBtn'),
+    inviteBtn: document.getElementById('inviteBtn'),
+    popularModal: document.getElementById('popularModal'),
+    popularModalClose: document.getElementById('popularModalClose'),
+    popularEmpty: document.getElementById('popularEmpty'),
+    popularList: document.getElementById('popularList'),
+    inviteModal: document.getElementById('inviteModal'),
+    inviteModalClose: document.getElementById('inviteModalClose'),
+    inviteText: document.getElementById('inviteText'),
+    copyInviteBtn: document.getElementById('copyInviteBtn'),
+    shareInviteBtn: document.getElementById('shareInviteBtn'),
+    // 반응 버튼들
+    likeBtn: document.getElementById('likeBtn'),
+    heartBtn: document.getElementById('heartBtn'),
+    fireBtn: document.getElementById('fireBtn'),
+    likeCount: document.getElementById('likeCount'),
+    heartCount: document.getElementById('heartCount'),
+    fireCount: document.getElementById('fireCount')
 };
 
 // 애플리케이션 초기화
@@ -133,6 +154,8 @@ function setupEventListeners() {
     elements.speakBtn.addEventListener('click', speakMessage);
     elements.favoritesBtn.addEventListener('click', openFavoritesModal);
     elements.historyBtn.addEventListener('click', openHistoryModal);
+    elements.popularBtn.addEventListener('click', openPopularModal);
+    elements.inviteBtn.addEventListener('click', openInviteModal);
     elements.settingsBtn.addEventListener('click', openSettingsModal);
     
     // 즐겨찾기 관련
@@ -143,6 +166,8 @@ function setupEventListeners() {
     elements.settingsModalClose.addEventListener('click', closeSettingsModal);
     elements.favoritesModalClose.addEventListener('click', closeFavoritesModal);
     elements.historyModalClose.addEventListener('click', closeHistoryModal);
+    elements.popularModalClose.addEventListener('click', closePopularModal);
+    elements.inviteModalClose.addEventListener('click', closeInviteModal);
     
     // 히스토리 관련
     elements.clearHistoryBtn.addEventListener('click', clearHistory);
@@ -154,6 +179,13 @@ function setupEventListeners() {
     elements.userNameInput.addEventListener('input', updateUserName);
     elements.themeSelect.addEventListener('change', changeTheme);
     elements.displayModeSelect.addEventListener('change', changeDisplayMode);
+    
+    // 소셜 기능
+    elements.likeBtn.addEventListener('click', () => handleReaction('like'));
+    elements.heartBtn.addEventListener('click', () => handleReaction('heart'));
+    elements.fireBtn.addEventListener('click', () => handleReaction('fire'));
+    elements.copyInviteBtn.addEventListener('click', copyInviteMessage);
+    elements.shareInviteBtn.addEventListener('click', shareInviteMessage);
     
     // 설정 관련
     elements.darkModeToggle.addEventListener('change', toggleDarkMode);
@@ -176,6 +208,8 @@ function setupEventListeners() {
         if (e.target === elements.settingsModal) closeSettingsModal();
         if (e.target === elements.favoritesModal) closeFavoritesModal();
         if (e.target === elements.historyModal) closeHistoryModal();
+        if (e.target === elements.popularModal) closePopularModal();
+        if (e.target === elements.inviteModal) closeInviteModal();
     });
     
     // 터치 제스처 (스와이프로 새 메시지)
@@ -300,6 +334,9 @@ function showMessage() {
     
     // 즐겨찾기 상태 업데이트
     updateFavoriteButton();
+    
+    // 반응 상태 업데이트
+    updateReactionCounts();
 }
 
 // 메시지 카운터 업데이트
@@ -823,6 +860,206 @@ function applyDisplayMode() {
             // 기본 카드형은 추가 클래스 없음
             break;
     }
+}
+
+// 소셜 기능들
+function handleReaction(reactionType) {
+    if (!currentMessage) return;
+    
+    const messageId = currentMessage.id;
+    
+    // 메시지 통계 초기화
+    if (!messageStats[messageId]) {
+        messageStats[messageId] = {
+            like: 0,
+            heart: 0,
+            fire: 0,
+            shares: 0
+        };
+    }
+    
+    // 사용자 반응 초기화
+    if (!userReactions[messageId]) {
+        userReactions[messageId] = {};
+    }
+    
+    // 이미 같은 반응을 했는지 확인
+    if (userReactions[messageId][reactionType]) {
+        // 반응 제거
+        messageStats[messageId][reactionType]--;
+        delete userReactions[messageId][reactionType];
+        showToast('반응이 취소되었습니다', 'info');
+    } else {
+        // 새 반응 추가
+        messageStats[messageId][reactionType]++;
+        userReactions[messageId][reactionType] = true;
+        
+        // 햅틱 피드백
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+        
+        const reactionEmojis = {
+            like: '👍',
+            heart: '❤️',
+            fire: '🔥'
+        };
+        
+        showToast(`${reactionEmojis[reactionType]} 반응을 남겼습니다!`, 'success');
+    }
+    
+    saveMessageStats();
+    saveUserReactions();
+    updateReactionCounts();
+}
+
+function updateReactionCounts() {
+    if (!currentMessage) return;
+    
+    const messageId = currentMessage.id;
+    const stats = messageStats[messageId] || { like: 0, heart: 0, fire: 0 };
+    const reactions = userReactions[messageId] || {};
+    
+    // 카운트 업데이트
+    elements.likeCount.textContent = stats.like;
+    elements.heartCount.textContent = stats.heart;
+    elements.fireCount.textContent = stats.fire;
+    
+    // 사용자가 반응한 버튼 스타일 변경
+    elements.likeBtn.classList.toggle('reacted', !!reactions.like);
+    elements.heartBtn.classList.toggle('reacted', !!reactions.heart);
+    elements.fireBtn.classList.toggle('reacted', !!reactions.fire);
+}
+
+function openPopularModal() {
+    displayPopularMessages();
+    elements.popularModal.style.display = 'block';
+}
+
+function closePopularModal() {
+    elements.popularModal.style.display = 'none';
+}
+
+function displayPopularMessages() {
+    // 인기 메시지 계산
+    const popularMessages = calculatePopularMessages();
+    
+    if (popularMessages.length === 0) {
+        elements.popularEmpty.style.display = 'block';
+        elements.popularList.style.display = 'none';
+        return;
+    }
+    
+    elements.popularEmpty.style.display = 'none';
+    elements.popularList.style.display = 'block';
+    
+    elements.popularList.innerHTML = popularMessages.map((item, index) => `
+        <div class="popular-item" data-id="${item.message.id}">
+            <div class="popular-rank">#${index + 1}</div>
+            <div class="popular-content">
+                <div class="popular-text">"${item.message.text}"</div>
+                <div class="popular-author">— ${item.message.author}</div>
+                <div class="popular-stats">
+                    <span class="stat-item">👍 ${item.stats.like}</span>
+                    <span class="stat-item">❤️ ${item.stats.heart}</span>
+                    <span class="stat-item">🔥 ${item.stats.fire}</span>
+                    <span class="stat-total">총 ${item.totalReactions}개</span>
+                </div>
+            </div>
+            <div class="popular-actions">
+                <button class="popular-action-btn" onclick="loadPopularMessage(${item.message.id})" aria-label="이 메시지 보기">
+                    📖
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function calculatePopularMessages() {
+    const messageScores = [];
+    
+    // 모든 메시지의 반응 점수 계산
+    messagesData.forEach(message => {
+        const stats = messageStats[message.id];
+        if (stats) {
+            const totalReactions = stats.like + stats.heart + stats.fire;
+            if (totalReactions > 0) {
+                messageScores.push({
+                    message,
+                    stats,
+                    totalReactions
+                });
+            }
+        }
+    });
+    
+    // 반응 수 기준으로 정렬
+    return messageScores.sort((a, b) => b.totalReactions - a.totalReactions).slice(0, 10);
+}
+
+function loadPopularMessage(messageId) {
+    const message = messagesData.find(msg => msg.id === messageId);
+    if (message) {
+        currentMessage = message;
+        showMessage();
+        updateMessageCounter();
+        closePopularModal();
+        showToast('인기 메시지를 불러왔습니다! 🔥', 'success');
+    }
+}
+
+function openInviteModal() {
+    // 초대 메시지에서 앱 URL 설정
+    const appUrl = window.location.origin + window.location.pathname;
+    const inviteText = elements.inviteText.textContent.replace('{{APP_URL}}', appUrl);
+    elements.inviteText.textContent = inviteText;
+    
+    elements.inviteModal.style.display = 'block';
+}
+
+function closeInviteModal() {
+    elements.inviteModal.style.display = 'none';
+}
+
+async function copyInviteMessage() {
+    try {
+        await navigator.clipboard.writeText(elements.inviteText.textContent);
+        showToast('초대 메시지가 복사되었습니다! 📋', 'success');
+        closeInviteModal();
+    } catch (error) {
+        console.error('복사 실패:', error);
+        showToast('복사에 실패했습니다.', 'error');
+    }
+}
+
+async function shareInviteMessage() {
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: '모닝 - 아침 메시지',
+                text: elements.inviteText.textContent,
+                url: window.location.href
+            });
+            
+            showToast('초대 메시지를 공유했습니다! 👥', 'success');
+            closeInviteModal();
+        } catch (error) {
+            if (error.name !== 'AbortError') {
+                console.error('공유 실패:', error);
+                copyInviteMessage();
+            }
+        }
+    } else {
+        copyInviteMessage();
+    }
+}
+
+function saveMessageStats() {
+    localStorage.setItem('messageStats', JSON.stringify(messageStats));
+}
+
+function saveUserReactions() {
+    localStorage.setItem('userReactions', JSON.stringify(userReactions));
 }
 
 // 공유 기능들
