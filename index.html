@@ -43,15 +43,19 @@
                 </div>
                 
                 <div class="action-buttons">
-                    <button class="btn btn-primary" id="newQuoteBtn">
+                    <button class="btn btn-primary" id="newQuoteBtn" aria-label="새로운 메시지 가져오기">
                         <span class="btn-icon">🌅</span>
                         새로운 메시지
                     </button>
-                    <button class="btn btn-secondary" id="shareBtn">
+                    <button class="btn btn-secondary" id="shareBtn" aria-label="현재 메시지 공유하기">
                         <span class="btn-icon">💌</span>
                         공유하기
                     </button>
-                    <button class="btn btn-secondary" id="settingsBtn">
+                    <button class="btn btn-secondary" id="speakBtn" aria-label="메시지 음성으로 듣기">
+                        <span class="btn-icon">🔊</span>
+                        음성듣기
+                    </button>
+                    <button class="btn btn-secondary" id="settingsBtn" aria-label="앱 설정 열기">
                         <span class="btn-icon">⚙️</span>
                         설정
                     </button>
@@ -95,11 +99,19 @@
                 <div class="simple-settings">
                     <div class="setting-row">
                         <span>🌙 다크모드</span>
-                        <input type="checkbox" id="darkModeToggle" class="simple-toggle">
+                        <input type="checkbox" id="darkModeToggle" class="simple-toggle" aria-label="다크모드 활성화">
+                    </div>
+                    <div class="setting-row">
+                        <span>🔔 알림</span>
+                        <input type="checkbox" id="notificationToggle" class="simple-toggle" aria-label="알림 활성화">
+                    </div>
+                    <div class="setting-row" id="notificationTimeRow" style="display: none;">
+                        <span>⏰ 알림 시간</span>
+                        <input type="time" id="notificationTime" value="08:00" class="time-input">
                     </div>
                     <div class="app-info">
                         <p>매일 새로운 메시지로 좋은 하루를 시작하세요</p>
-                        <small>버전 1.0</small>
+                        <small>버전 2.0 - 향상된 기능</small>
                     </div>
                 </div>
             </div>

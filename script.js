@@ -2,8 +2,11 @@
 let messagesData = [];
 let currentMessage = null;
 let messageCounter = 0;
+let isWidgetMode = new URLSearchParams(window.location.search).has('widget');
 let settings = JSON.parse(localStorage.getItem('settings')) || {
-    darkMode: false
+    darkMode: false,
+    notifications: false,
+    notificationTime: '08:00'
 };
 
 // DOM 요소
@@ -16,6 +19,7 @@ const elements = {
     timeGreeting: document.getElementById('timeGreeting'),
     newQuoteBtn: document.getElementById('newQuoteBtn'),
     shareBtn: document.getElementById('shareBtn'),
+    speakBtn: document.getElementById('speakBtn'),
     settingsBtn: document.getElementById('settingsBtn'),
     dateDisplay: document.getElementById('dateDisplay'),
     messageCounter: document.getElementById('messageCounter'),
@@ -27,7 +31,10 @@ const elements = {
     facebookBtn: document.getElementById('facebookBtn'),
     settingsModal: document.getElementById('settingsModal'),
     settingsModalClose: document.getElementById('settingsModalClose'),
-    darkModeToggle: document.getElementById('darkModeToggle')
+    darkModeToggle: document.getElementById('darkModeToggle'),
+    notificationToggle: document.getElementById('notificationToggle'),
+    notificationTime: document.getElementById('notificationTime'),
+    notificationTimeRow: document.getElementById('notificationTimeRow')
 };
 
 // 애플리케이션 초기화
@@ -38,7 +45,14 @@ async function initApp() {
         applySettings();
         displayCurrentTime();
         displayCurrentDate();
+        
+        // 위젯 모드 처리
+        if (isWidgetMode) {
+            setupWidgetMode();
+        }
+        
         displayRandomMessage();
+        setupNotifications();
         
     } catch (error) {
         console.error('앱 초기화 실패:', error);
@@ -89,6 +103,7 @@ function setupEventListeners() {
     // 기본 버튼들
     elements.newQuoteBtn.addEventListener('click', displayRandomMessage);
     elements.shareBtn.addEventListener('click', openShareModal);
+    elements.speakBtn.addEventListener('click', speakMessage);
     elements.settingsBtn.addEventListener('click', openSettingsModal);
     
     // 모달 관련
@@ -97,6 +112,8 @@ function setupEventListeners() {
     
     // 설정 관련
     elements.darkModeToggle.addEventListener('change', toggleDarkMode);
+    elements.notificationToggle.addEventListener('change', toggleNotifications);
+    elements.notificationTime.addEventListener('change', updateNotificationTime);
     
     // 공유 버튼들
     elements.copyBtn.addEventListener('click', copyToClipboard);
@@ -174,6 +191,11 @@ function displayCurrentDate() {
 function displayRandomMessage() {
     showLoading();
     
+    // 햅틱 피드백 (모바일)
+    if (navigator.vibrate) {
+        navigator.vibrate(50);
+    }
+    
     setTimeout(() => {
         let randomIndex;
         
@@ -186,6 +208,7 @@ function displayRandomMessage() {
         
         showMessage();
         updateMessageCounter();
+        saveCurrentMessage();
         
     }, 600);
 }
@@ -200,12 +223,18 @@ function showLoading() {
 function showMessage() {
     if (!currentMessage) return;
     
+    // 동적 폰트 크기 조정
+    adjustFontSize();
+    
     elements.quoteText.textContent = currentMessage.text;
     elements.quoteAuthor.textContent = currentMessage.author;
     elements.quoteCategory.textContent = currentMessage.category;
     
     elements.loading.style.display = 'none';
     elements.quoteContent.style.display = 'block';
+    
+    // 메시지 애니메이션
+    elements.quoteContent.style.animation = 'slideIn 0.5s ease-out';
 }
 
 // 메시지 카운터 업데이트
@@ -220,6 +249,11 @@ function applySettings() {
     if (settings.darkMode) {
         document.documentElement.setAttribute('data-theme', 'dark');
     }
+    
+    // 알림 설정
+    elements.notificationToggle.checked = settings.notifications;
+    elements.notificationTime.value = settings.notificationTime;
+    elements.notificationTimeRow.style.display = settings.notifications ? 'flex' : 'none';
 }
 
 // 다크모드 토글
@@ -233,6 +267,41 @@ function toggleDarkMode() {
     }
     
     saveSettings();
+}
+
+// 알림 토글
+async function toggleNotifications() {
+    if (elements.notificationToggle.checked) {
+        // 알림 권한 요청
+        const permission = await Notification.requestPermission();
+        
+        if (permission === 'granted') {
+            settings.notifications = true;
+            elements.notificationTimeRow.style.display = 'flex';
+            showToast('알림이 활성화되었습니다! 📢', 'success');
+            scheduleNotification();
+        } else {
+            elements.notificationToggle.checked = false;
+            showToast('알림 권한이 필요합니다', 'warning');
+        }
+    } else {
+        settings.notifications = false;
+        elements.notificationTimeRow.style.display = 'none';
+        showToast('알림이 비활성화되었습니다', 'info');
+    }
+    
+    saveSettings();
+}
+
+// 알림 시간 업데이트
+function updateNotificationTime() {
+    settings.notificationTime = elements.notificationTime.value;
+    saveSettings();
+    
+    if (settings.notifications) {
+        scheduleNotification();
+        showToast('알림 시간이 변경되었습니다', 'success');
+    }
 }
 
 
@@ -300,7 +369,7 @@ function shareToFacebook() {
     closeShareModal();
 }
 
-// 키보드 이벤트 처리
+// 키보드 이벤트 처리  
 function handleKeyboard(e) {
     if (elements.shareModal.style.display === 'block' || 
         elements.settingsModal.style.display === 'block') {
@@ -322,6 +391,17 @@ function handleKeyboard(e) {
             if (!e.ctrlKey && !e.metaKey) {
                 openShareModal();
             }
+            break;
+        case 'v':
+        case 'V':
+            if (!e.ctrlKey && !e.metaKey) {
+                speakMessage();
+            }
+            break;
+        case 'ArrowLeft':
+        case 'ArrowRight':
+            e.preventDefault();
+            displayRandomMessage();
             break;
     }
 }
@@ -384,8 +464,149 @@ function showError(message) {
     elements.quoteContent.style.display = 'block';
 }
 
+// 위젯 모드 설정
+function setupWidgetMode() {
+    document.body.classList.add('widget-mode');
+    document.querySelector('.header').style.display = 'none';
+    document.querySelector('.footer').style.display = 'none';
+}
+
+// 동적 폰트 크기 조정
+function adjustFontSize() {
+    const textLength = currentMessage.text.length;
+    const quoteTextElement = elements.quoteText;
+    
+    if (textLength > 100) {
+        quoteTextElement.style.fontSize = '1rem';
+    } else if (textLength > 50) {
+        quoteTextElement.style.fontSize = '1.125rem';
+    } else {
+        quoteTextElement.style.fontSize = '1.25rem';
+    }
+}
+
+// 현재 메시지 저장 (오프라인용)
+function saveCurrentMessage() {
+    const recentMessages = JSON.parse(localStorage.getItem('recentMessages')) || [];
+    
+    // 중복 제거 후 최신 메시지 추가
+    const filtered = recentMessages.filter(msg => msg.id !== currentMessage.id);
+    filtered.unshift(currentMessage);
+    
+    // 최대 20개까지만 저장
+    const updated = filtered.slice(0, 20);
+    localStorage.setItem('recentMessages', JSON.stringify(updated));
+}
+
+// 알림 설정
+async function setupNotifications() {
+    if (!('Notification' in window)) return;
+    
+    if (settings.notifications && Notification.permission === 'granted') {
+        scheduleNotification();
+    }
+}
+
+// 알림 스케줄링
+function scheduleNotification() {
+    const [hours, minutes] = settings.notificationTime.split(':');
+    const now = new Date();
+    const notificationTime = new Date();
+    notificationTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+    
+    // 오늘 시간이 지났으면 내일로 설정
+    if (notificationTime <= now) {
+        notificationTime.setDate(notificationTime.getDate() + 1);
+    }
+    
+    const timeUntilNotification = notificationTime - now;
+    
+    setTimeout(() => {
+        showNotification();
+        // 다음날을 위해 24시간 후 다시 스케줄링
+        setTimeout(scheduleNotification, 24 * 60 * 60 * 1000);
+    }, timeUntilNotification);
+}
+
+// 알림 표시
+function showNotification() {
+    if (Notification.permission === 'granted') {
+        const randomMessage = messagesData[Math.floor(Math.random() * messagesData.length)];
+        
+        new Notification('모닝 - 새로운 메시지', {
+            body: randomMessage.text,
+            icon: '/icons/icon-192x192.png',
+            badge: '/icons/icon-72x72.png',
+            tag: 'daily-message',
+            requireInteraction: false
+        });
+    }
+}
+
+// 음성 읽기 기능
+function speakMessage() {
+    if (!currentMessage || !('speechSynthesis' in window)) return;
+    
+    const utterance = new SpeechSynthesisUtterance(currentMessage.text);
+    utterance.lang = 'ko-KR';
+    utterance.rate = 0.8;
+    utterance.pitch = 1.0;
+    
+    speechSynthesis.speak(utterance);
+}
+
+// 시간대별 색상 변경
+function updateTimeBasedTheme() {
+    const hour = new Date().getHours();
+    const root = document.documentElement;
+    
+    if (hour >= 5 && hour < 12) {
+        // 아침 - 주황색 계열
+        root.style.setProperty('--primary-color', '#f59e0b');
+        root.style.setProperty('--primary-dark', '#d97706');
+    } else if (hour >= 12 && hour < 18) {
+        // 낮 - 노란색 계열
+        root.style.setProperty('--primary-color', '#eab308');
+        root.style.setProperty('--primary-dark', '#ca8a04');
+    } else if (hour >= 18 && hour < 22) {
+        // 저녁 - 보라색 계열
+        root.style.setProperty('--primary-color', '#8b5cf6');
+        root.style.setProperty('--primary-dark', '#7c3aed');
+    } else {
+        // 밤 - 어두운 파란색
+        root.style.setProperty('--primary-color', '#3b82f6');
+        root.style.setProperty('--primary-dark', '#2563eb');
+    }
+}
+
+// 오프라인 모드 처리
+function handleOfflineMode() {
+    if (!navigator.onLine) {
+        const recentMessages = JSON.parse(localStorage.getItem('recentMessages')) || [];
+        if (recentMessages.length > 0) {
+            messagesData = recentMessages;
+            showToast('오프라인 모드: 최근 메시지를 표시합니다', 'info');
+        }
+    }
+}
+
 // 페이지 로드 시 애플리케이션 초기화
-document.addEventListener('DOMContentLoaded', initApp);
+document.addEventListener('DOMContentLoaded', () => {
+    initApp();
+    updateTimeBasedTheme();
+    handleOfflineMode();
+    
+    // 온라인/오프라인 상태 감지
+    window.addEventListener('online', () => {
+        showToast('인터넷 연결이 복구되었습니다', 'success');
+        loadMessages();
+    });
+    
+    window.addEventListener('offline', () => {
+        showToast('오프라인 모드로 전환됩니다', 'warning');
+        handleOfflineMode();
+    });
+});
 
 // 서비스 워커 등록 (PWA)
 if ('serviceWorker' in navigator) {
@@ -393,6 +614,17 @@ if ('serviceWorker' in navigator) {
         try {
             const registration = await navigator.serviceWorker.register('service-worker.js');
             console.log('서비스 워커 등록 성공:', registration.scope);
+            
+            // 위젯 지원을 위한 메시지 리스너
+            navigator.serviceWorker.addEventListener('message', (event) => {
+                if (event.data.type === 'GET_DAILY_MESSAGE') {
+                    const randomMessage = messagesData[Math.floor(Math.random() * messagesData.length)];
+                    event.ports[0].postMessage({
+                        type: 'DAILY_MESSAGE',
+                        message: randomMessage
+                    });
+                }
+            });
         } catch (error) {
             console.error('서비스 워커 등록 실패:', error);
         }
