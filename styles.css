@@ -176,7 +176,7 @@ body {
 }
 
 .quote-text::before {
-    content: '"';
+    content: "\201C";
     font-size: 2rem;
     color: var(--primary-color);
     position: absolute;
@@ -186,7 +186,7 @@ body {
 }
 
 .quote-text::after {
-    content: '"';
+    content: "\201D";
     font-size: 2rem;
     color: var(--primary-color);
     position: absolute;
@@ -204,19 +204,18 @@ body {
 }
 
 .quote-author::before {
-    content: '— ';
+    content: "\2014\00a0";
 }
 
 .quote-category {
     font-size: 0.8rem;
     color: var(--primary-color);
-    background: rgba(79, 70, 229, 0.1);
+    background: rgba(245, 158, 11, 0.1);
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
     display: inline-block;
     font-weight: 500;
 }
-
 
 /* Action Buttons */
 .action-buttons {
@@ -391,6 +390,73 @@ body {
     background: var(--background);
 }
 
+/* Simple Settings */
+.simple-settings {
+    padding: 1rem 0;
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.app-info {
+    padding: 1.5rem 0 0.5rem 0;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.app-info p {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.app-info small {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.simple-toggle {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 44px;
+    height: 24px;
+    background: var(--border-color);
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+}
+
+.simple-toggle:checked {
+    background: var(--primary-color);
+}
+
+.simple-toggle::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.simple-toggle:checked::before {
+    left: 22px;
+}
+
 /* Responsive Design */
 @media (max-width: 640px) {
     body {
@@ -460,81 +526,6 @@ body {
     }
 }
 
-/* Simple Settings */
-.simple-settings {
-    padding: 1rem 0;
-}
-
-.setting-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border-color);
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.app-info {
-    padding: 1.5rem 0 0.5rem 0;
-    text-align: center;
-    color: var(--text-secondary);
-}
-
-.app-info p {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.app-info small {
-    font-size: 0.8rem;
-    opacity: 0.7;
-}
-
-.simple-toggle {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 44px;
-    height: 24px;
-    background: var(--border-color);
-    border-radius: 12px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    outline: none;
-}
-
-.simple-toggle:checked {
-    background: var(--primary-color);
-}
-
-.simple-toggle::before {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 20px;
-    height: 20px;
-    background: white;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.simple-toggle:checked::before {
-    left: 22px;
-}
-
-
-.modal-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 1.5rem;
-}
-
 /* Dark Mode Styles */
 [data-theme="dark"] {
     --background: #1f2937;
@@ -548,328 +539,15 @@ body {
     background: linear-gradient(135deg, #92400e 0%, #78350f 50%, #451a03 100%);
 }
 
-[data-theme="dark"] .quote-card,
-[data-theme="dark"] .favorites-section,
-[data-theme="dark"] .favorite-item {
+[data-theme="dark"] .quote-card {
     background: var(--card-background);
 }
 
-[data-theme="dark"] .filter-select {
+[data-theme="dark"] .btn-secondary {
     background: var(--card-background);
     color: var(--text-primary);
-    border-color: var(--border-color);
 }
 
 [data-theme="dark"] .modal-content {
     background: var(--card-background);
-}
-
-/* Font Size Classes */
-.font-small { font-size: 0.8em; }
-.font-normal { font-size: 1em; }
-.font-large { font-size: 1.2em; }
-.font-xlarge { font-size: 1.4em; }
-
-.admin-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: 1.5rem;
-}
-
-.tab-btn {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    border: none;
-    background: none;
-    color: var(--text-secondary);
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-    border-bottom: 2px solid transparent;
-}
-
-.tab-btn.active {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
-}
-
-.tab-btn:hover {
-    color: var(--text-primary);
-    background: var(--background);
-}
-
-.tab-content {
-    max-height: 60vh;
-    overflow-y: auto;
-}
-
-/* Form Styles */
-.message-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.form-group label {
-    font-weight: 500;
-    color: var(--text-primary);
-    font-size: 0.9rem;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    font-family: inherit;
-    font-size: 0.9rem;
-    transition: var(--transition);
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
-}
-
-.form-group textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-/* Message Management */
-.manage-controls {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-}
-
-.search-filter {
-    display: flex;
-    gap: 0.5rem;
-    flex: 1;
-    min-width: 200px;
-}
-
-.search-filter input,
-.search-filter select {
-    padding: 0.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    font-size: 0.9rem;
-}
-
-.search-filter input {
-    flex: 1;
-}
-
-.message-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.message-item {
-    background: var(--background);
-    padding: 1rem;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-    transition: var(--transition);
-}
-
-.message-item:hover {
-    box-shadow: var(--shadow);
-}
-
-.message-item-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.5rem;
-    gap: 1rem;
-}
-
-.message-item-content {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 0.75rem;
-}
-
-.message-item-meta {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    margin-bottom: 0.75rem;
-    flex-wrap: wrap;
-}
-
-.message-item-actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.btn-small {
-    padding: 0.25rem 0.75rem;
-    font-size: 0.8rem;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.btn-edit {
-    background: var(--info-color);
-    color: white;
-}
-
-.btn-delete {
-    background: var(--error-color);
-    color: white;
-}
-
-.btn-edit:hover,
-.btn-delete:hover {
-    opacity: 0.8;
-}
-
-/* Data Management */
-.data-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.import-section,
-.export-section,
-.stats-section {
-    padding: 1rem;
-    background: var(--background);
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-}
-
-.import-section h3,
-.export-section h3,
-.stats-section h3 {
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.help-text {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    margin-top: 0.5rem;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.stat-item {
-    text-align: center;
-    padding: 1rem;
-    background: white;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-}
-
-.stat-number {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 0.25rem;
-}
-
-.stat-label {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-}
-
-/* Category Filter Pills */
-.category-pill {
-    display: inline-block;
-    background: var(--primary-color);
-    color: white;
-    padding: 0.2rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 500;
-}
-
-.time-badge {
-    display: inline-block;
-    background: var(--info-color);
-    color: white;
-    padding: 0.2rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 500;
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #1f2937;
-        --card-background: #374151;
-        --text-primary: #f9fafb;
-        --text-secondary: #d1d5db;
-        --border-color: #4b5563;
-    }
-    
-    body {
-        background: linear-gradient(135deg, #92400e 0%, #78350f 50%, #451a03 100%);
-    }
-    
-    .quote-card {
-        background: var(--card-background);
-    }
-    
-    .btn-secondary {
-        background: var(--card-background);
-        color: var(--text-primary);
-    }
-    
-    .modal-content {
-        background: var(--card-background);
-    }
-    
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-        background: var(--card-background);
-        color: var(--text-primary);
-        border-color: var(--border-color);
-    }
-    
-    .message-item {
-        background: var(--card-background);
-    }
-    
-    .import-section,
-    .export-section,
-    .stats-section {
-        background: var(--card-background);
-    }
-    
-    .stat-item {
-        background: var(--background);
-    }
 }
