@@ -620,15 +620,29 @@ function saveSettings() {
 
 // 모달 관련 함수들
 function openShareModal() {
-    if (!currentMessage) return;
+    if (!currentMessage) {
+        showToast('공유할 메시지가 없습니다', 'error');
+        return;
+    }
     
-    const shareText = `"${currentMessage.text}"\n\n— ${currentMessage.author}`;
-    elements.sharePreview.textContent = shareText;
-    elements.shareModal.style.display = 'block';
+    const shareModal = document.getElementById('shareModal');
+    const sharePreview = document.getElementById('sharePreview');
+    
+    if (shareModal && sharePreview) {
+        const shareText = `"${currentMessage.text}"\n\n— ${currentMessage.author}`;
+        sharePreview.textContent = shareText;
+        shareModal.style.display = 'block';
+    } else {
+        console.error('공유 모달을 찾을 수 없습니다');
+        showToast('공유 기능을 로드할 수 없습니다', 'error');
+    }
 }
 
 function closeShareModal() {
-    elements.shareModal.style.display = 'none';
+    const shareModal = document.getElementById('shareModal');
+    if (shareModal) {
+        shareModal.style.display = 'none';
+    }
 }
 
 function openSettingsModal() {
@@ -1444,13 +1458,22 @@ function displayJournalHistory() {
 }
 
 function openHabitModal() {
-    updateHabitStats();
-    generateHabitCalendar();
-    elements.habitModal.style.display = 'block';
+    const habitModal = document.getElementById('habitModal');
+    if (habitModal) {
+        updateHabitStats();
+        generateHabitCalendar();
+        habitModal.style.display = 'block';
+    } else {
+        console.error('습관 트래커 모달을 찾을 수 없습니다');
+        showToast('습관 트래커를 로드할 수 없습니다', 'error');
+    }
 }
 
 function closeHabitModal() {
-    elements.habitModal.style.display = 'none';
+    const habitModal = document.getElementById('habitModal');
+    if (habitModal) {
+        habitModal.style.display = 'none';
+    }
 }
 
 function initializeHabitTracker() {
@@ -1643,10 +1666,13 @@ function initializeKakao() {
 
 // 카카오톡 공유
 function shareToKakao() {
-    if (!currentMessage) return;
+    if (!currentMessage) {
+        showToast('공유할 메시지가 없습니다', 'error');
+        return;
+    }
     
-    if (typeof Kakao === 'undefined') {
-        showToast('카카오톡 공유 기능을 로드하는 중입니다...', 'info');
+    if (typeof Kakao === 'undefined' || !Kakao.isInitialized()) {
+        showToast('카카오톡 공유 기능이 준비되지 않았습니다', 'error');
         return;
     }
     
