@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모닝 - 간단 버전</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .app-container {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .hamburger-btn {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .hamburger-btn span {
+            width: 24px;
+            height: 3px;
+            background: #f59e0b;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .message-card {
+            margin: 2rem 0;
+        }
+
+        .message-text {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .message-author {
+            font-size: 1rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #d97706;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            padding: 2rem 1rem;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 1rem;
+        }
+
+        .sidebar-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .menu-item {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            text-align: left;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .menu-item:hover {
+            background: #f3f4f6;
+        }
+
+        .user-info {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .message-date {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .app-container {
+                padding: 1.5rem;
+            }
+            
+            .message-text {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 사이드바 오버레이 -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- 사이드바 -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>🌅 모닝</h2>
+            <button class="sidebar-close" id="sidebarClose">&times;</button>
+        </div>
+
+        <div class="user-info">
+            <div id="userGreeting">안녕하세요!</div>
+            <div id="streakInfo">🔥 0일 연속 방문</div>
+            
+            <div class="auth-buttons" id="authButtons">
+                <button class="btn" onclick="showLogin()">로그인</button>
+                <button class="btn btn-secondary" onclick="showRegister()">회원가입</button>
+            </div>
+            
+            <div class="auth-buttons" id="userButtons" style="display: none;">
+                <button class="btn btn-secondary" onclick="logout()">로그아웃</button>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <button class="menu-item" onclick="newMessage()">🌅 새로운 메시지</button>
+            <button class="menu-item" onclick="showFavorites()">⭐ 즐겨찾기</button>
+            <button class="menu-item" onclick="showHistory()">📚 히스토리</button>
+            <button class="menu-item" onclick="showJournal()">📝 일기</button>
+            <button class="menu-item" onclick="showGoals()">🎯 목표</button>
+        </div>
+    </div>
+
+    <!-- 메인 앱 -->
+    <div class="app-container">
+        <button class="hamburger-btn" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="message-card">
+            <div class="message-date" id="messageDate"></div>
+            <div class="message-text" id="messageText">
+                새로운 하루가 시작됩니다. 오늘도 좋은 하루 되세요! 🌅
+            </div>
+            <div class="message-author" id="messageAuthor">- 모닝 팀</div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn" onclick="newMessage()">새 메시지</button>
+            <button class="btn btn-secondary" onclick="toggleFavorite()">❤️ 좋아요</button>
+            <button class="btn btn-secondary" onclick="shareMessage()">📤 공유</button>
+        </div>
+    </div>
+
+    <script>
+        // 간단한 메시지 데이터
+        const messages = [
+            { text: "새로운 하루가 시작됩니다. 오늘도 좋은 하루 되세요!", author: "모닝 팀", category: "morning" },
+            { text: "작은 걸음도 앞으로 나아가는 것입니다.", author: "익명", category: "motivation" },
+            { text: "오늘 하루도 감사한 마음으로 시작해보세요.", author: "모닝 팀", category: "gratitude" },
+            { text: "당신의 꿈은 충분히 가치가 있습니다.", author: "익명", category: "dreams" },
+            { text: "지금 이 순간이 새로운 시작의 기회입니다.", author: "모닝 팀", category: "opportunity" }
+        ];
+
+        let currentMessageIndex = 0;
+        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        let history = JSON.parse(localStorage.getItem('history') || '[]');
+        let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+        // 사이드바 관리
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarClose = document.getElementById('sidebarClose');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('show');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('show');
+        }
+
+        hamburgerBtn.addEventListener('click', toggleSidebar);
+        sidebarClose.addEventListener('click', closeSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
+
+        // 메시지 관리
+        function displayMessage(index) {
+            const message = messages[index];
+            document.getElementById('messageText').textContent = message.text;
+            document.getElementById('messageAuthor').textContent = `- ${message.author}`;
+            document.getElementById('messageDate').textContent = new Date().toLocaleDateString('ko-KR');
+            
+            // 히스토리에 추가
+            const historyItem = {
+                ...message,
+                date: new Date().toISOString(),
+                index: index
+            };
+            
+            // 중복 제거
+            history = history.filter(item => item.index !== index);
+            history.unshift(historyItem);
+            history = history.slice(0, 50); // 최대 50개 유지
+            
+            localStorage.setItem('history', JSON.stringify(history));
+        }
+
+        function newMessage() {
+            currentMessageIndex = Math.floor(Math.random() * messages.length);
+            displayMessage(currentMessageIndex);
+            closeSidebar();
+        }
+
+        function toggleFavorite() {
+            const message = messages[currentMessageIndex];
+            const existingIndex = favorites.findIndex(fav => fav.index === currentMessageIndex);
+            
+            if (existingIndex === -1) {
+                favorites.push({
+                    ...message,
+                    index: currentMessageIndex,
+                    date: new Date().toISOString()
+                });
+                alert('즐겨찾기에 추가되었습니다!');
+            } else {
+                favorites.splice(existingIndex, 1);
+                alert('즐겨찾기에서 제거되었습니다!');
+            }
+            
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+
+        function shareMessage() {
+            const message = messages[currentMessageIndex];
+            const shareText = `${message.text}\n\n- ${message.author}\n\n🌅 모닝 앱에서`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: '모닝 - 아침 메시지',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('메시지가 클립보드에 복사되었습니다!');
+                });
+            }
+        }
+
+        function showFavorites() {
+            if (favorites.length === 0) {
+                alert('즐겨찾기한 메시지가 없습니다.');
+                return;
+            }
+            
+            const favoritesList = favorites.map((fav, index) => 
+                `${index + 1}. ${fav.text} - ${fav.author}`
+            ).join('\n\n');
+            
+            alert(`즐겨찾기 목록:\n\n${favoritesList}`);
+            closeSidebar();
+        }
+
+        function showHistory() {
+            if (history.length === 0) {
+                alert('히스토리가 없습니다.');
+                return;
+            }
+            
+            const historyList = history.slice(0, 5).map((item, index) => 
+                `${index + 1}. ${item.text} - ${item.author}`
+            ).join('\n\n');
+            
+            alert(`최근 히스토리:\n\n${historyList}`);
+            closeSidebar();
+        }
+
+        function showJournal() {
+            const entry = prompt('오늘의 일기를 작성해보세요:');
+            if (entry) {
+                const journal = JSON.parse(localStorage.getItem('journal') || '[]');
+                journal.unshift({
+                    text: entry,
+                    date: new Date().toISOString()
+                });
+                localStorage.setItem('journal', JSON.stringify(journal));
+                alert('일기가 저장되었습니다!');
+            }
+            closeSidebar();
+        }
+
+        function showGoals() {
+            const goal = prompt('이번 주 목표를 설정해보세요:');
+            if (goal) {
+                const goals = JSON.parse(localStorage.getItem('goals') || '[]');
+                goals.unshift({
+                    text: goal,
+                    date: new Date().toISOString(),
+                    completed: false
+                });
+                localStorage.setItem('goals', JSON.stringify(goals));
+                alert('목표가 설정되었습니다!');
+            }
+            closeSidebar();
+        }
+
+        function showLogin() {
+            const username = prompt('사용자명을 입력하세요:');
+            if (username) {
+                currentUser = { username: username, loginTime: new Date().toISOString() };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                updateAuthUI();
+                alert(`${username}님, 환영합니다!`);
+            }
+        }
+
+        function showRegister() {
+            const username = prompt('새 사용자명을 입력하세요:');
+            if (username) {
+                currentUser = { username: username, loginTime: new Date().toISOString() };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                updateAuthUI();
+                alert(`${username}님, 회원가입이 완료되었습니다!`);
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateAuthUI();
+            alert('로그아웃되었습니다.');
+        }
+
+        function updateAuthUI() {
+            const authButtons = document.getElementById('authButtons');
+            const userButtons = document.getElementById('userButtons');
+            const userGreeting = document.getElementById('userGreeting');
+            
+            if (currentUser) {
+                authButtons.style.display = 'none';
+                userButtons.style.display = 'flex';
+                userGreeting.textContent = `안녕하세요, ${currentUser.username}님!`;
+            } else {
+                authButtons.style.display = 'flex';
+                userButtons.style.display = 'none';
+                userGreeting.textContent = '안녕하세요!';
+            }
+        }
+
+        // 초기화
+        function init() {
+            displayMessage(0);
+            updateAuthUI();
+            
+            // 스트릭 정보 업데이트
+            const today = new Date().toDateString();
+            const lastVisit = localStorage.getItem('lastVisit');
+            let streak = parseInt(localStorage.getItem('streak') || '0');
+            
+            if (lastVisit !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                if (lastVisit === yesterday.toDateString()) {
+                    streak++;
+                } else if (lastVisit !== null) {
+                    streak = 1;
+                } else {
+                    streak = 1;
+                }
+                
+                localStorage.setItem('lastVisit', today);
+                localStorage.setItem('streak', streak.toString());
+            }
+            
+            document.getElementById('streakInfo').textContent = `🔥 ${streak}일 연속 방문`;
+        }
+
+        // 키보드 단축키
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSidebar();
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                if (!e.target.matches('input, textarea')) {
+                    newMessage();
+                }
+            }
+        });
+
+        // 앱 시작
+        init();
+    </script>
+</body>
+</html>

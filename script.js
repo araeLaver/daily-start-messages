@@ -1,3 +1,6 @@
+// 오류 방지를 위한 초기 설정
+console.log('스크립트 로딩 시작...');
+
 // 전역 변수
 let messagesData = [];
 let currentMessage = null;
@@ -160,10 +163,21 @@ const elements = {
 
 // 애플리케이션 초기화
 async function initApp() {
+    console.log('앱 초기화 시작...');
+    
     try {
+        // 메시지 로드
         await loadMessages();
+        console.log('메시지 로드 완료:', messagesData.length);
+        
+        // 이벤트 리스너 설정
         setupEventListeners();
+        console.log('이벤트 리스너 설정 완료');
+        
+        // 설정 적용
         applySettings();
+        
+        // 시간 및 날짜 표시
         displayCurrentTime();
         displayCurrentDate();
         
@@ -172,11 +186,27 @@ async function initApp() {
             setupWidgetMode();
         }
         
-        // 메시지 데이터가 로드된 후 첫 메시지 표시
-        if (messagesData.length > 0 || currentMessage) {
-            displayRandomMessage();
-        } else {
-            // 메시지 로드 실패 시 기본 메시지 직접 표시
+        // 첫 메시지 표시
+        displayRandomMessage();
+        console.log('첫 메시지 표시 완료');
+        
+        // 추가 기능들 (오류가 발생해도 계속 진행)
+        try {
+            setupNotifications();
+            initializeKakao();
+            checkWebShareSupport();
+            initializeHabitTracker();
+        } catch (extraError) {
+            console.warn('추가 기능 초기화 중 일부 오류:', extraError);
+        }
+        
+        console.log('앱 초기화 완료');
+        
+    } catch (error) {
+        console.error('앱 초기화 중 오류:', error);
+        
+        // 오류 발생 시 기본 메시지라도 표시
+        try {
             currentMessage = {
                 id: 0,
                 text: "새로운 하루가 시작됩니다. 오늘도 좋은 하루 되세요! ✨",
@@ -184,12 +214,9 @@ async function initApp() {
                 category: "새로운 시작"
             };
             showMessage();
+        } catch (showError) {
+            console.error('기본 메시지 표시 실패:', showError);
         }
-        
-        setupNotifications();
-        initializeKakao();
-        checkWebShareSupport();
-        initializeHabitTracker();
         updateStreakDisplay();
         initializeGoals();
         initializeUserSubmissions();
@@ -238,20 +265,22 @@ async function loadMessages() {
     }
 }
 
-// 이벤트 리스너 설정
+// 이벤트 리스너 설정 (안전한 방식)
 function setupEventListeners() {
-    // 기본 버튼들
-    elements.newQuoteBtn.addEventListener('click', displayRandomMessage);
-    elements.shareBtn.addEventListener('click', openShareModal);
-    elements.speakBtn.addEventListener('click', speakMessage);
-    elements.favoritesBtn.addEventListener('click', openFavoritesModal);
-    elements.historyBtn.addEventListener('click', openHistoryModal);
-    elements.popularBtn.addEventListener('click', openPopularModal);
-    elements.inviteBtn.addEventListener('click', openInviteModal);
-    elements.journalBtn.addEventListener('click', openJournalModal);
-    elements.habitTrackerBtn.addEventListener('click', openHabitModal);
-    elements.goalsBtn.addEventListener('click', openGoalsModal);
-    elements.submitBtn.addEventListener('click', openSubmitModal);
+    console.log('이벤트 리스너 설정 중...');
+    
+    // 기본 버튼들 (null 체크 포함)
+    if (elements.newQuoteBtn) elements.newQuoteBtn.addEventListener('click', displayRandomMessage);
+    if (elements.shareBtn) elements.shareBtn.addEventListener('click', openShareModal);
+    if (elements.speakBtn) elements.speakBtn.addEventListener('click', speakMessage);
+    if (elements.favoritesBtn) elements.favoritesBtn.addEventListener('click', openFavoritesModal);
+    if (elements.historyBtn) elements.historyBtn.addEventListener('click', openHistoryModal);
+    if (elements.popularBtn) elements.popularBtn.addEventListener('click', openPopularModal);
+    if (elements.inviteBtn) elements.inviteBtn.addEventListener('click', openInviteModal);
+    if (elements.journalBtn) elements.journalBtn.addEventListener('click', openJournalModal);
+    if (elements.habitTrackerBtn) elements.habitTrackerBtn.addEventListener('click', openHabitModal);
+    if (elements.goalsBtn) elements.goalsBtn.addEventListener('click', openGoalsModal);
+    if (elements.submitBtn) elements.submitBtn.addEventListener('click', openSubmitModal);
     elements.settingsBtn.addEventListener('click', openSettingsModal);
     
     // 즐겨찾기 관련
@@ -2937,20 +2966,51 @@ function saveCommunityMessages() {
 
 // 페이지 로드 시 애플리케이션 초기화
 document.addEventListener('DOMContentLoaded', () => {
-    initApp();
-    updateTimeBasedTheme();
-    handleOfflineMode();
+    console.log('DOM 로드 완료, 앱 시작...');
     
-    // 온라인/오프라인 상태 감지
-    window.addEventListener('online', () => {
-        showToast('인터넷 연결이 복구되었습니다', 'success');
-        loadMessages();
-    });
-    
-    window.addEventListener('offline', () => {
-        showToast('오프라인 모드로 전환됩니다', 'warning');
-        handleOfflineMode();
-    });
+    try {
+        initApp();
+        
+        // 추가 기능들도 안전하게 실행
+        try {
+            updateTimeBasedTheme();
+            handleOfflineMode();
+        } catch (themeError) {
+            console.warn('테마/오프라인 모드 설정 오류:', themeError);
+        }
+        
+        // 온라인/오프라인 상태 감지
+        window.addEventListener('online', () => {
+            try {
+                showToast('인터넷 연결이 복구되었습니다', 'success');
+                loadMessages();
+            } catch (onlineError) {
+                console.warn('온라인 상태 처리 오류:', onlineError);
+            }
+        });
+        
+        window.addEventListener('offline', () => {
+            try {
+                showToast('오프라인 모드로 전환됩니다', 'warning');
+                handleOfflineMode();
+            } catch (offlineError) {
+                console.warn('오프라인 상태 처리 오류:', offlineError);
+            }
+        });
+        
+    } catch (initError) {
+        console.error('초기화 중 전체 오류:', initError);
+        
+        // 최소한의 기능이라도 작동하도록
+        try {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('quoteContent').style.display = 'block';
+            document.getElementById('quoteText').textContent = '새로운 하루가 시작됩니다. 오늘도 좋은 하루 되세요! ✨';
+            document.getElementById('quoteAuthor').textContent = '- 모닝';
+        } catch (fallbackError) {
+            console.error('최소 기능 표시도 실패:', fallbackError);
+        }
+    }
 });
 
 // 서비스 워커 등록 (PWA)

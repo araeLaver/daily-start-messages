@@ -1,0 +1,324 @@
+/* 접근성 개선 스타일 */
+
+/* 포커스 표시 개선 */
+*:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* 고대비 모드 지원 */
+@media (prefers-contrast: high) {
+    :root {
+        --primary-color: #0066cc;
+        --text-primary: #000000;
+        --text-secondary: #333333;
+        --border-color: #666666;
+        --background: #ffffff;
+        --card-background: #ffffff;
+    }
+}
+
+/* 축소된 모션 선호 사용자 지원 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .quote-card,
+    .hamburger-btn,
+    .sidebar,
+    .modal {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* 스크린 리더 전용 텍스트 */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Skip to content 링크 */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--primary-color);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    z-index: 10001;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+/* 터치 타겟 크기 개선 */
+@media (max-width: 640px) {
+    button,
+    .menu-item,
+    .category-btn,
+    .quick-action-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .hamburger-btn {
+        min-height: 48px;
+        min-width: 48px;
+    }
+}
+
+/* 키보드 네비게이션 개선 */
+.menu-item:focus,
+.category-btn:focus,
+.btn:focus,
+.quick-action-btn:focus {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
+}
+
+/* 에러 상태 스타일 */
+.error-state {
+    color: var(--error-color);
+    border-color: var(--error-color);
+}
+
+.error-message {
+    color: var(--error-color);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* 성공 상태 스타일 */
+.success-state {
+    color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+/* 로딩 상태 접근성 */
+.loading[aria-live="polite"] {
+    /* 스크린 리더가 로딩 상태를 알 수 있도록 */
+}
+
+/* 대비 개선을 위한 텍스트 그림자 */
+.header .time-greeting {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 라이브 리전 스타일 */
+[aria-live] {
+    position: relative;
+}
+
+/* 모달 접근성 개선 */
+.modal[aria-hidden="true"] {
+    display: none !important;
+}
+
+.modal[aria-hidden="false"] {
+    display: flex !important;
+}
+
+/* 사이드바 접근성 개선 */
+.sidebar[aria-hidden="true"] {
+    visibility: hidden;
+}
+
+.sidebar[aria-hidden="false"] {
+    visibility: visible;
+}
+
+/* 툴팁 스타일 */
+[title]:hover::after,
+[data-tooltip]:hover::after {
+    content: attr(title) attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* 인터랙티브 요소 상태 표시 */
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+button[aria-pressed="true"] {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* 양식 검증 스타일 */
+input:invalid,
+textarea:invalid,
+select:invalid {
+    border-color: var(--error-color);
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+input:valid,
+textarea:valid,
+select:valid {
+    border-color: var(--success-color);
+}
+
+/* 즐겨찾기 및 히스토리 아이템 스타일 */
+.favorite-item,
+.history-item {
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.favorite-item:hover,
+.history-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.favorite-actions,
+.history-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.favorite-action-btn,
+.history-action-btn {
+    min-width: 32px;
+    min-height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.favorite-action-btn:hover,
+.history-action-btn:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+/* 일기 관련 스타일 */
+.mood-btn {
+    background: none;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mood-btn:hover,
+.mood-btn.selected {
+    border-color: var(--primary-color);
+    background: rgba(245, 158, 11, 0.1);
+    transform: scale(1.1);
+}
+
+.journal-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.journal-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.journal-history-item {
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.journal-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.journal-history-date {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.journal-history-mood {
+    font-size: 1.2rem;
+}
+
+.journal-history-text {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.journal-empty {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* 프린트 스타일 */
+@media print {
+    .hamburger-btn,
+    .sidebar,
+    .modal,
+    .quick-actions,
+    .quote-reactions {
+        display: none !important;
+    }
+    
+    .quote-card {
+        box-shadow: none;
+        border: 1px solid #000;
+        page-break-inside: avoid;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+}

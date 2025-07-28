@@ -16,56 +16,137 @@
     <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16x16.png">
     
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/loader.css">
+    <link rel="stylesheet" href="css/accessibility.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- 접근성: Skip to content 링크 -->
+    <a href="#main-content" class="skip-link">메인 콘텐츠로 건너뛰기</a>
+    
+    <!-- 햄버거 메뉴 버튼 -->
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="메뉴 열기">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- 사이드바 메뉴 -->
+    <nav class="sidebar" id="sidebar" aria-label="메인 네비게이션">
+        <div class="sidebar-header">
+            <h2>🌅 모닝</h2>
+            <button class="sidebar-close" id="sidebarClose" aria-label="메뉴 닫기">&times;</button>
+        </div>
+        
+        <div class="sidebar-content">
+            <div class="user-info" id="userInfo">
+                <div class="user-greeting">안녕하세요!</div>
+                <div class="user-streak">
+                    <span class="streak-icon">🔥</span>
+                    <span id="streakNumber">0</span>일 연속 방문
+                </div>
+                <div class="user-actions">
+                    <button class="auth-btn" id="loginBtn" onclick="showAuthModal('login')">로그인</button>
+                    <button class="auth-btn" id="logoutBtn" onclick="logout()" style="display: none;">로그아웃</button>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <h3>📝 메시지</h3>
+                <button class="menu-item" id="newQuoteBtn" data-action="newQuote">
+                    <span class="menu-icon">🌅</span>
+                    새로운 메시지
+                </button>
+                <button class="menu-item" id="categoryFilterBtn" data-action="categoryFilter">
+                    <span class="menu-icon">🏷️</span>
+                    카테고리 필터
+                </button>
+                <button class="menu-item" id="favoritesBtn" data-action="favorites">
+                    <span class="menu-icon">⭐</span>
+                    즐겨찾기
+                </button>
+                <button class="menu-item" id="historyBtn" data-action="history">
+                    <span class="menu-icon">📚</span>
+                    히스토리
+                </button>
+                <button class="menu-item" id="popularBtn" data-action="popular">
+                    <span class="menu-icon">🔥</span>
+                    인기 메시지
+                </button>
+            </div>
+
+            <div class="menu-section">
+                <h3>📱 기능</h3>
+                <button class="menu-item" id="shareBtn" data-action="share">
+                    <span class="menu-icon">💌</span>
+                    공유하기
+                </button>
+                <button class="menu-item" id="speakBtn" data-action="speak">
+                    <span class="menu-icon">🔊</span>
+                    음성듣기
+                </button>
+                <button class="menu-item" id="journalBtn" data-action="journal">
+                    <span class="menu-icon">📝</span>
+                    일기
+                </button>
+                <button class="menu-item" id="goalsBtn" data-action="goals">
+                    <span class="menu-icon">🎯</span>
+                    목표
+                </button>
+            </div>
+
+            <div class="menu-section">
+                <h3>🌍 커뮤니티</h3>
+                <button class="menu-item" id="submitBtn" data-action="submit">
+                    <span class="menu-icon">✍️</span>
+                    메시지 제출
+                </button>
+                <button class="menu-item" id="inviteBtn" data-action="invite">
+                    <span class="menu-icon">👥</span>
+                    친구 초대
+                </button>
+            </div>
+
+            <div class="menu-section">
+                <h3>⚙️ 설정</h3>
+                <button class="menu-item" id="settingsBtn" data-action="settings">
+                    <span class="menu-icon">⚙️</span>
+                    앱 설정
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 사이드바 오버레이 -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <div class="app-container">
+        <!-- 깔끔한 헤더 -->
         <header class="header">
-            <div class="header-content">
-                <div class="header-main">
-                    <h1 class="title">모닝</h1>
-                    <p class="subtitle">새로운 아침을 맞이하는 따뜻한 메시지</p>
-                    <div class="time-greeting" id="timeGreeting"></div>
-                    <div class="seasonal-indicator" title="현재 계절"></div>
-                    <div class="event-indicator" title="활성 이벤트" style="display: none;"></div>
-                </div>
-                <div class="header-tracker">
-                    <button class="tracker-btn" id="habitTrackerBtn" aria-label="습관 트래커 보기">
-                        <span class="tracker-icon">🔥</span>
-                        <span class="tracker-number" id="streakNumber">0</span>
-                    </button>
-                </div>
+            <div class="time-greeting" id="timeGreeting"></div>
+            <div class="header-indicators">
+                <div class="seasonal-indicator" id="seasonalIndicator" title="현재 계절"></div>
+                <div class="event-indicator" id="eventIndicator" title="활성 이벤트" style="display: none;"></div>
             </div>
         </header>
         
-        <main class="main-content">
+        <!-- 메인 콘텐츠: 글귀만 표시 -->
+        <main class="main-content" id="main-content">
             <div class="quote-container">
-                <div class="category-filter">
-                    <select id="categoryFilter" class="category-select" aria-label="카테고리 선택">
-                        <option value="all">🌟 모든 카테고리</option>
-                        <option value="새로운 시작">🌅 새로운 시작</option>
-                        <option value="동기부여">💪 동기부여</option>
-                        <option value="감사">🙏 감사</option>
-                        <option value="위로">🤗 위로</option>
-                        <option value="성찰">💭 성찰</option>
-                        <option value="희망">✨ 희망</option>
-                    </select>
-                </div>
                 <div class="quote-card" id="quoteCard">
                     <div class="loading" id="loading">
                         <div class="loading-spinner"></div>
                         <p>새로운 메시지를 준비하고 있어요...</p>
                     </div>
                     <div class="quote-content" id="quoteContent" style="display: none;">
-                        <div class="quote-header">
+                        <div class="quote-actions">
                             <button class="favorite-btn" id="favoriteBtn" aria-label="즐겨찾기 추가/제거">
                                 <span class="favorite-icon">🤍</span>
                             </button>
                         </div>
                         <blockquote class="quote-text" id="quoteText"></blockquote>
-                        <cite class="quote-author" id="quoteAuthor"></cite>
                         <div class="quote-category" id="quoteCategory"></div>
                         <div class="quote-reactions">
                             <button class="reaction-btn" id="likeBtn" data-reaction="like" aria-label="좋아요">
@@ -84,61 +165,70 @@
                     </div>
                 </div>
                 
-                <div class="action-buttons">
-                    <button class="btn btn-primary" id="newQuoteBtn" aria-label="새로운 메시지 가져오기">
-                        <span class="btn-icon">🌅</span>
-                        새로운 메시지
+                <!-- 간단한 액션 버튼들 -->
+                <div class="quick-actions">
+                    <button class="quick-action-btn" id="quickNewBtn" aria-label="새로운 메시지" title="새로운 메시지">
+                        🔄
                     </button>
-                    <button class="btn btn-secondary" id="shareBtn" aria-label="현재 메시지 공유하기">
-                        <span class="btn-icon">💌</span>
-                        공유하기
+                    <button class="quick-action-btn" id="quickShareBtn" aria-label="공유하기" title="공유하기">
+                        📤
                     </button>
-                    <button class="btn btn-secondary" id="speakBtn" aria-label="메시지 음성으로 듣기">
-                        <span class="btn-icon">🔊</span>
-                        음성듣기
-                    </button>
-                    <button class="btn btn-secondary" id="favoritesBtn" aria-label="즐겨찾기 목록 보기">
-                        <span class="btn-icon">⭐</span>
-                        즐겨찾기
-                    </button>
-                    <button class="btn btn-secondary" id="historyBtn" aria-label="메시지 히스토리 보기">
-                        <span class="btn-icon">📚</span>
-                        히스토리
-                    </button>
-                    <button class="btn btn-secondary" id="popularBtn" aria-label="인기 메시지 보기">
-                        <span class="btn-icon">🔥</span>
-                        인기
-                    </button>
-                    <button class="btn btn-secondary" id="inviteBtn" aria-label="친구 초대하기">
-                        <span class="btn-icon">👥</span>
-                        초대
-                    </button>
-                    <button class="btn btn-secondary" id="journalBtn" aria-label="일기 작성하기">
-                        <span class="btn-icon">📝</span>
-                        일기
-                    </button>
-                    <button class="btn btn-secondary" id="goalsBtn" aria-label="목표 설정하기">
-                        <span class="btn-icon">🎯</span>
-                        목표
-                    </button>
-                    <button class="btn btn-secondary" id="submitBtn" aria-label="메시지 제출하기">
-                        <span class="btn-icon">✍️</span>
-                        제출
-                    </button>
-                    <button class="btn btn-secondary" id="settingsBtn" aria-label="앱 설정 열기">
-                        <span class="btn-icon">⚙️</span>
-                        설정
+                    <button class="quick-action-btn" id="quickSpeakBtn" aria-label="음성듣기" title="음성듣기">
+                        🔊
                     </button>
                 </div>
             </div>
         </main>
         
+        <!-- 미니멀 푸터 -->
         <footer class="footer">
             <div class="date-display" id="dateDisplay"></div>
             <div class="message-counter">
                 <span id="messageCounter">1</span>번째 메시지
             </div>
         </footer>
+    </div>
+
+    <!-- 카테고리 필터 모달 -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏷️ 카테고리 선택</h2>
+                <button class="modal-close" id="categoryModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="category-grid">
+                    <button class="category-btn active" data-category="all">
+                        <span class="category-icon">🌟</span>
+                        <span class="category-name">모든 카테고리</span>
+                    </button>
+                    <button class="category-btn" data-category="새로운 시작">
+                        <span class="category-icon">🌅</span>
+                        <span class="category-name">새로운 시작</span>
+                    </button>
+                    <button class="category-btn" data-category="동기부여">
+                        <span class="category-icon">💪</span>
+                        <span class="category-name">동기부여</span>
+                    </button>
+                    <button class="category-btn" data-category="감사">
+                        <span class="category-icon">🙏</span>
+                        <span class="category-name">감사</span>
+                    </button>
+                    <button class="category-btn" data-category="위로">
+                        <span class="category-icon">🤗</span>
+                        <span class="category-name">위로</span>
+                    </button>
+                    <button class="category-btn" data-category="성찰">
+                        <span class="category-icon">💭</span>
+                        <span class="category-name">성찰</span>
+                    </button>
+                    <button class="category-btn" data-category="희망">
+                        <span class="category-icon">✨</span>
+                        <span class="category-name">희망</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="modal" id="shareModal">
@@ -704,6 +794,62 @@
         </div>
     </div>
     
+    <!-- 인증 모달 (로그인/회원가입) -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="authModalTitle">로그인</h2>
+                <button class="modal-close" data-modal="authModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" onclick="switchAuthTab('login')">로그인</button>
+                    <button class="auth-tab" onclick="switchAuthTab('register')">회원가입</button>
+                </div>
+                
+                <!-- 로그인 폼 -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginUsername">사용자명</label>
+                        <input type="text" id="loginUsername" required minlength="3" maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">비밀번호</label>
+                        <input type="password" id="loginPassword" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn-primary">로그인</button>
+                </form>
+                
+                <!-- 회원가입 폼 -->
+                <form id="registerForm" class="auth-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="registerUsername">사용자명</label>
+                        <input type="text" id="registerUsername" required minlength="3" maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">이메일 (선택사항)</label>
+                        <input type="email" id="registerEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerDisplayName">표시 이름</label>
+                        <input type="text" id="registerDisplayName" maxlength="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">비밀번호</label>
+                        <input type="password" id="registerPassword" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPasswordConfirm">비밀번호 확인</label>
+                        <input type="password" id="registerPasswordConfirm" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn-primary">회원가입</button>
+                </form>
+                
+                <div id="authMessage" class="auth-message"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- 메시지 미리보기 모달 -->
     <div class="modal" id="previewModal">
         <div class="modal-content preview-modal-content">
@@ -739,6 +885,1251 @@
             integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" 
             crossorigin="anonymous"></script>
     
-    <script src="script.js"></script>
+    <!-- 원본 script.js 대신 안전한 인라인 스크립트 -->
+    <script>
+        console.log('안전한 스크립트 시작...');
+
+        // API 설정
+        const API_BASE_URL = 'http://localhost:8002';
+        let currentUser = null;
+        let authToken = null;
+
+        // 로컬 스토리지에서 토큰 확인
+        function loadUserSession() {
+            const token = localStorage.getItem('authToken');
+            const user = localStorage.getItem('currentUser');
+            if (token && user) {
+                authToken = token;
+                currentUser = JSON.parse(user);
+                updateUserInterface();
+            }
+        }
+
+        // 사용자 인터페이스 업데이트
+        function updateUserInterface() {
+            const userInfo = safeGetElement('userInfo');
+            if (userInfo && currentUser) {
+                const greeting = userInfo.querySelector('.user-greeting');
+                if (greeting) {
+                    greeting.textContent = `안녕하세요, ${currentUser.display_name || currentUser.username}님!`;
+                }
+            }
+        }
+
+        // API 호출 헬퍼 함수
+        async function apiCall(endpoint, options = {}) {
+            const url = `${API_BASE_URL}${endpoint}`;
+            const headers = {
+                'Content-Type': 'application/json',
+                ...options.headers
+            };
+            
+            if (authToken) {
+                headers['Authorization'] = `Bearer ${authToken}`;
+            }
+            
+            const response = await fetch(url, {
+                ...options,
+                headers
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API Error: ${response.status}`);
+            }
+            
+            return response.json();
+        }
+
+        // 회원가입
+        async function register(username, email, password, displayName) {
+            try {
+                const response = await apiCall('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                        display_name: displayName
+                    })
+                });
+                
+                authToken = response.access_token;
+                currentUser = response.user;
+                
+                localStorage.setItem('authToken', authToken);
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                updateUserInterface();
+                return response;
+            } catch (error) {
+                console.error('회원가입 오류:', error);
+                throw error;
+            }
+        }
+
+        // 로그인
+        async function login(username, password) {
+            try {
+                const response = await apiCall('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        username,
+                        password
+                    })
+                });
+                
+                authToken = response.access_token;
+                currentUser = response.user;
+                
+                localStorage.setItem('authToken', authToken);
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                updateUserInterface();
+                return response;
+            } catch (error) {
+                console.error('로그인 오류:', error);
+                throw error;
+            }
+        }
+
+        // 로그아웃
+        function logout() {
+            authToken = null;
+            currentUser = null;
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('currentUser');
+            updateUserInterface();
+        }
+
+        // 즐겨찾기 추가
+        async function addFavorite(messageId, messageData) {
+            if (!authToken) {
+                alert('로그인이 필요합니다.');
+                return;
+            }
+            
+            try {
+                return await apiCall('/favorites', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        message_id: messageId,
+                        message_data: messageData
+                    })
+                });
+            } catch (error) {
+                console.error('즐겨찾기 추가 오류:', error);
+                throw error;
+            }
+        }
+
+        // 즐겨찾기 목록 조회
+        async function getFavorites() {
+            if (!authToken) {
+                return [];
+            }
+            
+            try {
+                return await apiCall('/favorites');
+            } catch (error) {
+                console.error('즐겨찾기 조회 오류:', error);
+                return [];
+            }
+        }
+
+        // 인증 모달 표시
+        function showAuthModal(type = 'login') {
+            const modal = safeGetElement('authModal');
+            if (modal) {
+                modal.style.display = 'block';
+                switchAuthTab(type);
+            }
+        }
+
+        // 인증 탭 전환
+        function switchAuthTab(type) {
+            const loginForm = safeGetElement('loginForm');
+            const registerForm = safeGetElement('registerForm');
+            const authModalTitle = safeGetElement('authModalTitle');
+            const tabs = document.querySelectorAll('.auth-tab');
+            
+            // 탭 버튼 스타일 업데이트
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`.auth-tab[onclick*="${type}"]`).classList.add('active');
+            
+            if (type === 'login') {
+                if (loginForm) loginForm.style.display = 'block';
+                if (registerForm) registerForm.style.display = 'none';
+                if (authModalTitle) authModalTitle.textContent = '로그인';
+            } else {
+                if (loginForm) loginForm.style.display = 'none';
+                if (registerForm) registerForm.style.display = 'block';
+                if (authModalTitle) authModalTitle.textContent = '회원가입';
+            }
+            
+            // 메시지 초기화
+            const authMessage = safeGetElement('authMessage');
+            if (authMessage) authMessage.textContent = '';
+        }
+
+        // 인증 메시지 표시
+        function showAuthMessage(message, isError = false) {
+            const authMessage = safeGetElement('authMessage');
+            if (authMessage) {
+                authMessage.textContent = message;
+                authMessage.style.color = isError ? '#e74c3c' : '#27ae60';
+            }
+        }
+
+        // 사용자 인터페이스 업데이트 (로그인 상태 반영)
+        function updateUserInterface() {
+            const userInfo = safeGetElement('userInfo');
+            const loginBtn = safeGetElement('loginBtn');
+            const logoutBtn = safeGetElement('logoutBtn');
+            
+            if (currentUser) {
+                // 로그인 상태
+                if (userInfo) {
+                    const greeting = userInfo.querySelector('.user-greeting');
+                    if (greeting) {
+                        greeting.textContent = `안녕하세요, ${currentUser.display_name || currentUser.username}님!`;
+                    }
+                }
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (logoutBtn) logoutBtn.style.display = 'block';
+            } else {
+                // 로그아웃 상태
+                if (userInfo) {
+                    const greeting = userInfo.querySelector('.user-greeting');
+                    if (greeting) {
+                        greeting.textContent = '안녕하세요!';
+                    }
+                }
+                if (loginBtn) loginBtn.style.display = 'block';
+                if (logoutBtn) logoutBtn.style.display = 'none';
+            }
+        }
+
+        // 카테고리 모달 표시
+        function showCategoryModal() {
+            const modal = safeGetElement('categoryModal');
+            const categoryList = modal?.querySelector('.category-list');
+            
+            if (!modal || !categoryList) {
+                alert('카테고리 모달을 찾을 수 없습니다.');
+                return;
+            }
+            
+            // 카테고리 목록 생성
+            const categories = ['all', ...new Set(allMessages.map(msg => msg.category))];
+            
+            categoryList.innerHTML = categories.map(category => `
+                <button class="category-item ${category === currentCategory ? 'active' : ''}" 
+                        onclick="selectCategory('${category}')">
+                    ${category === 'all' ? '전체' : category}
+                    <span class="category-count">${category === 'all' ? allMessages.length : allMessages.filter(msg => msg.category === category).length}</span>
+                </button>
+            `).join('');
+            
+            modal.style.display = 'block';
+        }
+
+        // 카테고리 선택
+        function selectCategory(category) {
+            const success = filterMessagesByCategory(category);
+            if (success) {
+                showMessage(); // 새로운 카테고리에서 메시지 표시
+                const modal = safeGetElement('categoryModal');
+                if (modal) modal.style.display = 'none';
+            } else {
+                alert('해당 카테고리에 메시지가 없습니다.');
+            }
+        }
+
+        // 히스토리 모달 표시  
+        function showHistoryModal() {
+            const modal = safeGetElement('historyModal');
+            const historyContent = modal?.querySelector('.modal-body');
+            
+            if (!modal || !historyContent) {
+                alert('히스토리 모달을 찾을 수 없습니다.');
+                return;
+            }
+            
+            if (messageHistory.length === 0) {
+                historyContent.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #6b7280;">
+                        <p>아직 본 메시지가 없습니다.</p>
+                        <p>메시지를 확인하면 여기에 기록됩니다.</p>
+                    </div>
+                `;
+            } else {
+                const historyHtml = messageHistory.map((msg, index) => `
+                    <div class="history-item" style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;" 
+                         onclick="showHistoryMessage(${index})">
+                        <div style="font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">
+                            ${msg.text.length > 80 ? msg.text.substring(0, 80) + '...' : msg.text}
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #6b7280;">#${msg.category}</span>
+                            <span style="font-size: 0.75rem; color: #9ca3af;">
+                                ${new Date(msg.viewedAt).toLocaleDateString('ko-KR')}
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
+                
+                historyContent.innerHTML = `
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        ${historyHtml}
+                    </div>
+                `;
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        // 히스토리에서 메시지 선택
+        function showHistoryMessage(index) {
+            const message = messageHistory[index];
+            if (message) {
+                // 현재 메시지 배열에서 해당 메시지 찾기
+                const messageIndex = messages.findIndex(msg => msg.id === message.id);
+                if (messageIndex >= 0) {
+                    showMessage(messageIndex, false);
+                }
+                const modal = safeGetElement('historyModal');
+                if (modal) modal.style.display = 'none';
+            }
+        }
+
+        // 일기 모달 표시 (기본 구현)
+        function showJournalModal() {
+            if (!authToken) {
+                showAuthModal('login');
+                return;
+            }
+            const modal = safeGetElement('journalModal');
+            if (modal) {
+                modal.style.display = 'block';
+            } else {
+                alert('일기 기능은 아직 개발 중입니다.');
+            }
+        }
+
+        // 목표 모달 표시 (기본 구현)
+        function showGoalsModal() {
+            if (!authToken) {
+                showAuthModal('login');
+                return;
+            }
+            const modal = safeGetElement('goalsModal');
+            if (modal) {
+                modal.style.display = 'block';
+            } else {
+                alert('목표 설정 기능은 아직 개발 중입니다.');
+            }
+        }
+
+        // 즐겨찾기 모달 표시
+        async function showFavoritesModal() {
+            if (!authToken) {
+                showAuthModal('login');
+                return;
+            }
+            
+            const modal = safeGetElement('favoritesModal');
+            const favoritesContent = modal?.querySelector('.modal-body');
+            
+            if (!modal || !favoritesContent) {
+                alert('즐겨찾기 모달을 찾을 수 없습니다.');
+                return;
+            }
+            
+            // 로딩 표시
+            favoritesContent.innerHTML = '<div style="text-align: center; padding: 2rem;">로딩 중...</div>';
+            modal.style.display = 'block';
+            
+            try {
+                const favorites = await getFavorites();
+                
+                if (favorites.length === 0) {
+                    favoritesContent.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: #6b7280;">
+                            <p>아직 즐겨찾기에 추가된 메시지가 없습니다.</p>
+                            <p>마음에 드는 메시지를 ❤️ 버튼으로 추가해보세요!</p>
+                        </div>
+                    `;
+                } else {
+                    const favoritesHtml = favorites.map(fav => `
+                        <div class="favorite-item" style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 8px;">
+                            <blockquote style="margin: 0 0 0.5rem 0; font-style: italic; color: #374151;">
+                                "${fav.message_data.text}"
+                            </blockquote>
+                            <div style="margin-top: 0.5rem;">
+                                <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; color: #6b7280;">
+                                    #${fav.message_data.category}
+                                </span>
+                                <span style="margin-left: 0.5rem; font-size: 0.8rem; color: #9ca3af;">
+                                    ${new Date(fav.added_at).toLocaleDateString('ko-KR')}
+                                </span>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    favoritesContent.innerHTML = `
+                        <div style="max-height: 400px; overflow-y: auto;">
+                            ${favoritesHtml}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('즐겨찾기 로드 오류:', error);
+                favoritesContent.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #ef4444;">
+                        <p>즐겨찾기를 불러오는 중 오류가 발생했습니다.</p>
+                        <button onclick="showFavoritesModal()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: #f59e0b; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            다시 시도
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // 메시지 데이터
+        let messages = [];
+        let allMessages = []; // 전체 메시지 저장용
+        let currentCategory = 'all'; // 현재 선택된 카테고리
+        
+        // 기본 메시지 (JSON 로드 실패시 백업용) - 확장된 메시지 모음
+        const fallbackMessages = [
+            // 동기부여
+            { id: 1, text: "새로운 하루가 시작됩니다. 오늘도 좋은 하루 되세요! 🌅", category: "새로운 시작", timeOfDay: "morning", season: "all" },
+            { id: 2, text: "작은 걸음도 앞으로 나아가는 것입니다.", category: "동기부여", timeOfDay: "morning", season: "all" },
+            { id: 3, text: "오늘 하루도 감사한 마음으로 시작해보세요.", category: "감사", timeOfDay: "morning", season: "all" },
+            { id: 4, text: "당신의 꿈은 충분히 가치가 있습니다.", category: "꿈", timeOfDay: "all", season: "all" },
+            { id: 5, text: "지금 이 순간이 새로운 시작의 기회입니다.", category: "기회", timeOfDay: "all", season: "all" },
+            
+            // 명언
+            { id: 6, text: "행복은 습관이다. 그것을 몸에 지니라.", category: "행복", timeOfDay: "all", season: "all" },
+            { id: 7, text: "성공은 준비와 기회가 만나는 지점이다.", category: "성공", timeOfDay: "all", season: "all" },
+            { id: 8, text: "가장 어두운 밤이 지나면 가장 아름다운 새벽이 온다.", category: "희망", timeOfDay: "morning", season: "all" },
+            { id: 9, text: "오늘 할 수 있는 일을 내일로 미루지 마라.", category: "실행력", timeOfDay: "all", season: "all" },
+            { id: 10, text: "변화를 두려워하지 마라. 변화는 성장의 시작이다.", category: "변화", timeOfDay: "all", season: "all" },
+            
+            // 위로와 격려
+            { id: 11, text: "모든 일이 잘 될 거야. 걱정하지 마세요.", category: "위로", timeOfDay: "all", season: "all" },
+            { id: 12, text: "실패는 성공으로 가는 징검다리입니다.", category: "격려", timeOfDay: "all", season: "all" },
+            { id: 13, text: "힘든 시간도 지나갑니다. 조금만 더 버텨요.", category: "위로", timeOfDay: "all", season: "all" },
+            { id: 14, text: "당신은 생각보다 훨씬 강한 사람입니다.", category: "격려", timeOfDay: "all", season: "all" },
+            { id: 15, text: "오늘도 최선을 다한 당신에게 박수를 보냅니다.", category: "격려", timeOfDay: "evening", season: "all" },
+            
+            // 긍정과 에너지
+            { id: 16, text: "웃음은 마음의 특효약입니다. 오늘 많이 웃으세요! 😊", category: "긍정", timeOfDay: "all", season: "all" },
+            { id: 17, text: "좋은 일이 생길 것 같은 기분이 듭니다.", category: "긍정", timeOfDay: "morning", season: "all" },
+            { id: 18, text: "에너지 넘치는 하루를 만들어 보세요!", category: "에너지", timeOfDay: "morning", season: "all" },
+            { id: 19, text: "긍정적인 마음가짐이 기적을 만듭니다.", category: "긍정", timeOfDay: "all", season: "all" },
+            { id: 20, text: "오늘은 특별한 날이 될 것입니다.", category: "기대", timeOfDay: "morning", season: "all" },
+            
+            // 지혜와 성찰
+            { id: 21, text: "진정한 지혜는 자신의 무지를 아는 것이다.", category: "지혜", timeOfDay: "all", season: "all" },
+            { id: 22, text: "과거에 연연하지 말고 현재에 집중하세요.", category: "현재", timeOfDay: "all", season: "all" },
+            { id: 23, text: "배움에는 끝이 없습니다. 오늘도 새로운 것을 배워보세요.", category: "학습", timeOfDay: "all", season: "all" },
+            { id: 24, text: "감사한 마음은 더 많은 행복을 불러옵니다.", category: "감사", timeOfDay: "all", season: "all" },
+            { id: 25, text: "인생은 마라톤입니다. 자신의 페이스를 유지하세요.", category: "인생", timeOfDay: "all", season: "all" },
+            
+            // 관계와 사랑
+            { id: 26, text: "사랑하는 사람들에게 따뜻한 말 한마디 건네보세요.", category: "사랑", timeOfDay: "all", season: "all" },
+            { id: 27, text: "혼자가 아닙니다. 당신을 아끼는 사람들이 있어요.", category: "위로", timeOfDay: "all", season: "all" },
+            { id: 28, text: "진심 어린 한마디가 누군가의 하루를 바꿀 수 있습니다.", category: "관계", timeOfDay: "all", season: "all" },
+            { id: 29, text: "용서는 자신을 위한 선물입니다.", category: "용서", timeOfDay: "all", season: "all" },
+            { id: 30, text: "소중한 사람들과 함께하는 시간을 더 많이 만드세요.", category: "관계", timeOfDay: "all", season: "all" }
+        ];
+
+        // 메시지 데이터 로드
+        async function loadMessages() {
+            try {
+                // 1. 로컬 messages.json 로드 시도
+                let localMessages = [];
+                try {
+                    const response = await fetch('./messages.json');
+                    const data = await response.json();
+                    localMessages = data.messages || [];
+                    console.log(`로컬에서 ${localMessages.length}개의 메시지를 로드했습니다.`);
+                } catch (error) {
+                    console.log('로컬 메시지 로드 실패, 기본 메시지 사용');
+                    localMessages = fallbackMessages;
+                }
+
+                // 2. 캐시된 메시지 로드
+                const cachedMessages = messageUpdater.loadCachedMessages();
+                if (cachedMessages.length > 0) {
+                    console.log(`캐시에서 ${cachedMessages.length}개의 메시지를 추가로 로드했습니다.`);
+                }
+
+                // 3. 외부 명언 API에서 추가 메시지 로드 시도
+                const externalMessages = await loadExternalQuotes();
+                
+                // 4. 모든 메시지 합치기
+                allMessages = [...localMessages, ...cachedMessages, ...externalMessages];
+                messages = [...allMessages];
+                
+                console.log(`총 ${messages.length}개의 메시지를 사용할 수 있습니다.`);
+
+                // 5. 백그라운드에서 업데이트 확인 (비동기)
+                setTimeout(async () => {
+                    try {
+                        await messageUpdater.checkForUpdates();
+                    } catch (error) {
+                        console.log('백그라운드 업데이트 실패:', error);
+                    }
+                }, 2000); // 2초 후 실행
+
+                return true;
+            } catch (error) {
+                console.error('메시지 로드 실패:', error);
+                allMessages = fallbackMessages;
+                messages = [...fallbackMessages];
+                return false;
+            }
+        }
+
+        // 외부 명언 API에서 메시지 로드
+        async function loadExternalQuotes() {
+            const externalMessages = [];
+            
+            try {
+                // 한국어 명언 API 시도 (가상의 예시 - 실제로는 존재하는 API 사용)
+                const koreanQuotes = await fetchKoreanQuotes();
+                externalMessages.push(...koreanQuotes);
+            } catch (error) {
+                console.log('한국어 명언 API 로드 실패:', error);
+            }
+
+            try {
+                // 영어 명언을 한국어로 번역한 데이터 로드
+                const translatedQuotes = await fetchTranslatedQuotes();
+                externalMessages.push(...translatedQuotes);
+            } catch (error) {
+                console.log('번역된 명언 로드 실패:', error);
+            }
+
+            // 랜덤한 추가 메시지 생성
+            const additionalMessages = generateAdditionalMessages();
+            externalMessages.push(...additionalMessages);
+
+            return externalMessages;
+        }
+
+        // 한국어 명언 API 호출 (예시)
+        async function fetchKoreanQuotes() {
+            // 실제 API가 있다면 여기서 호출
+            // 현재는 더미 데이터 반환
+            return [
+                { id: 1001, text: "천 리 길도 한 걸음부터.", category: "시작", timeOfDay: "all", season: "all" },
+                { id: 1002, text: "구슬이 서 말이어도 꿰어야 보배.", category: "완성", timeOfDay: "all", season: "all" },
+                { id: 1003, text: "낮말은 새가 듣고 밤말은 쥐가 듣는다.", category: "지혜", timeOfDay: "all", season: "all" },
+                { id: 1004, text: "급할수록 돌아가라.", category: "인내", timeOfDay: "all", season: "all" },
+                { id: 1005, text: "티끌 모아 태산.", category: "노력", timeOfDay: "all", season: "all" }
+            ];
+        }
+
+        // 번역된 명언 로드
+        async function fetchTranslatedQuotes() {
+            // 유명한 영어 명언들을 한국어로 번역한 버전
+            return [
+                { id: 2001, text: "어제는 지나갔고, 내일은 미지수다. 하지만 오늘은 선물이다.", category: "현재", timeOfDay: "all", season: "all" },
+                { id: 2002, text: "위대한 업적을 이루는 유일한 방법은 자신이 하는 일을 사랑하는 것이다.", category: "열정", timeOfDay: "all", season: "all" },
+                { id: 2003, text: "성공은 최종 목적지가 아니고, 실패는 치명적이지 않다. 중요한 것은 계속할 용기다.", category: "용기", timeOfDay: "all", season: "all" },
+                { id: 2004, text: "자신을 믿어라. 당신은 생각보다 더 용감하고, 보이는 것보다 더 강하다.", category: "자신감", timeOfDay: "all", season: "all" },
+                { id: 2005, text: "행복은 준비된 마음이 기회를 만났을 때 일어난다.", category: "행복", timeOfDay: "all", season: "all" }
+            ];
+        }
+
+        // 추가 메시지 생성 (계절별, 시간별 특화)
+        function generateAdditionalMessages() {
+            const currentMonth = new Date().getMonth() + 1;
+            const currentHour = new Date().getHours();
+            
+            let seasonalMessages = [];
+            
+            // 계절별 메시지
+            if (currentMonth >= 3 && currentMonth <= 5) { // 봄
+                seasonalMessages = [
+                    { id: 3001, text: "새싹이 돋듯 새로운 시작을 응원합니다.", category: "계절", timeOfDay: "all", season: "spring" },
+                    { id: 3002, text: "봄바람처럼 상쾌한 하루 되세요.", category: "계절", timeOfDay: "morning", season: "spring" }
+                ];
+            } else if (currentMonth >= 6 && currentMonth <= 8) { // 여름
+                seasonalMessages = [
+                    { id: 3003, text: "뜨거운 태양처럼 열정적인 하루 보내세요.", category: "계절", timeOfDay: "all", season: "summer" },
+                    { id: 3004, text: "여름의 에너지로 활기찬 하루를 만들어보세요.", category: "계절", timeOfDay: "morning", season: "summer" }
+                ];
+            } else if (currentMonth >= 9 && currentMonth <= 11) { // 가을
+                seasonalMessages = [
+                    { id: 3005, text: "가을 낙엽처럼 자연스럽게 변화를 받아들이세요.", category: "계절", timeOfDay: "all", season: "autumn" },
+                    { id: 3006, text: "가을 하늘처럼 맑은 마음으로 하루를 시작하세요.", category: "계절", timeOfDay: "morning", season: "autumn" }
+                ];
+            } else { // 겨울
+                seasonalMessages = [
+                    { id: 3007, text: "겨울의 고요함 속에서 내면의 평화를 찾으세요.", category: "계절", timeOfDay: "all", season: "winter" },
+                    { id: 3008, text: "따뜻한 마음으로 추운 겨울을 이겨내세요.", category: "계절", timeOfDay: "all", season: "winter" }
+                ];
+            }
+
+            // 시간대별 추가 메시지
+            const timeBasedMessages = [];
+            if (currentHour >= 5 && currentHour < 12) {
+                timeBasedMessages.push(
+                    { id: 4001, text: "좋은 아침! 오늘도 멋진 하루를 만들어가세요.", category: "아침인사", timeOfDay: "morning", season: "all" },
+                    { id: 4002, text: "새벽 공기처럼 맑은 마음으로 시작하세요.", category: "아침인사", timeOfDay: "morning", season: "all" }
+                );
+            } else if (currentHour >= 12 && currentHour < 17) {
+                timeBasedMessages.push(
+                    { id: 4003, text: "오후의 햇살처럼 따뜻한 시간 보내세요.", category: "오후", timeOfDay: "afternoon", season: "all" },
+                    { id: 4004, text: "하루의 중반, 잠시 쉬어가며 에너지를 충전하세요.", category: "오후", timeOfDay: "afternoon", season: "all" }
+                );
+            } else if (currentHour >= 17 && currentHour < 21) {
+                timeBasedMessages.push(
+                    { id: 4005, text: "하루를 마무리하며 오늘의 성취를 축하해주세요.", category: "저녁", timeOfDay: "evening", season: "all" },
+                    { id: 4006, text: "석양처럼 아름다운 하루의 마무리를 만들어보세요.", category: "저녁", timeOfDay: "evening", season: "all" }
+                );
+            } else {
+                timeBasedMessages.push(
+                    { id: 4007, text: "고민이 많은 밤, 내일은 더 좋은 날이 될 거예요.", category: "밤", timeOfDay: "night", season: "all" },
+                    { id: 4008, text: "별빛처럼 어둠 속에서도 빛나는 희망을 찾으세요.", category: "밤", timeOfDay: "night", season: "all" }
+                );
+            }
+
+            return [...seasonalMessages, ...timeBasedMessages];
+        }
+
+        // 메시지 업데이트 시스템
+        class MessageUpdateSystem {
+            constructor() {
+                this.lastUpdateCheck = localStorage.getItem('lastUpdateCheck');
+                this.updateInterval = 24 * 60 * 60 * 1000; // 24시간
+                this.maxRetries = 3;
+            }
+
+            // 메시지 업데이트 확인 및 실행
+            async checkForUpdates() {
+                const now = Date.now();
+                const lastCheck = this.lastUpdateCheck ? parseInt(this.lastUpdateCheck) : 0;
+                
+                // 24시간마다 한 번 업데이트 확인
+                if (now - lastCheck < this.updateInterval) {
+                    console.log('최근에 업데이트를 확인했습니다.');
+                    return false;
+                }
+
+                console.log('새로운 메시지 업데이트를 확인합니다...');
+                
+                try {
+                    // 외부 소스에서 새로운 메시지 가져오기
+                    const newMessages = await this.fetchLatestMessages();
+                    
+                    if (newMessages.length > 0) {
+                        await this.addNewMessages(newMessages);
+                        console.log(`${newMessages.length}개의 새로운 메시지가 추가되었습니다.`);
+                    }
+
+                    // 업데이트 시간 기록
+                    localStorage.setItem('lastUpdateCheck', now.toString());
+                    return true;
+                } catch (error) {
+                    console.error('메시지 업데이트 실패:', error);
+                    return false;
+                }
+            }
+
+            // 최신 메시지 가져오기
+            async fetchLatestMessages() {
+                const newMessages = [];
+                
+                // 1. 실제로는 여기서 외부 API 호출
+                // 예: 명언 API, RSS 피드, 크롤링 등
+                
+                // 2. 현재는 샘플 데이터 반환
+                const sampleNewMessages = this.generateDailyMessages();
+                newMessages.push(...sampleNewMessages);
+
+                // 3. 사용자 제출 메시지 가져오기 (API 연동)
+                if (authToken) {
+                    try {
+                        const userSubmittedMessages = await this.fetchUserSubmittedMessages();
+                        newMessages.push(...userSubmittedMessages);
+                    } catch (error) {
+                        console.log('사용자 제출 메시지 로드 실패:', error);
+                    }
+                }
+
+                return newMessages;
+            }
+
+            // 일일 메시지 생성
+            generateDailyMessages() {
+                const today = new Date();
+                const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+                
+                // 날짜 기반으로 고유한 메시지 생성
+                const dailyMessages = [
+                    {
+                        id: 5000 + dayOfYear,
+                        text: this.getDailyInspiration(dayOfYear),
+                        category: "오늘의 메시지",
+                        timeOfDay: "all",
+                        season: "all",
+                        isDaily: true,
+                        date: today.toISOString().split('T')[0]
+                    }
+                ];
+
+                return dailyMessages;
+            }
+
+            // 날짜별 영감 메시지
+            getDailyInspiration(dayOfYear) {
+                const inspirations = [
+                    "오늘은 새로운 가능성의 날입니다.",
+                    "당신의 잠재력을 믿고 도전해보세요.",
+                    "작은 진전도 큰 변화의 시작입니다.",
+                    "오늘 하루도 감사할 일들이 가득할 거예요.",
+                    "당신의 미소가 누군가에게 희망이 됩니다.",
+                    "힘든 시간도 성장의 기회가 될 수 있어요.",
+                    "오늘도 당신답게 살아가세요.",
+                    "새로운 하루, 새로운 기회가 기다립니다.",
+                    "당신의 노력은 반드시 보상받을 거예요.",
+                    "오늘 하루 자신에게 친절하게 대하세요."
+                ];
+                
+                return inspirations[dayOfYear % inspirations.length];
+            }
+
+            // 사용자 제출 메시지 가져오기
+            async fetchUserSubmittedMessages() {
+                try {
+                    const response = await apiCall('/messages/approved');
+                    return response.messages || [];
+                } catch (error) {
+                    return [];
+                }
+            }
+
+            // 새 메시지 추가
+            async addNewMessages(newMessages) {
+                // 중복 제거
+                const existingIds = new Set(allMessages.map(msg => msg.id));
+                const uniqueNewMessages = newMessages.filter(msg => !existingIds.has(msg.id));
+                
+                if (uniqueNewMessages.length > 0) {
+                    allMessages.push(...uniqueNewMessages);
+                    messages = [...allMessages];
+                    
+                    // 로컬 스토리지에 캐시
+                    try {
+                        localStorage.setItem('cachedMessages', JSON.stringify(uniqueNewMessages));
+                        localStorage.setItem('cacheTimestamp', Date.now().toString());
+                    } catch (error) {
+                        console.log('메시지 캐시 저장 실패:', error);
+                    }
+                }
+            }
+
+            // 캐시된 메시지 로드
+            loadCachedMessages() {
+                try {
+                    const cached = localStorage.getItem('cachedMessages');
+                    const timestamp = localStorage.getItem('cacheTimestamp');
+                    
+                    if (cached && timestamp) {
+                        const cacheAge = Date.now() - parseInt(timestamp);
+                        // 7일 이내의 캐시만 사용
+                        if (cacheAge < 7 * 24 * 60 * 60 * 1000) {
+                            return JSON.parse(cached);
+                        }
+                    }
+                } catch (error) {
+                    console.log('캐시된 메시지 로드 실패:', error);
+                }
+                return [];
+            }
+        }
+
+        // 메시지 업데이트 시스템 인스턴스
+        const messageUpdater = new MessageUpdateSystem();
+
+        // 카테고리별 메시지 필터링
+        function filterMessagesByCategory(category = 'all') {
+            currentCategory = category;
+            if (category === 'all') {
+                messages = [...allMessages];
+            } else {
+                messages = allMessages.filter(msg => 
+                    msg.category === category || 
+                    msg.category.toLowerCase() === category.toLowerCase()
+                );
+            }
+            console.log(`카테고리 '${category}': ${messages.length}개 메시지`);
+            return messages.length > 0;
+        }
+
+        // 시간대별 메시지 필터링
+        function getTimeBasedMessages() {
+            const hour = new Date().getHours();
+            let timeOfDay;
+            
+            if (hour >= 5 && hour < 12) timeOfDay = 'morning';
+            else if (hour >= 12 && hour < 17) timeOfDay = 'afternoon';
+            else if (hour >= 17 && hour < 21) timeOfDay = 'evening';
+            else timeOfDay = 'night';
+            
+            const timeMessages = messages.filter(msg => 
+                msg.timeOfDay === timeOfDay || msg.timeOfDay === 'all'
+            );
+            
+            return timeMessages.length > 0 ? timeMessages : messages;
+        }
+
+        let currentMessageIndex = 0;
+
+        // 안전한 요소 선택
+        function safeGetElement(id) {
+            return document.getElementById(id);
+        }
+
+        // 메시지 표시
+        function showMessage(index = null, useTimeFilter = true) {
+            // 메시지가 없으면 리턴
+            if (!messages || messages.length === 0) {
+                console.error('표시할 메시지가 없습니다.');
+                return;
+            }
+            
+            // 시간대별 필터링 적용
+            const availableMessages = useTimeFilter ? getTimeBasedMessages() : messages;
+            
+            // 인덱스 결정
+            if (index === null) {
+                index = Math.floor(Math.random() * availableMessages.length);
+            } else if (index >= availableMessages.length) {
+                index = 0;
+            }
+            
+            const message = availableMessages[index];
+            currentMessageIndex = messages.findIndex(msg => msg.id === message.id);
+            
+            // UI 업데이트
+            const loading = safeGetElement('loading');
+            const quoteContent = safeGetElement('quoteContent');
+            const quoteText = safeGetElement('quoteText');
+            const quoteCategory = safeGetElement('quoteCategory');
+            
+            if (loading) loading.style.display = 'none';
+            if (quoteContent) quoteContent.style.display = 'block';
+            
+            if (quoteText) {
+                quoteText.textContent = message.text;
+                // 텍스트 애니메이션
+                quoteText.style.opacity = '0';
+                setTimeout(() => {
+                    quoteText.style.opacity = '1';
+                }, 100);
+            }
+            
+            if (quoteCategory) {
+                quoteCategory.textContent = `#${message.category}`;
+            }
+            
+            // 즐겨찾기 상태 초기화
+            const favoriteIcon = document.querySelector('.favorite-icon');
+            if (favoriteIcon) {
+                favoriteIcon.textContent = '🤍';
+            }
+            
+            // 메시지 히스토리에 추가
+            addToHistory(message);
+            
+            console.log('메시지 표시됨:', message.text);
+        }
+
+        // 메시지 히스토리 관리
+        let messageHistory = [];
+        
+        function addToHistory(message) {
+            // 중복 제거
+            messageHistory = messageHistory.filter(msg => msg.id !== message.id);
+            // 최신 메시지를 앞에 추가
+            messageHistory.unshift({
+                ...message,
+                viewedAt: new Date().toISOString()
+            });
+            // 최대 50개까지만 저장
+            if (messageHistory.length > 50) {
+                messageHistory = messageHistory.slice(0, 50);
+            }
+            // 로컬 스토리지에 저장
+            localStorage.setItem('messageHistory', JSON.stringify(messageHistory));
+        }
+
+        // 히스토리 로드
+        function loadHistory() {
+            try {
+                const saved = localStorage.getItem('messageHistory');
+                if (saved) {
+                    messageHistory = JSON.parse(saved);
+                }
+            } catch (error) {
+                console.error('히스토리 로드 실패:', error);
+                messageHistory = [];
+            }
+        }
+
+        // 사이드바 관리
+        function toggleSidebar() {
+            const sidebar = safeGetElement('sidebar');
+            const overlay = safeGetElement('sidebarOverlay');
+            if (sidebar) sidebar.classList.toggle('open');
+            if (overlay) overlay.classList.toggle('show');
+        }
+
+        function closeSidebar() {
+            const sidebar = safeGetElement('sidebar');
+            const overlay = safeGetElement('sidebarOverlay');
+            if (sidebar) sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('show');
+        }
+
+        // 즐겨찾기 토글
+        async function toggleFavorite() {
+            if (!authToken) {
+                showAuthModal('login');
+                return;
+            }
+            
+            const favoriteBtn = safeGetElement('favoriteBtn');
+            const icon = favoriteBtn?.querySelector('.favorite-icon');
+            
+            if (!icon || !favoriteBtn) return;
+            
+            const isFavorited = icon.textContent === '❤️';
+            
+            if (!isFavorited) {
+                // 즐겨찾기 추가
+                try {
+                    const currentMessage = messages[currentMessageIndex];
+                    const messageId = `msg_${currentMessageIndex}_${Date.now()}`;
+                    
+                    await addFavorite(messageId, {
+                        text: currentMessage.text,
+                        category: currentMessage.category,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    icon.textContent = '❤️';
+                    console.log('즐겨찾기 추가됨');
+                } catch (error) {
+                    console.error('즐겨찾기 추가 실패:', error);
+                    alert('즐겨찾기 추가에 실패했습니다.');
+                }
+            } else {
+                // 즐겨찾기 제거 (현재는 UI만 변경)
+                icon.textContent = '🤍';
+                console.log('즐겨찾기 제거됨 (UI만)');
+            }
+        }
+
+        // 공유 기능
+        function shareMessage() {
+            const quoteText = safeGetElement('quoteText');
+            const messageText = quoteText?.textContent || '새로운 하루가 시작됩니다!';
+            const shareText = `${messageText}\n\n🌅 모닝 앱에서`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: '모닝 - 아침 메시지',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('메시지가 클립보드에 복사되었습니다!');
+                });
+            }
+        }
+
+        // 음성 재생
+        function speakMessage() {
+            const quoteText = safeGetElement('quoteText');
+            const messageText = quoteText?.textContent || '새로운 하루가 시작됩니다!';
+            
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(messageText);
+                utterance.lang = 'ko-KR';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('음성 재생을 지원하지 않는 브라우저입니다.');
+            }
+        }
+
+        // 날짜 표시
+        function displayDate() {
+            const dateDisplay = safeGetElement('dateDisplay');
+            if (dateDisplay) {
+                const today = new Date();
+                dateDisplay.textContent = today.toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    weekday: 'long'
+                });
+            }
+        }
+
+        // 이벤트 리스너 설정
+        function setupEventListeners() {
+            console.log('이벤트 리스너 설정 중...');
+            
+            // 햄버거 메뉴
+            const hamburgerBtn = safeGetElement('hamburgerBtn');
+            const sidebarClose = safeGetElement('sidebarClose');
+            const sidebarOverlay = safeGetElement('sidebarOverlay');
+            
+            if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+            if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+            if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+            
+            // 새 메시지 버튼들
+            const newQuoteBtn = safeGetElement('newQuoteBtn');
+            const quickNewBtn = safeGetElement('quickNewBtn');
+            
+            if (newQuoteBtn) {
+                newQuoteBtn.addEventListener('click', () => {
+                    showMessage();
+                    closeSidebar();
+                });
+            }
+            
+            if (quickNewBtn) {
+                quickNewBtn.addEventListener('click', () => showMessage());
+            }
+            
+            // 즐겨찾기 버튼
+            const favoriteBtn = safeGetElement('favoriteBtn');
+            if (favoriteBtn) {
+                favoriteBtn.addEventListener('click', toggleFavorite);
+            }
+            
+            // 빠른 액션 버튼들
+            const quickShareBtn = safeGetElement('quickShareBtn');
+            const quickSpeakBtn = safeGetElement('quickSpeakBtn');
+            
+            if (quickShareBtn) quickShareBtn.addEventListener('click', shareMessage);
+            if (quickSpeakBtn) quickSpeakBtn.addEventListener('click', speakMessage);
+            
+            // 인증 폼 이벤트 리스너
+            const loginForm = safeGetElement('loginForm');
+            const registerForm = safeGetElement('registerForm');
+            
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const username = safeGetElement('loginUsername').value;
+                    const password = safeGetElement('loginPassword').value;
+                    
+                    try {
+                        showAuthMessage('로그인 중...', false);
+                        await login(username, password);
+                        showAuthMessage('로그인 성공!', false);
+                        setTimeout(() => {
+                            const modal = safeGetElement('authModal');
+                            if (modal) modal.style.display = 'none';
+                        }, 1000);
+                    } catch (error) {
+                        showAuthMessage('로그인 실패: 사용자명 또는 비밀번호를 확인해주세요.', true);
+                    }
+                });
+            }
+            
+            if (registerForm) {
+                registerForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const username = safeGetElement('registerUsername').value;
+                    const email = safeGetElement('registerEmail').value;
+                    const displayName = safeGetElement('registerDisplayName').value;
+                    const password = safeGetElement('registerPassword').value;
+                    const passwordConfirm = safeGetElement('registerPasswordConfirm').value;
+                    
+                    if (password !== passwordConfirm) {
+                        showAuthMessage('비밀번호가 일치하지 않습니다.', true);
+                        return;
+                    }
+                    
+                    try {
+                        showAuthMessage('회원가입 중...', false);
+                        await register(username, email, password, displayName);
+                        showAuthMessage('회원가입 성공!', false);
+                        setTimeout(() => {
+                            const modal = safeGetElement('authModal');
+                            if (modal) modal.style.display = 'none';
+                        }, 1000);
+                    } catch (error) {
+                        showAuthMessage('회원가입 실패: 사용자명이 이미 존재하거나 입력 정보를 확인해주세요.', true);
+                    }
+                });
+            }
+
+            // 모달 닫기 버튼들
+            const modalCloseButtons = document.querySelectorAll('.modal-close');
+            modalCloseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-modal');
+                    const modal = modalId ? safeGetElement(modalId) : this.closest('.modal');
+                    if (modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+
+            // 모달 배경 클릭시 닫기
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+            });
+
+            // 메뉴 아이템들
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const action = this.id.replace('Btn', '');
+                    console.log('메뉴 클릭:', action);
+                    
+                    switch(action) {
+                        case 'newQuote':
+                            showMessage();
+                            break;
+                        case 'categoryFilter':
+                            showCategoryModal();
+                            break;
+                        case 'favorites':
+                            showFavoritesModal();
+                            break;
+                        case 'history':
+                            showHistoryModal();
+                            break;
+                        case 'popular':
+                            alert('인기 메시지 기능 (준비 중)');
+                            break;
+                        case 'share':
+                            shareMessage();
+                            break;
+                        case 'invite':
+                            alert('친구 초대 기능 (준비 중)');
+                            break;
+                        case 'journal':
+                            showJournalModal();
+                            break;
+                        case 'habit':
+                            alert('습관 트래커 기능 (준비 중)');
+                            break;
+                        case 'goals':
+                            showGoalsModal();
+                            break;
+                        case 'submit':
+                            alert('메시지 제출 기능 (준비 중)');
+                            break;
+                        case 'settings':
+                            alert('설정 기능 (준비 중)');
+                            break;
+                        default:
+                            console.log('알 수 없는 액션:', action);
+                    }
+                    closeSidebar();
+                });
+            });
+            
+            console.log('이벤트 리스너 설정 완료');
+        }
+
+        // 초기화
+        async function init() {
+            console.log('앱 초기화 시작...');
+            
+            try {
+                // 데이터 로드
+                await loadMessages(); // 메시지 데이터 로드
+                loadUserSession(); // 사용자 세션 로드
+                loadHistory(); // 히스토리 로드
+                
+                // UI 초기화
+                setupEventListeners();
+                showMessage(); // 랜덤 메시지 표시
+                displayDate();
+                
+                console.log('앱 초기화 완료!');
+            } catch (error) {
+                console.error('초기화 오류:', error);
+                // 최소한 메시지라도 표시
+                const loading = safeGetElement('loading');
+                const quoteContent = safeGetElement('quoteContent');
+                const quoteText = safeGetElement('quoteText');
+                
+                if (loading) loading.style.display = 'none';
+                if (quoteContent) quoteContent.style.display = 'block';
+                if (quoteText) quoteText.textContent = '새로운 하루가 시작됩니다. 오늘도 좋은 하루 되세요! ✨';
+            }
+        }
+
+        // 즉시 실행 (강제)
+        console.log('즉시 실행 시작...');
+        
+        // 0.5초 후 강제 실행
+        setTimeout(() => {
+            console.log('강제 실행 중...');
+            try {
+                // 바로 로딩 숨기고 메시지 표시
+                const loading = document.getElementById('loading');
+                const quoteContent = document.getElementById('quoteContent');
+                const quoteText = document.getElementById('quoteText');
+                const quoteCategory = document.getElementById('quoteCategory');
+                
+                if (loading) {
+                    loading.style.display = 'none';
+                    console.log('로딩 숨김');
+                }
+                if (quoteContent) {
+                    quoteContent.style.display = 'block';
+                    console.log('콘텐츠 표시');
+                }
+                if (quoteText) {
+                    quoteText.textContent = '새로운 하루가 시작됩니다. 오늘도 좋은 하루 되세요! 🌅';
+                    console.log('메시지 텍스트 설정');
+                }
+                if (quoteCategory) {
+                    quoteCategory.textContent = '#새로운 시작';
+                    console.log('카테고리 설정');
+                }
+                
+                // 이벤트 리스너도 설정
+                setupEventListeners();
+                
+                console.log('강제 실행 완료!');
+            } catch (error) {
+                console.error('강제 실행 오류:', error);
+            }
+        }, 500);
+
+        // DOM 로드 완료 후에도 실행
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+        console.log('스크립트 로딩 완료');
+    </script>
 </body>
 </html>
