@@ -2972,3 +2972,363 @@ body {
     border-color: var(--primary-color) !important;
     transform: translateY(-1px);
 }
+
+/* Popular Messages Modal */
+.popular-messages-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.popular-message-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    background: white;
+}
+
+.popular-message-item:hover {
+    background: var(--background);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.popular-rank {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    min-width: 2rem;
+    text-align: center;
+    margin-right: 1rem;
+}
+
+.popular-content {
+    flex: 1;
+}
+
+.popular-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 0.25rem;
+}
+
+.popular-category {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.popular-reactions {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+
+/* Invite Modal */
+.invite-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.invite-section {
+    padding: 1.5rem;
+    background: var(--background);
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+.invite-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.invite-section p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.invite-link {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.invite-link input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+}
+
+/* Habit Tracker */
+.habit-tracker {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.habit-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: var(--background);
+    border-radius: var(--border-radius);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-top: 1rem;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    background: #f3f4f6;
+}
+
+.calendar-day.visited {
+    background: var(--primary-color);
+    color: white;
+}
+
+.calendar-day.today {
+    border: 2px solid var(--primary-color);
+}
+
+.calendar-day.empty {
+    background: transparent;
+}
+
+.goal-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.goal-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+/* Submit Form */
+.submit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-group textarea,
+.form-group input,
+.form-group select {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    font-family: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.submit-preview {
+    padding: 1rem;
+    background: var(--background);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.preview-message {
+    padding: 1rem;
+    background: white;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.preview-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+
+.preview-category {
+    font-size: 0.8rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.submit-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+/* Settings Form */
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.settings-section {
+    padding: 1.5rem;
+    background: var(--background);
+    border-radius: var(--border-radius);
+}
+
+.settings-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.setting-item {
+    margin-bottom: 1rem;
+}
+
+.setting-item label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.setting-item input[type="checkbox"] {
+    margin: 0;
+}
+
+.setting-item input[type="time"],
+.setting-item select {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.app-info p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.settings-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+/* Reaction Buttons Animation */
+.reaction-btn {
+    transition: all 0.15s ease;
+}
+
+.reaction-btn:active {
+    transform: scale(1.2);
+}
+
+/* Theme Support */
+.dark-theme {
+    --card-background: #1f2937;
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --background: #374151;
+    --border-color: #4b5563;
+}
+
+.dark-theme .modal-content,
+.dark-theme .popular-message-item,
+.dark-theme .invite-section,
+.dark-theme .stat-item,
+.dark-theme .settings-section,
+.dark-theme .submit-preview,
+.dark-theme .preview-message {
+    background: var(--card-background);
+    color: var(--text-primary);
+}
+
+.dark-theme .calendar-day {
+    background: #4b5563;
+    color: var(--text-primary);
+}
+
+/* Mobile Responsiveness for New Modals */
+@media (max-width: 768px) {
+    .habit-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .popular-message-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .popular-rank {
+        margin-right: 0;
+    }
+    
+    .invite-link {
+        flex-direction: column;
+    }
+    
+    .submit-actions,
+    .settings-actions {
+        flex-direction: column;
+    }
+}

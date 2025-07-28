@@ -1743,6 +1743,10 @@
                 favoriteIcon.textContent = isFavorite(messageId) ? '❤️' : '🤍';
             }
             
+            // 리액션 UI 업데이트
+            const messageId = message.id || currentMessageIndex;
+            updateReactionUI(messageId);
+            
             // 메시지 히스토리에 추가
             addToHistory(message);
             
@@ -1796,7 +1800,565 @@
             if (overlay) overlay.classList.remove('show');
         }
 
+        // 인기 메시지 기능
+        function showPopularMessages() {
+            // 리액션 수가 높은 메시지들을 정렬
+            const popularMessages = [];
+            
+            // 메시지별 총 리액션 수 계산
+            for (const messageId in messageReactions) {
+                const reactions = messageReactions[messageId];
+                const totalReactions = (reactions.like || 0) + (reactions.heart || 0) + (reactions.fire || 0);
+                
+                if (totalReactions > 0) {
+                    // 원본 메시지 찾기
+                    const message = messages.find(msg => msg.id == messageId) || 
+                                  fallbackMessages.find(msg => msg.id == messageId) ||
+                                  { id: messageId, text: '알 수 없는 메시지', category: '기타' };
+                    
+                    popularMessages.push({
+                        ...message,
+                        totalReactions,
+                        reactions: { ...reactions }
+                    });
+                }
+            }
+            
+            // 리액션 수 기준 내림차순 정렬
+            popularMessages.sort((a, b) => b.totalReactions - a.totalReactions);
+            
+            // 인기 메시지가 없는 경우 기본 인기 메시지들 표시
+            if (popularMessages.length === 0) {
+                const defaultPopular = messages.slice(0, 5).map((msg, index) => ({
+                    ...msg,
+                    totalReactions: 10 - index,
+                    reactions: { like: 3, heart: 4, fire: 3 - index }
+                }));
+                popularMessages.push(...defaultPopular);
+            }
+            
+            // 모달 내용 생성
+            const modalContent = `
+                <div class="modal" id="popularModal" style="display: block;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>🔥 인기 메시지</h2>
+                            <button class="modal-close" onclick="document.getElementById('popularModal').remove()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="popular-messages-list">
+                                ${popularMessages.slice(0, 10).map((msg, index) => `
+                                    <div class="popular-message-item" onclick="showMessageById('${msg.id}')">
+                                        <div class="popular-rank">${index + 1}</div>
+                                        <div class="popular-content">
+                                            <div class="popular-text">${msg.text}</div>
+                                            <div class="popular-category">#${msg.category}</div>
+                                        </div>
+                                        <div class="popular-reactions">
+                                            <span>👍 ${msg.reactions.like || 0}</span>
+                                            <span>❤️ ${msg.reactions.heart || 0}</span>
+                                            <span>🔥 ${msg.reactions.fire || 0}</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalContent);
+        }
+
+        // 메시지 ID로 메시지 표시
+        function showMessageById(messageId) {
+            const messageIndex = messages.findIndex(msg => msg.id == messageId);
+            if (messageIndex >= 0) {
+                currentMessageIndex = messageIndex;
+                showMessage(messageIndex, false);
+                document.getElementById('popularModal')?.remove();
+            }
+        }
+
+        // 친구 초대 기능
+        function showInviteModal() {
+            const modalContent = `
+                <div class="modal" id="inviteModal" style="display: block;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>👥 친구 초대</h2>
+                            <button class="modal-close" onclick="document.getElementById('inviteModal').remove()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="invite-options">
+                                <div class="invite-section">
+                                    <h3>📱 앱 공유</h3>
+                                    <p>친구들과 함께 매일 좋은 메시지를 나눠보세요!</p>
+                                    <button class="btn btn-primary" onclick="shareApp()">앱 공유하기</button>
+                                </div>
+                                
+                                <div class="invite-section">
+                                    <h3>💌 메시지 공유</h3>
+                                    <p>현재 메시지를 친구에게 보내보세요.</p>
+                                    <button class="btn btn-secondary" onclick="shareMessage()">현재 메시지 공유</button>
+                                </div>
+                                
+                                <div class="invite-section">
+                                    <h3>🔗 초대 링크</h3>
+                                    <p>링크를 복사해서 친구들에게 보내세요.</p>
+                                    <div class="invite-link">
+                                        <input type="text" value="${window.location.href}" readonly>
+                                        <button class="btn btn-outline" onclick="copyInviteLink()">복사</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalContent);
+        }
+
+        // 앱 공유하기
+        function shareApp() {
+            const shareData = {
+                title: '모닝 앱 - 매일 좋은 시작',
+                text: '매일 아침 좋은 메시지로 하루를 시작해보세요! 🌅',
+                url: window.location.href
+            };
+            
+            if (navigator.share) {
+                navigator.share(shareData);
+            } else {
+                // 클립보드 복사
+                navigator.clipboard.writeText(`${shareData.title}\n${shareData.text}\n${shareData.url}`);
+                alert('앱 정보가 클립보드에 복사되었습니다!');
+            }
+        }
+
+        // 초대 링크 복사
+        function copyInviteLink() {
+            const linkInput = document.querySelector('.invite-link input');
+            linkInput.select();
+            navigator.clipboard.writeText(linkInput.value);
+            alert('초대 링크가 복사되었습니다!');
+        }
+
+        // 습관 트래커 기능
+        function showHabitTracker() {
+            const modalContent = `
+                <div class="modal" id="habitModal" style="display: block;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>📊 습관 트래커</h2>
+                            <button class="modal-close" onclick="document.getElementById('habitModal').remove()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="habit-tracker">
+                                <div class="habit-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">${getTodayVisitCount()}</div>
+                                        <div class="stat-label">오늘 방문</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">${getStreakCount()}</div>
+                                        <div class="stat-label">연속 일수</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">${getTotalMessages()}</div>
+                                        <div class="stat-label">본 메시지</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="habit-calendar">
+                                    <h3>📅 이번 달 활동</h3>
+                                    <div id="habitCalendar">${generateHabitCalendar()}</div>
+                                </div>
+                                
+                                <div class="habit-goals">
+                                    <h3>🎯 이번 주 목표</h3>
+                                    <div class="goal-progress">
+                                        <div class="goal-item">
+                                            <span>매일 메시지 확인</span>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: ${Math.min(100, (getTodayVisitCount() / 1) * 100)}%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalContent);
+        }
+
+        // 습관 트래커 유틸리티 함수들
+        function getTodayVisitCount() {
+            const today = new Date().toDateString();
+            const visits = JSON.parse(localStorage.getItem('dailyVisits') || '{}');
+            return visits[today] || 0;
+        }
+
+        function getStreakCount() {
+            const visits = JSON.parse(localStorage.getItem('dailyVisits') || '{}');
+            let streak = 0;
+            let currentDate = new Date();
+            
+            while (true) {
+                const dateStr = currentDate.toDateString();
+                if (visits[dateStr]) {
+                    streak++;
+                    currentDate.setDate(currentDate.getDate() - 1);
+                } else {
+                    break;
+                }
+            }
+            
+            return streak;
+        }
+
+        function getTotalMessages() {
+            return messageHistory.length;
+        }
+
+        function generateHabitCalendar() {
+            const visits = JSON.parse(localStorage.getItem('dailyVisits') || '{}');
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            
+            let calendar = '<div class="calendar-grid">';
+            
+            // 빈 날짜들
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                calendar += '<div class="calendar-day empty"></div>';
+            }
+            
+            // 실제 날짜들
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(today.getFullYear(), today.getMonth(), day);
+                const dateStr = date.toDateString();
+                const hasVisit = visits[dateStr] > 0;
+                const isToday = day === today.getDate();
+                
+                calendar += `<div class="calendar-day ${hasVisit ? 'visited' : ''} ${isToday ? 'today' : ''}">${day}</div>`;
+            }
+            
+            calendar += '</div>';
+            return calendar;
+        }
+
+        // 메시지 제출 기능
+        function showSubmitModal() {
+            const modalContent = `
+                <div class="modal" id="submitModal" style="display: block;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>✍️ 메시지 제출</h2>
+                            <button class="modal-close" onclick="document.getElementById('submitModal').remove()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="submit-form">
+                                <div class="form-group">
+                                    <label for="submitText">💭 메시지 내용</label>
+                                    <textarea id="submitText" placeholder="다른 사람들과 나누고 싶은 좋은 메시지를 작성해주세요..." rows="4"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="submitCategory">🏷️ 카테고리</label>
+                                    <select id="submitCategory">
+                                        <option value="동기부여">동기부여</option>
+                                        <option value="감사">감사</option>
+                                        <option value="성찰">성찰</option>
+                                        <option value="희망">희망</option>
+                                        <option value="지혜">지혜</option>
+                                        <option value="행복">행복</option>
+                                        <option value="기타">기타</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="submitAuthor">👤 작성자 (선택사항)</label>
+                                    <input type="text" id="submitAuthor" placeholder="익명">
+                                </div>
+                                
+                                <div class="submit-preview" id="submitPreview" style="display: none;">
+                                    <h3>👀 미리보기</h3>
+                                    <div class="preview-message">
+                                        <div class="preview-text" id="previewText"></div>
+                                        <div class="preview-category" id="previewCategory"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="submit-actions">
+                                    <button class="btn btn-secondary" onclick="previewSubmission()">미리보기</button>
+                                    <button class="btn btn-primary" onclick="submitMessage()">제출하기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalContent);
+        }
+
+        // 메시지 미리보기
+        function previewSubmission() {
+            const text = document.getElementById('submitText').value;
+            const category = document.getElementById('submitCategory').value;
+            
+            if (!text.trim()) {
+                alert('메시지 내용을 입력해주세요.');
+                return;
+            }
+            
+            document.getElementById('previewText').textContent = text;
+            document.getElementById('previewCategory').textContent = `#${category}`;
+            document.getElementById('submitPreview').style.display = 'block';
+        }
+
+        // 메시지 제출
+        function submitMessage() {
+            const text = document.getElementById('submitText').value;
+            const category = document.getElementById('submitCategory').value;
+            const author = document.getElementById('submitAuthor').value || '익명';
+            
+            if (!text.trim()) {
+                alert('메시지 내용을 입력해주세요.');
+                return;
+            }
+            
+            // 로컬 저장소에 제출된 메시지 저장
+            const submittedMessages = JSON.parse(localStorage.getItem('submittedMessages') || '[]');
+            const newMessage = {
+                id: Date.now(),
+                text: text.trim(),
+                category,
+                author,
+                submittedAt: new Date().toISOString(),
+                status: 'pending'
+            };
+            
+            submittedMessages.push(newMessage);
+            localStorage.setItem('submittedMessages', JSON.stringify(submittedMessages));
+            
+            alert('메시지가 제출되었습니다! 검토 후 앱에 반영될 예정입니다. 💝');
+            document.getElementById('submitModal').remove();
+        }
+
+        // 설정 기능
+        function showSettingsModal() {
+            const settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+            
+            const modalContent = `
+                <div class="modal" id="settingsModal" style="display: block;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>⚙️ 앱 설정</h2>
+                            <button class="modal-close" onclick="document.getElementById('settingsModal').remove()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="settings-form">
+                                <div class="settings-section">
+                                    <h3>🔔 알림 설정</h3>
+                                    <div class="setting-item">
+                                        <label>
+                                            <input type="checkbox" id="enableNotifications" ${settings.enableNotifications ? 'checked' : ''}>
+                                            푸시 알림 받기
+                                        </label>
+                                    </div>
+                                    <div class="setting-item">
+                                        <label for="notificationTime">알림 시간</label>
+                                        <input type="time" id="notificationTime" value="${settings.notificationTime || '09:00'}">
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-section">
+                                    <h3>🎨 테마 설정</h3>
+                                    <div class="setting-item">
+                                        <label for="theme">테마 선택</label>
+                                        <select id="theme">
+                                            <option value="light" ${settings.theme === 'light' ? 'selected' : ''}>밝은 테마</option>
+                                            <option value="dark" ${settings.theme === 'dark' ? 'selected' : ''}>어두운 테마</option>
+                                            <option value="auto" ${settings.theme === 'auto' ? 'selected' : ''}>자동</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-section">
+                                    <h3>📱 앱 정보</h3>
+                                    <div class="app-info">
+                                        <p><strong>버전:</strong> 1.0.0</p>
+                                        <p><strong>개발자:</strong> 모닝팀</p>
+                                        <p><strong>문의:</strong> morning@example.com</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-actions">
+                                    <button class="btn btn-outline" onclick="resetSettings()">설정 초기화</button>
+                                    <button class="btn btn-primary" onclick="saveSettings()">저장</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalContent);
+        }
+
+        // 설정 저장
+        function saveSettings() {
+            const settings = {
+                enableNotifications: document.getElementById('enableNotifications').checked,
+                notificationTime: document.getElementById('notificationTime').value,
+                theme: document.getElementById('theme').value
+            };
+            
+            localStorage.setItem('appSettings', JSON.stringify(settings));
+            
+            // 테마 적용
+            applyTheme(settings.theme);
+            
+            alert('설정이 저장되었습니다!');
+            document.getElementById('settingsModal').remove();
+        }
+
+        // 설정 초기화
+        function resetSettings() {
+            if (confirm('모든 설정을 초기화하시겠습니까?')) {
+                localStorage.removeItem('appSettings');
+                alert('설정이 초기화되었습니다.');
+                document.getElementById('settingsModal').remove();
+            }
+        }
+
+        // 테마 적용
+        function applyTheme(theme) {
+            const body = document.body;
+            body.classList.remove('light-theme', 'dark-theme');
+            
+            if (theme === 'dark') {
+                body.classList.add('dark-theme');
+            } else if (theme === 'light') {
+                body.classList.add('light-theme');
+            } else {
+                // 자동: 시스템 설정 따라가기
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                body.classList.add(prefersDark ? 'dark-theme' : 'light-theme');
+            }
+        }
+
+        // 일일 방문 추적
+        function trackDailyVisit() {
+            const today = new Date().toDateString();
+            const visits = JSON.parse(localStorage.getItem('dailyVisits') || '{}');
+            
+            visits[today] = (visits[today] || 0) + 1;
+            localStorage.setItem('dailyVisits', JSON.stringify(visits));
+        }
+
         // 즐겨찾기 토글
+        // 리액션 기능
+        let messageReactions = {};
+
+        // 리액션 데이터 로드
+        function loadReactions() {
+            try {
+                const saved = localStorage.getItem('messageReactions');
+                messageReactions = saved ? JSON.parse(saved) : {};
+            } catch (error) {
+                console.error('리액션 로드 실패:', error);
+                messageReactions = {};
+            }
+        }
+
+        // 리액션 데이터 저장
+        function saveReactions() {
+            try {
+                localStorage.setItem('messageReactions', JSON.stringify(messageReactions));
+            } catch (error) {
+                console.error('리액션 저장 실패:', error);
+            }
+        }
+
+        // 리액션 처리
+        function handleReaction(reactionType) {
+            if (!messages[currentMessageIndex]) return;
+            
+            const messageId = messages[currentMessageIndex].id || currentMessageIndex;
+            
+            // 메시지별 리액션 초기화
+            if (!messageReactions[messageId]) {
+                messageReactions[messageId] = { like: 0, heart: 0, fire: 0 };
+            }
+            
+            // 사용자별 리액션 상태 체크 (간단한 구현)
+            const userReactionKey = `user_${messageId}_${reactionType}`;
+            const hasReacted = localStorage.getItem(userReactionKey);
+            
+            if (hasReacted) {
+                // 이미 리액션한 경우 취소
+                messageReactions[messageId][reactionType] = Math.max(0, messageReactions[messageId][reactionType] - 1);
+                localStorage.removeItem(userReactionKey);
+            } else {
+                // 새로운 리액션
+                messageReactions[messageId][reactionType] += 1;
+                localStorage.setItem(userReactionKey, 'true');
+            }
+            
+            // UI 업데이트
+            updateReactionUI(messageId);
+            saveReactions();
+            
+            // 간단한 애니메이션 효과
+            const btn = document.getElementById(`${reactionType}Btn`);
+            if (btn) {
+                btn.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1)';
+                }, 150);
+            }
+        }
+
+        // 리액션 UI 업데이트
+        function updateReactionUI(messageId) {
+            if (!messageReactions[messageId]) return;
+            
+            const reactions = messageReactions[messageId];
+            
+            // 각 리액션 카운트 업데이트
+            const likeCount = document.getElementById('likeCount');
+            const heartCount = document.getElementById('heartCount');
+            const fireCount = document.getElementById('fireCount');
+            
+            if (likeCount) likeCount.textContent = reactions.like || 0;
+            if (heartCount) heartCount.textContent = reactions.heart || 0;
+            if (fireCount) fireCount.textContent = reactions.fire || 0;
+            
+            // 사용자가 리액션했는지 표시
+            ['like', 'heart', 'fire'].forEach(type => {
+                const userReactionKey = `user_${messageId}_${type}`;
+                const hasReacted = localStorage.getItem(userReactionKey);
+                const btn = document.getElementById(`${type}Btn`);
+                
+                if (btn) {
+                    if (hasReacted) {
+                        btn.style.opacity = '1';
+                        btn.style.background = '#e3f2fd';
+                    } else {
+                        btn.style.opacity = '0.7';
+                        btn.style.background = '';
+                    }
+                }
+            });
+        }
+
         function toggleFavorite() {
             const favoriteBtn = safeGetElement('favoriteBtn');
             const icon = favoriteBtn?.querySelector('.favorite-icon');
@@ -1894,9 +2456,26 @@
             if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
             if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
             
+            // 리액션 버튼들
+            const likeBtn = safeGetElement('likeBtn');
+            const heartBtn = safeGetElement('heartBtn');
+            const fireBtn = safeGetElement('fireBtn');
+            
+            if (likeBtn) likeBtn.addEventListener('click', () => handleReaction('like'));
+            if (heartBtn) heartBtn.addEventListener('click', () => handleReaction('heart'));
+            if (fireBtn) fireBtn.addEventListener('click', () => handleReaction('fire'));
+            
+            // 퀵 액션 버튼들
+            const quickNewBtn = safeGetElement('quickNewBtn');
+            const quickShareBtn = safeGetElement('quickShareBtn');
+            const quickSpeakBtn = safeGetElement('quickSpeakBtn');
+            
+            if (quickNewBtn) quickNewBtn.addEventListener('click', () => showMessage());
+            if (quickShareBtn) quickShareBtn.addEventListener('click', shareMessage);
+            if (quickSpeakBtn) quickSpeakBtn.addEventListener('click', speakMessage);
+            
             // 새 메시지 버튼들
             const newQuoteBtn = safeGetElement('newQuoteBtn');
-            const quickNewBtn = safeGetElement('quickNewBtn');
             
             if (newQuoteBtn) {
                 newQuoteBtn.addEventListener('click', () => {
@@ -1905,22 +2484,12 @@
                 });
             }
             
-            if (quickNewBtn) {
-                quickNewBtn.addEventListener('click', () => showMessage());
-            }
-            
             // 즐겨찾기 버튼
             const favoriteBtn = safeGetElement('favoriteBtn');
             if (favoriteBtn) {
                 favoriteBtn.addEventListener('click', toggleFavorite);
             }
             
-            // 빠른 액션 버튼들
-            const quickShareBtn = safeGetElement('quickShareBtn');
-            const quickSpeakBtn = safeGetElement('quickSpeakBtn');
-            
-            if (quickShareBtn) quickShareBtn.addEventListener('click', shareMessage);
-            if (quickSpeakBtn) quickSpeakBtn.addEventListener('click', speakMessage);
             
             // 인증 폼 이벤트 리스너
             const loginForm = safeGetElement('loginForm');
@@ -2014,28 +2583,28 @@
                             showHistoryModal();
                             break;
                         case 'popular':
-                            alert('인기 메시지 기능 (준비 중)');
+                            showPopularMessages();
                             break;
                         case 'share':
                             shareMessage();
                             break;
                         case 'invite':
-                            alert('친구 초대 기능 (준비 중)');
+                            showInviteModal();
                             break;
                         case 'journal':
                             showJournalModal();
                             break;
                         case 'habit':
-                            alert('습관 트래커 기능 (준비 중)');
+                            showHabitTracker();
                             break;
                         case 'goals':
                             showGoalsModal();
                             break;
                         case 'submit':
-                            alert('메시지 제출 기능 (준비 중)');
+                            showSubmitModal();
                             break;
                         case 'settings':
-                            alert('설정 기능 (준비 중)');
+                            showSettingsModal();
                             break;
                         default:
                             console.log('알 수 없는 액션:', action);
@@ -2057,9 +2626,11 @@
                 loadUserSession(); // 사용자 세션 로드
                 loadHistory(); // 히스토리 로드
                 loadLocalFavorites(); // 로컬 즐겨찾기 로드
+                loadReactions(); // 리액션 데이터 로드
                 
                 // UI 초기화
                 setupEventListeners();
+                trackDailyVisit(); // 일일 방문 추적
                 showMessage(); // 랜덤 메시지 표시
                 displayDate();
                 
