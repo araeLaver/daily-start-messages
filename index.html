@@ -83,14 +83,6 @@
                     <span class="menu-icon">🔊</span>
                     음성듣기
                 </button>
-                <button class="menu-item" id="journalBtn" data-action="journal">
-                    <span class="menu-icon">📝</span>
-                    일기
-                </button>
-                <button class="menu-item" id="goalsBtn" data-action="goals">
-                    <span class="menu-icon">🎯</span>
-                    목표
-                </button>
             </div>
 
             <div class="menu-section">
@@ -145,15 +137,15 @@
                         <blockquote class="quote-text" id="quoteText"></blockquote>
                         <div class="quote-category" id="quoteCategory"></div>
                         <div class="quote-reactions">
-                            <button class="reaction-btn" id="likeBtn" data-reaction="like" aria-label="좋아요">
+                            <button class="reaction-btn" id="likeBtn" data-reaction="like" aria-label="좋아요" onclick="handleReaction('like')">
                                 <span class="reaction-icon">👍</span>
                                 <span class="reaction-count" id="likeCount">0</span>
                             </button>
-                            <button class="reaction-btn" id="heartBtn" data-reaction="heart" aria-label="공감">
+                            <button class="reaction-btn" id="heartBtn" data-reaction="heart" aria-label="공감" onclick="handleReaction('heart')">
                                 <span class="reaction-icon">❤️</span>
                                 <span class="reaction-count" id="heartCount">0</span>
                             </button>
-                            <button class="reaction-btn" id="fireBtn" data-reaction="fire" aria-label="핫">
+                            <button class="reaction-btn" id="fireBtn" data-reaction="fire" aria-label="핫" onclick="handleReaction('fire')">
                                 <span class="reaction-icon">🔥</span>
                                 <span class="reaction-count" id="fireCount">0</span>
                             </button>
@@ -415,66 +407,6 @@
         </div>
     </div>
     
-    <!-- 일기 모달 -->
-    <div class="modal" id="journalModal">
-        <div class="modal-content journal-modal-content">
-            <div class="modal-header">
-                <h2>📝 오늘의 일기</h2>
-                <button class="modal-close" id="journalModalClose">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="journal-container">
-                    <div class="journal-inspiration">
-                        <div class="inspiration-header">
-                            <span class="inspiration-icon">💡</span>
-                            <span>오늘의 메시지에서 영감을 받아보세요</span>
-                        </div>
-                        <div class="inspiration-quote" id="inspirationQuote">
-                            메시지를 먼저 확인해주세요
-                        </div>
-                    </div>
-                    
-                    <div class="journal-form">
-                        <div class="journal-date" id="journalDate"></div>
-                        
-                        <div class="mood-selector">
-                            <label class="mood-label">오늘의 기분</label>
-                            <div class="mood-options">
-                                <button class="mood-btn" data-mood="great">😄</button>
-                                <button class="mood-btn" data-mood="good">😊</button>
-                                <button class="mood-btn" data-mood="okay">😐</button>
-                                <button class="mood-btn" data-mood="bad">😔</button>
-                                <button class="mood-btn" data-mood="terrible">😢</button>
-                            </div>
-                        </div>
-                        
-                        <div class="journal-writing">
-                            <label for="journalText" class="journal-text-label">오늘 하루는 어땠나요?</label>
-                            <textarea 
-                                id="journalText" 
-                                class="journal-textarea" 
-                                placeholder="오늘 있었던 일, 느낀 점, 감사한 일 등을 자유롭게 적어보세요...&#10;&#10;예시:&#10;- 오늘 아침 메시지가 정말 마음에 와닿았다&#10;- 새로운 도전을 시작했다&#10;- 가족과 좋은 시간을 보냈다"
-                                rows="8"
-                                maxlength="1000"></textarea>
-                            <div class="char-counter">
-                                <span id="charCount">0</span> / 1000
-                            </div>
-                        </div>
-                        
-                        <div class="journal-actions">
-                            <button class="btn btn-secondary" id="cancelJournalBtn">취소</button>
-                            <button class="btn btn-primary" id="saveJournalBtn">저장하기</button>
-                        </div>
-                    </div>
-                    
-                    <div class="journal-history">
-                        <h3>지난 일기들</h3>
-                        <div class="journal-list" id="journalList"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     
     <!-- 습관 트래커 모달 -->
     <div class="modal" id="habitModal">
@@ -528,133 +460,6 @@
         </div>
     </div>
     
-    <!-- 목표 설정 모달 -->
-    <div class="modal" id="goalsModal">
-        <div class="modal-content goals-modal-content">
-            <div class="modal-header">
-                <h2>🎯 목표 설정</h2>
-                <button class="modal-close" id="goalsModalClose">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="goals-container">
-                    <div class="goals-tabs">
-                        <button class="goals-tab active" data-tab="weekly">주간 목표</button>
-                        <button class="goals-tab" data-tab="monthly">월간 목표</button>
-                        <button class="goals-tab" data-tab="progress">진행 상황</button>
-                    </div>
-                    
-                    <!-- 주간 목표 탭 -->
-                    <div class="goals-tab-content active" id="weeklyTab">
-                        <div class="goals-inspiration">
-                            <div class="inspiration-text">
-                                "작은 목표들이 모여 큰 성취를 만듭니다" ✨
-                            </div>
-                        </div>
-                        
-                        <div class="goal-form">
-                            <h3>이번 주 목표 설정</h3>
-                            <div class="goal-input-group">
-                                <label for="weeklyGoalText">목표 내용</label>
-                                <input type="text" id="weeklyGoalText" placeholder="예: 매일 30분 운동하기, 책 3페이지 읽기..." maxlength="50">
-                            </div>
-                            <div class="goal-input-group">
-                                <label for="weeklyGoalCategory">카테고리</label>
-                                <select id="weeklyGoalCategory">
-                                    <option value="health">💪 건강</option>
-                                    <option value="study">📚 공부</option>
-                                    <option value="work">💼 업무</option>
-                                    <option value="relationship">👥 관계</option>
-                                    <option value="hobby">🎨 취미</option>
-                                    <option value="other">🌟 기타</option>
-                                </select>
-                            </div>
-                            <button class="btn btn-primary" id="addWeeklyGoalBtn">목표 추가</button>
-                        </div>
-                        
-                        <div class="current-goals">
-                            <h3>이번 주 목표들</h3>
-                            <div class="weekly-goals-list" id="weeklyGoalsList"></div>
-                        </div>
-                    </div>
-                    
-                    <!-- 월간 목표 탭 -->
-                    <div class="goals-tab-content" id="monthlyTab">
-                        <div class="goals-inspiration">
-                            <div class="inspiration-text">
-                                "한 달의 여정이 인생을 바꿉니다" 🌙
-                            </div>
-                        </div>
-                        
-                        <div class="goal-form">
-                            <h3>이번 달 목표 설정</h3>
-                            <div class="goal-input-group">
-                                <label for="monthlyGoalText">목표 내용</label>
-                                <input type="text" id="monthlyGoalText" placeholder="예: 새로운 기술 배우기, 10권 책 읽기..." maxlength="50">
-                            </div>
-                            <div class="goal-input-group">
-                                <label for="monthlyGoalCategory">카테고리</label>
-                                <select id="monthlyGoalCategory">
-                                    <option value="health">💪 건강</option>
-                                    <option value="study">📚 공부</option>
-                                    <option value="work">💼 업무</option>
-                                    <option value="relationship">👥 관계</option>
-                                    <option value="hobby">🎨 취미</option>
-                                    <option value="other">🌟 기타</option>
-                                </select>
-                            </div>
-                            <button class="btn btn-primary" id="addMonthlyGoalBtn">목표 추가</button>
-                        </div>
-                        
-                        <div class="current-goals">
-                            <h3>이번 달 목표들</h3>
-                            <div class="monthly-goals-list" id="monthlyGoalsList"></div>
-                        </div>
-                    </div>
-                    
-                    <!-- 진행 상황 탭 -->
-                    <div class="goals-tab-content" id="progressTab">
-                        <div class="progress-overview">
-                            <h3>📈 목표 달성 현황</h3>
-                            <div class="progress-stats">
-                                <div class="progress-stat-card">
-                                    <div class="stat-icon">📅</div>
-                                    <div class="stat-info">
-                                        <div class="stat-number" id="weeklyProgress">0%</div>
-                                        <div class="stat-label">주간 달성률</div>
-                                    </div>
-                                </div>
-                                <div class="progress-stat-card">
-                                    <div class="stat-icon">🗓️</div>
-                                    <div class="stat-info">
-                                        <div class="stat-number" id="monthlyProgress">0%</div>
-                                        <div class="stat-label">월간 달성률</div>
-                                    </div>
-                                </div>
-                                <div class="progress-stat-card">
-                                    <div class="stat-icon">🏆</div>
-                                    <div class="stat-info">
-                                        <div class="stat-number" id="completedGoals">0</div>
-                                        <div class="stat-label">완료한 목표</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="achievements">
-                            <h3>🏅 달성한 목표들</h3>
-                            <div class="achievements-list" id="achievementsList"></div>
-                        </div>
-                        
-                        <div class="motivation-message">
-                            <div class="motivation-text" id="motivationText">
-                                목표를 설정하고 달성해보세요! 💪
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     
     <!-- 사용자 제출 모달 -->
     <div class="modal" id="submitModal">
@@ -1208,33 +1013,6 @@
             }
         }
 
-        // 일기 모달 표시 (기본 구현)
-        function showJournalModal() {
-            if (!authToken) {
-                showAuthModal('login');
-                return;
-            }
-            const modal = safeGetElement('journalModal');
-            if (modal) {
-                modal.style.display = 'block';
-            } else {
-                alert('일기 기능은 아직 개발 중입니다.');
-            }
-        }
-
-        // 목표 모달 표시 (기본 구현)
-        function showGoalsModal() {
-            if (!authToken) {
-                showAuthModal('login');
-                return;
-            }
-            const modal = safeGetElement('goalsModal');
-            if (modal) {
-                modal.style.display = 'block';
-            } else {
-                alert('목표 설정 기능은 아직 개발 중입니다.');
-            }
-        }
 
         // 즐겨찾기 모달 표시
         function showFavoritesModal() {
@@ -2289,7 +2067,9 @@
 
         // 리액션 처리
         function handleReaction(reactionType) {
-            if (!messages[currentMessageIndex]) return;
+            if (!messages || messages.length === 0 || !messages[currentMessageIndex]) {
+                return;
+            }
             
             const messageId = messages[currentMessageIndex].id || currentMessageIndex;
             
@@ -2328,7 +2108,9 @@
 
         // 리액션 UI 업데이트
         function updateReactionUI(messageId) {
-            if (!messageReactions[messageId]) return;
+            if (!messageReactions[messageId]) {
+                messageReactions[messageId] = { like: 0, heart: 0, fire: 0 };
+            }
             
             const reactions = messageReactions[messageId];
             
@@ -2591,14 +2373,8 @@
                         case 'invite':
                             showInviteModal();
                             break;
-                        case 'journal':
-                            showJournalModal();
-                            break;
                         case 'habit':
                             showHabitTracker();
-                            break;
-                        case 'goals':
-                            showGoalsModal();
                             break;
                         case 'submit':
                             showSubmitModal();
