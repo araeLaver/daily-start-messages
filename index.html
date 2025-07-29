@@ -1928,6 +1928,10 @@
             alert('메시지가 제출되었습니다! 검토 후 앱에 반영될 예정입니다. 💝');
             document.getElementById('submitModal').remove();
         }
+        
+        // 전역에 등록
+        window.previewSubmission = previewSubmission;
+        window.submitMessage = submitMessage;
 
         // 설정 기능
         function showSettingsModal() {
@@ -2006,6 +2010,9 @@
             alert('설정이 저장되었습니다!');
             document.getElementById('settingsModal').remove();
         }
+        
+        // 전역에 설정 함수들 등록
+        window.saveSettings = saveSettings;
 
         // 설정 초기화
         function resetSettings() {
@@ -2015,6 +2022,9 @@
                 document.getElementById('settingsModal').remove();
             }
         }
+        
+        // 전역에 등록
+        window.resetSettings = resetSettings;
 
         // 테마 적용
         function applyTheme(theme) {
