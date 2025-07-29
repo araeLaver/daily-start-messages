@@ -1503,15 +1503,18 @@
             
             if (quoteText) {
                 quoteText.textContent = message.text;
-                // 텍스트 애니메이션
-                quoteText.style.opacity = '0';
-                setTimeout(() => {
-                    quoteText.style.opacity = '1';
-                }, 100);
+                // 애니메이션 재시작
+                quoteText.style.animation = 'none';
+                quoteText.offsetHeight; // 리플로우 강제 실행
+                quoteText.style.animation = 'textFadeIn 0.8s ease-out';
             }
             
             if (quoteCategory) {
                 quoteCategory.textContent = `#${message.category}`;
+                // 카테고리 애니메이션 재시작
+                quoteCategory.style.animation = 'none';
+                quoteCategory.offsetHeight;
+                quoteCategory.style.animation = 'categorySlideIn 0.6s ease-out 0.3s both';
             }
             
             // 즐겨찾기 상태 확인 및 표시
@@ -1524,6 +1527,14 @@
             // 리액션 UI 업데이트
             const messageId = message.id || currentMessageIndex;
             updateReactionUI(messageId);
+            
+            // 리액션 애니메이션 재시작
+            const reactions = document.querySelector('.quote-reactions');
+            if (reactions) {
+                reactions.style.animation = 'none';
+                reactions.offsetHeight;
+                reactions.style.animation = 'reactionsSlideUp 0.6s ease-out 0.5s both';
+            }
             
             // 메시지 히스토리에 추가
             addToHistory(message);
