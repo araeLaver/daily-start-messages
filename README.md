@@ -1,21 +1,21 @@
 # 🌅 하루의 시작 - Daily Start Messages
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/your-site-id/deploy-status)](https://app.netlify.com/sites/your-site-name/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6fe8b80e-c5cc-4c8e-8d0f-9a2e4b5c6d7e/deploy-status)](https://app.netlify.com/sites/daily-start-messages/deploys)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PWA Ready](https://img.shields.io/badge/PWA-Ready-green.svg)](https://web.dev/progressive-web-apps/)
 
-새로운 하루를 시작하는 따뜻하고 힘이 되는 메시지를 만나보세요.
+새로운 하루를 시작하는 따뜻하고 힘이 되는 명언과 메시지를 만나보세요.
 
 ## 🚀 데모 및 다운로드
 
 - **🌐 웹 앱**: [https://daily-start-messages.netlify.app](https://daily-start-messages.netlify.app)
-- **📱 안드로이드 앱**: [Google Play Store](https://play.google.com/store/apps/details?id=com.dailystart.app)
-- **🔧 개발 버전**: [https://dev-daily-start.netlify.app](https://dev-daily-start.netlify.app)
+- **📱 PWA 설치**: 브라우저에서 직접 앱 설치 가능
+- **⚡ 빠른 액세스**: 북마크로 바로 접속
 
 ## ✨ 주요 기능
 
 - **🌄 시간별 맞춤 메시지**: 아침, 오후, 저녁, 새벽 각 시간대별 메시지
-- **📚 풍부한 콘텐츠**: 65개 이상의 엄선된 메시지, 30개 이상 카테고리
+- **📚 풍부한 콘텐츠**: 45개의 엄선된 명언과 동기부여 메시지, 다양한 카테고리
 - **⚙️ 관리 기능**: 메시지 추가/수정/삭제, 카테고리별 관리
 - **📱 PWA 지원**: 앱처럼 설치하여 오프라인에서도 사용 가능
 - **🎨 반응형 디자인**: 모바일, 태블릿, 데스크톱 완벽 지원
@@ -35,7 +35,7 @@
 
 ```bash
 # 저장소 클론
-git clone https://github.com/yourusername/daily-start-messages.git
+git clone https://github.com/araeLaver/daily-start-messages.git
 cd daily-start-messages
 
 # 로컬 서버 실행 (Python 3)
@@ -97,7 +97,7 @@ daily-start-messages/
 
 ```json
 {
-  "id": 66,
+  "id": 46,
   "text": "새로운 메시지 내용",
   "author": "작성자명",
   "category": "카테고리",
