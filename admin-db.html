@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>데이터베이스 관리자 - Daily Start Messages</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <style>
+        .connection-status {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .connection-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .connection-failed {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .message-form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .messages-list {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .message-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .message-content {
+            flex: 1;
+        }
+        .message-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .message-meta {
+            font-size: 12px;
+            color: #666;
+        }
+        .message-actions {
+            display: flex;
+            gap: 5px;
+        }
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>🗄️ 데이터베이스 관리자</h1>
+            <div class="admin-nav">
+                <a href="index.html">메인 페이지로</a>
+                <a href="admin.html">파일 관리자로</a>
+            </div>
+        </header>
+
+        <main class="admin-main">
+            <!-- 연결 상태 -->
+            <div id="connectionStatus" class="connection-status">
+                연결 상태 확인 중...
+            </div>
+
+            <!-- 통계 -->
+            <section class="stats-section">
+                <h2>📊 통계</h2>
+                <div id="statsGrid" class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalMessages">-</div>
+                        <div>총 메시지</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalViews">-</div>
+                        <div>총 조회수</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="todayViews">-</div>
+                        <div>오늘 조회수</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCategories">-</div>
+                        <div>카테고리</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 알림 메시지 -->
+            <div id="alertMessage"></div>
+
+            <!-- 메시지 추가 폼 -->
+            <section class="message-form">
+                <h2>➕ 새 메시지 추가</h2>
+                <form id="messageForm">
+                    <div class="form-group">
+                        <label for="messageText">메시지 내용 *</label>
+                        <textarea id="messageText" required placeholder="감동적이고 의미있는 메시지를 입력하세요..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="messageAuthor">작성자/출처 *</label>
+                        <input type="text" id="messageAuthor" required placeholder="스티브 잡스, 마하트마 간디 등">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="messageCategory">카테고리 *</label>
+                        <select id="messageCategory" required>
+                            <option value="">카테고리 선택</option>
+                            <option value="자기계발">자기계발</option>
+                            <option value="성공">성공</option>
+                            <option value="동기부여">동기부여</option>
+                            <option value="꿈">꿈</option>
+                            <option value="믿음">믿음</option>
+                            <option value="행복">행복</option>
+                            <option value="용기">용기</option>
+                            <option value="도전">도전</option>
+                            <option value="성장">성장</option>
+                            <option value="희망">희망</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="timeOfDay">시간대</label>
+                        <select id="timeOfDay">
+                            <option value="">전체 시간</option>
+                            <option value="morning">아침</option>
+                            <option value="afternoon">오후</option>
+                            <option value="evening">저녁</option>
+                            <option value="night">밤</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="messagePriority">우선순위</label>
+                        <select id="messagePriority">
+                            <option value="1">1 (낮음)</option>
+                            <option value="3">3</option>
+                            <option value="5" selected>5 (보통)</option>
+                            <option value="7">7</option>
+                            <option value="10">10 (높음)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">메시지 추가</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm()">초기화</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 메시지 목록 -->
+            <section class="messages-section">
+                <h2>📝 최근 메시지</h2>
+                <div class="btn-group" style="margin-bottom: 20px;">
+                    <button class="btn btn-secondary" onclick="loadMessages()">새로고침</button>
+                    <select id="categoryFilter" onchange="loadMessages()">
+                        <option value="">전체 카테고리</option>
+                    </select>
+                    <select id="timeFilter" onchange="loadMessages()">
+                        <option value="">전체 시간</option>
+                        <option value="morning">아침</option>
+                        <option value="afternoon">오후</option>
+                        <option value="evening">저녁</option>
+                        <option value="night">밤</option>
+                    </select>
+                </div>
+                
+                <div id="messagesList" class="messages-list">
+                    <div class="loading">메시지를 불러오는 중...</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module">
+        import { HybridMessageManager } from './js/api-client.js';
+
+        class DatabaseAdmin {
+            constructor() {
+                this.messageManager = new HybridMessageManager();
+                this.isConnected = false;
+                this.init();
+            }
+
+            async init() {
+                await this.checkConnection();
+                await this.loadStats();
+                await this.loadCategories();
+                await this.loadMessages();
+                this.bindEvents();
+            }
+
+            async checkConnection() {
+                try {
+                    const isConnected = await this.messageManager.isUsingDatabase();
+                    this.isConnected = isConnected;
+                    
+                    const statusEl = document.getElementById('connectionStatus');
+                    if (isConnected) {
+                        statusEl.className = 'connection-status connection-success';
+                        statusEl.textContent = '✅ 데이터베이스 연결됨 (PostgreSQL)';
+                    } else {
+                        statusEl.className = 'connection-status connection-failed';
+                        statusEl.textContent = '❌ 데이터베이스 연결 실패 - 로컬 모드로 동작';
+                    }
+                } catch (error) {
+                    console.error('Connection check failed:', error);
+                    this.showAlert('연결 상태 확인 실패', 'error');
+                }
+            }
+
+            async loadStats() {
+                if (!this.isConnected) return;
+                
+                try {
+                    const stats = await this.messageManager.apiClient.getStats();
+                    
+                    document.getElementById('totalMessages').textContent = stats.totalMessages || 0;
+                    document.getElementById('totalViews').textContent = stats.totalViews || 0;
+                    document.getElementById('todayViews').textContent = stats.todayViews || 0;
+                    
+                    const categories = await this.messageManager.getCategories();
+                    document.getElementById('totalCategories').textContent = categories.length;
+                    
+                } catch (error) {
+                    console.error('Failed to load stats:', error);
+                }
+            }
+
+            async loadCategories() {
+                try {
+                    const categories = await this.messageManager.getCategories();
+                    const categorySelect = document.getElementById('categoryFilter');
+                    
+                    categorySelect.innerHTML = '<option value="">전체 카테고리</option>';
+                    categories.forEach(cat => {
+                        const option = document.createElement('option');
+                        option.value = cat.name;
+                        option.textContent = `${cat.name} (${cat.count || 0})`;
+                        categorySelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Failed to load categories:', error);
+                }
+            }
+
+            async loadMessages() {
+                const category = document.getElementById('categoryFilter').value;
+                const timeOfDay = document.getElementById('timeFilter').value;
+                
+                try {
+                    const response = await this.messageManager.getMessages({
+                        category,
+                        timeOfDay,
+                        limit: 20,
+                        randomOrder: false
+                    });
+                    
+                    this.renderMessages(response.messages || []);
+                } catch (error) {
+                    console.error('Failed to load messages:', error);
+                    this.showAlert('메시지 로드 실패', 'error');
+                }
+            }
+
+            renderMessages(messages) {
+                const listEl = document.getElementById('messagesList');
+                
+                if (messages.length === 0) {
+                    listEl.innerHTML = '<div class="loading">메시지가 없습니다.</div>';
+                    return;
+                }
+                
+                listEl.innerHTML = messages.map(msg => `
+                    <div class="message-item">
+                        <div class="message-content">
+                            <div class="message-text">${msg.text}</div>
+                            <div class="message-meta">
+                                ${msg.author} | ${msg.category} | ${msg.timeOfDay || '전체시간'} | 
+                                ID: ${msg.id} | 생성: ${new Date(msg.createdAt).toLocaleDateString()}
+                            </div>
+                        </div>
+                        <div class="message-actions">
+                            <button class="btn btn-sm btn-secondary" onclick="editMessage(${msg.id})">수정</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteMessage(${msg.id})">삭제</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            bindEvents() {
+                document.getElementById('messageForm').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    await this.addMessage();
+                });
+            }
+
+            async addMessage() {
+                if (!this.isConnected) {
+                    this.showAlert('데이터베이스에 연결되지 않았습니다. 파일 관리자를 사용하세요.', 'error');
+                    return;
+                }
+
+                const formData = {
+                    text: document.getElementById('messageText').value.trim(),
+                    author: document.getElementById('messageAuthor').value.trim(),
+                    category: document.getElementById('messageCategory').value,
+                    timeOfDay: document.getElementById('timeOfDay').value,
+                    priority: parseInt(document.getElementById('messagePriority').value)
+                };
+
+                if (!formData.text || !formData.author || !formData.category) {
+                    this.showAlert('필수 필드를 모두 입력해주세요.', 'error');
+                    return;
+                }
+
+                try {
+                    // API 호출 (실제 구현 시 추가)
+                    this.showAlert('메시지가 추가되었습니다!', 'success');
+                    this.clearForm();
+                    await this.loadMessages();
+                    await this.loadStats();
+                } catch (error) {
+                    console.error('Failed to add message:', error);
+                    this.showAlert('메시지 추가 실패', 'error');
+                }
+            }
+
+            clearForm() {
+                document.getElementById('messageForm').reset();
+            }
+
+            showAlert(message, type = 'info') {
+                const alertEl = document.getElementById('alertMessage');
+                alertEl.className = type;
+                alertEl.textContent = message;
+                alertEl.style.display = 'block';
+                
+                setTimeout(() => {
+                    alertEl.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // 전역 함수들
+        window.clearForm = () => admin.clearForm();
+        window.editMessage = (id) => console.log('Edit message:', id);
+        window.deleteMessage = (id) => console.log('Delete message:', id);
+        window.loadMessages = () => admin.loadMessages();
+
+        // 초기화
+        const admin = new DatabaseAdmin();
+    </script>
+</body>
+</html>

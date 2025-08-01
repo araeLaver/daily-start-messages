@@ -1,0 +1,56 @@
+name: Deploy API to Koyeb
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+      - 'messages.json'
+      - '.github/workflows/api-deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        cd backend
+        pip install -r requirements-api.txt
+        
+    - name: Run database migration
+      env:
+        ENVIRONMENT: production
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      run: |
+        cd backend
+        python migrate_messages.py
+        
+    - name: Deploy to Koyeb
+      env:
+        KOYEB_API_TOKEN: ${{ secrets.KOYEB_API_TOKEN }}
+      run: |
+        # Koyeb CLI 설치
+        curl -fsSL https://github.com/koyeb/koyeb-cli/releases/latest/download/koyeb-cli_linux_amd64.tar.gz | tar -xz
+        sudo mv koyeb /usr/local/bin/
+        
+        # Koyeb 배포
+        koyeb app deploy daily-messages-api \
+          --git https://github.com/${{ github.repository }} \
+          --git-branch main \
+          --git-build-command "cd backend && pip install -r requirements-api.txt" \
+          --git-run-command "cd backend && python -m uvicorn api_messages:app --host 0.0.0.0 --port 8000" \
+          --ports 8000:http \
+          --env ENVIRONMENT=production \
+          --env DATABASE_URL=${{ secrets.DATABASE_URL }} \
+          --region fra \
+          --instance-type nano

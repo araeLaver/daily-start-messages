@@ -2,18 +2,18 @@
   "messages": [
     {
       "id": 1,
-      "text": "새로운 하루가 시작됩니다. 오늘도 당신이 할 수 있는 일들을 믿어보세요.",
-      "author": "하루의 시작",
-      "category": "새로운 시작",
+      "text": "당신의 한계는 당신이 정한 것입니다. 오늘 그 한계를 넘어서세요.",
+      "author": "스티브 잡스",
+      "category": "자기계발",
       "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 2,
-      "text": "어제의 실수는 오늘의 지혜가 됩니다. 새로운 마음으로 시작해보세요.",
-      "author": "하루의 시작",
-      "category": "성장",
+      "text": "성공이란 열정을 잃지 않고 실패에서 실패로 걸어가는 것이다.",
+      "author": "윈스턴 처칠",
+      "category": "성공",
       "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
@@ -23,972 +23,387 @@
       "text": "오늘 할 수 있는 일을 내일로 미루지 마라.",
       "author": "벤자민 프랭클린",
       "category": "동기부여",
-      "timeOfDay": "",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 4,
-      "text": "성공은 준비된 자에게 기회가 주어질 때 얻어지는 것이다.",
-      "author": "루이 파스퇴르",
-      "category": "성공",
-      "timeOfDay": "",
+      "text": "실현가능한 목표를 세우는 것이 아니라, 목표를 실현가능하게 만드는 것이다.",
+      "author": "마이클 조던",
+      "category": "목표",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 5,
-      "text": "좋은 아침입니다! 오늘 하루도 감사함으로 시작하세요.",
-      "author": "하루의 시작",
-      "category": "감사",
+      "text": "어제는 역사가 되었고, 내일은 미스터리다. 하지만 오늘은 선물이다.",
+      "author": "엘리노어 루즈벨트",
+      "category": "현재에 집중",
       "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 6,
-      "text": "커피 한 잔의 여유와 함께, 오늘의 계획을 세워보세요.",
-      "author": "하루의 시작",
-      "category": "여유",
+      "text": "위대한 것을 이루기 위해서는 행동할 뿐만 아니라 꿈꿀 줄도 알아야 하고, 계획할 뿐만 아니라 믿을 줄도 알아야 한다.",
+      "author": "아나톨 프랑스",
+      "category": "믿음",
       "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 7,
-      "text": "오늘은 어제와는 다른 새로운 가능성들이 기다리고 있습니다.",
-      "author": "하루의 시작",
-      "category": "가능성",
+      "text": "변화를 원한다면 먼저 자신이 변해야 한다.",
+      "author": "마하트마 간디",
+      "category": "변화",
       "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 8,
-      "text": "점심시간입니다. 잠깐 쉬어가며 오후를 준비해보세요.",
-      "author": "하루의 시작",
-      "category": "휴식",
-      "timeOfDay": "afternoon",
+      "text": "불가능이란 사실이 아니라 의견일 뿐이다.",
+      "author": "무하마드 알리",
+      "category": "가능성",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 9,
-      "text": "오후의 나른함을 이겨내고, 남은 하루를 알차게 보내세요.",
-      "author": "하루의 시작",
-      "category": "활력",
-      "timeOfDay": "afternoon",
+      "text": "행복은 성취가 아니라 여정에서 찾는 것이다.",
+      "author": "랄프 왈도 에머슨",
+      "category": "행복",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 10,
-      "text": "하루 종일 수고하셨습니다. 오늘도 최선을 다한 자신을 칭찬해주세요.",
-      "author": "하루의 시작",
-      "category": "칭찬",
-      "timeOfDay": "evening",
+      "text": "성공의 비밀은 남들이 포기할 때까지 계속하는 것이다.",
+      "author": "토마스 에디슨",
+      "category": "인내",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 11,
-      "text": "저녁 시간, 오늘 하루를 돌아보며 감사한 일들을 떠올려보세요.",
-      "author": "하루의 시작",
-      "category": "감사",
-      "timeOfDay": "evening",
+      "text": "자신을 믿어라. 당신은 생각보다 훨씬 용감하고 재능이 있으며 능력이 뛰어나다.",
+      "author": "로이 T. 베넷",
+      "category": "자신감",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 12,
-      "text": "늦은 시간이지만, 지금이라도 좋은 생각을 해보세요.",
-      "author": "하루의 시작",
-      "category": "긍정",
-      "timeOfDay": "night",
+      "text": "삶이 당신에게 레몬을 준다면, 레모네이드를 만들어라.",
+      "author": "데일 카네기",
+      "category": "긍정적 사고",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 13,
-      "text": "꿈을 지녀라. 그러면 어려운 현실을 이겨낼 수 있다.",
-      "author": "월트 디즈니",
-      "category": "꿈",
-      "timeOfDay": "",
+      "text": "혁신은 리더와 추종자를 구분하는 것이다.",
+      "author": "스티브 잡스",
+      "category": "혁신",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 14,
-      "text": "시작하는 방법은 말하는 것을 그만두고 행동하는 것이다.",
-      "author": "월트 디즈니",
-      "category": "실행력",
-      "timeOfDay": "",
+      "text": "미래는 자신의 꿈의 아름다움을 믿는 사람들의 것이다.",
+      "author": "엘리노어 루즈벨트",
+      "category": "꿈",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 15,
-      "text": "오늘 아침, 새로운 에너지로 하루를 시작해보세요!",
-      "author": "하루의 시작",
-      "category": "에너지",
+      "text": "당신이 할 수 있다고 믿든 할 수 없다고 믿든, 당신이 옳다.",
+      "author": "헨리 포드",
+      "category": "믿음",
       "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 16,
-      "text": "인생에서 실패한 사람 중 다수는 포기할 때 성공에 얼마나 가까이 있었는지 깨닫지 못한 사람들이다.",
-      "author": "토마스 에디슨",
-      "category": "인내",
-      "timeOfDay": "",
+      "text": "작은 발걸음도 올바른 방향이라면 의미가 있다.",
+      "author": "마틴 루터 킹 주니어",
+      "category": "진보",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 17,
-      "text": "행복은 습관이다. 그것을 몸에 지니라.",
-      "author": "허버드",
-      "category": "행복",
-      "timeOfDay": "",
+      "text": "성공한 사람이 되려고 노력하지 말고, 가치 있는 사람이 되려고 노력하라.",
+      "author": "알베르트 아인슈타인",
+      "category": "가치",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 18,
-      "text": "월요일 아침, 새로운 한 주를 활기차게 시작해보세요!",
-      "author": "하루의 시작",
-      "category": "월요일",
+      "text": "어려움은 우리를 시험하기 위해 오는 것이 아니라, 우리를 발견하게 하기 위해 온다.",
+      "author": "빅터 휴고",
+      "category": "도전",
       "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 19,
-      "text": "화요일도 좋은 하루가 될 것입니다. 믿고 시작하세요!",
-      "author": "하루의 시작",
-      "category": "화요일",
+      "text": "지식에 투자하는 것이 가장 좋은 이익을 가져다준다.",
+      "author": "벤자민 프랭클린",
+      "category": "학습",
       "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 20,
-      "text": "수요일 중간점, 이번 주도 절반을 넘었습니다. 조금만 더 힘내세요!",
-      "author": "하루의 시작",
-      "category": "수요일",
-      "timeOfDay": "",
+      "text": "최고의 복수는 엄청난 성공이다.",
+      "author": "프랭크 시나트라",
+      "category": "성공",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 21,
-      "text": "목요일, 주말이 코앞입니다. 오늘도 힘차게!",
-      "author": "하루의 시작",
-      "category": "목요일",
-      "timeOfDay": "",
+      "text": "당신의 시간은 한정되어 있으니, 다른 사람의 인생을 사느라 낭비하지 마라.",
+      "author": "스티브 잡스",
+      "category": "시간 관리",
+      "timeOfDay": "afternoon",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 22,
-      "text": "불금입니다! 오늘 하루도 즐겁게 마무리하세요.",
-      "author": "하루의 시작",
-      "category": "금요일",
-      "timeOfDay": "",
+      "text": "완벽함이 아니라 진보를 추구하라.",
+      "author": "윈스턴 처칠",
+      "category": "완벽주의",
+      "timeOfDay": "afternoon",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 23,
-      "text": "토요일, 여유로운 하루를 보내세요. 재충전의 시간입니다.",
-      "author": "하루의 시작",
-      "category": "토요일",
-      "timeOfDay": "",
+      "text": "성취의 크기는 목표를 달성하기 위해 극복해야 했던 장애물의 크기로 측정된다.",
+      "author": "부커 T. 워싱턴",
+      "category": "성취",
+      "timeOfDay": "afternoon",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 24,
-      "text": "일요일, 다가올 한 주를 준비하며 마음의 평안을 찾아보세요.",
-      "author": "하루의 시작",
-      "category": "일요일",
-      "timeOfDay": "",
+      "text": "기회는 준비된 마음이 우연과 만나는 곳에서 찾을 수 있다.",
+      "author": "루이 파스퇴르",
+      "category": "기회",
+      "timeOfDay": "afternoon",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 25,
-      "text": "변화를 만들고 싶다면 먼저 자신이 변해야 한다.",
-      "author": "마하트마 간디",
-      "category": "변화",
-      "timeOfDay": "",
+      "text": "실패는 성공으로 가는 디딤돌이다.",
+      "author": "올리버 골드스미스",
+      "category": "실패",
+      "timeOfDay": "afternoon",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 26,
-      "text": "가장 큰 영광은 한 번도 실패하지 않음이 아니라 실패할 때마다 다시 일어서는 데 있다.",
-      "author": "공자",
-      "category": "용기",
-      "timeOfDay": "",
+      "text": "열정 없이는 위대한 것을 성취할 수 없다.",
+      "author": "랄프 왈도 에머슨",
+      "category": "열정",
+      "timeOfDay": "afternoon",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 27,
-      "text": "당신이 할 수 있다고 믿든 할 수 없다고 믿든 믿는 대로 될 것이다.",
-      "author": "헨리 포드",
-      "category": "믿음",
-      "timeOfDay": "",
+      "text": "과거를 바꿀 수는 없지만, 미래는 아직 당신의 손 안에 있다.",
+      "author": "휴 화이트",
+      "category": "미래",
+      "timeOfDay": "evening",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 28,
-      "text": "아침 운동으로 하루를 상쾌하게 시작해보세요!",
-      "author": "하루의 시작",
-      "category": "건강",
-      "timeOfDay": "morning",
+      "text": "위대한 일들은 편안한 지대에서 일어나지 않는다.",
+      "author": "로이 T. 베넷",
+      "category": "도전",
+      "timeOfDay": "evening",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 29,
-      "text": "오늘은 스마일! 미소가 전하는 긍정 에너지를 나눠보세요.",
-      "author": "하루의 시작",
-      "category": "미소",
-      "timeOfDay": "",
+      "text": "행동은 모든 성공의 기초적인 열쇠다.",
+      "author": "파블로 피카소",
+      "category": "행동",
+      "timeOfDay": "evening",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 30,
-      "text": "노력하는 사람은 희망을 말하고, 게으른 사람은 불만을 말한다.",
-      "author": "한국 속담",
-      "category": "노력",
-      "timeOfDay": "",
+      "text": "당신이 될 수 있는 최고의 버전이 되기 위해 노력하라.",
+      "author": "마야 안젤루",
+      "category": "자기계발",
+      "timeOfDay": "evening",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 31,
-      "text": "천 리 길도 한 걸음부터",
-      "author": "한국 속담",
-      "category": "시작",
-      "timeOfDay": "",
+      "text": "내일 죽을 것처럼 살고, 영원히 살 것처럼 배워라.",
+      "author": "마하트마 간디",
+      "category": "삶의 지혜",
+      "timeOfDay": "night",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 32,
-      "text": "작은 것을 소홀히 하면 큰 것을 이룰 수 없다.",
-      "author": "한국 속담",
-      "category": "성실함",
-      "timeOfDay": "",
+      "text": "두려움을 느끼는 것은 괜찮다. 하지만 두려움이 당신을 멈추게 하지는 마라.",
+      "author": "수잔 제퍼스",
+      "category": "용기",
+      "timeOfDay": "night",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 33,
-      "text": "오늘도 작은 성취를 쌓아가는 하루가 되길 바랍니다.",
-      "author": "하루의 시작",
-      "category": "성취",
-      "timeOfDay": "",
+      "text": "성공은 행복의 열쇠가 아니다. 행복이 성공의 열쇠다.",
+      "author": "알베르트 슈바이처",
+      "category": "행복",
+      "timeOfDay": "night",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 34,
-      "text": "배우는 것은 평생의 보물이다.",
-      "author": "중국 속담",
-      "category": "학습",
-      "timeOfDay": "",
+      "text": "당신의 꿈은 당신이 믿는 만큼 크다.",
+      "author": "오프라 윈프리",
+      "category": "꿈",
+      "timeOfDay": "night",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 35,
-      "text": "좋은 친구는 인생의 보석이다.",
-      "author": "소크라테스",
-      "category": "우정",
-      "timeOfDay": "",
+      "text": "매일 작은 개선을 하면 놀라운 결과를 얻을 수 있다.",
+      "author": "제임스 클리어",
+      "category": "습관",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 36,
-      "text": "점심 후 잠깐의 휴식, 오후를 위한 에너지 충전 시간입니다.",
-      "author": "하루의 시작",
-      "category": "휴식",
-      "timeOfDay": "afternoon",
+      "text": "당신이 갖고 있는 것에 감사하라. 당신은 더 많은 것을 갖게 될 것이다.",
+      "author": "오프라 윈프리",
+      "category": "감사",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 37,
-      "text": "시간은 가장 귀중한 것이다. 시간을 낭비하는 것은 존재를 낭비하는 것이다.",
-      "author": "괴테",
-      "category": "시간",
-      "timeOfDay": "",
+      "text": "인생에서 가장 위험한 것은 아무런 위험도 감수하지 않는 것이다.",
+      "author": "마크 저커버그",
+      "category": "위험감수",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 38,
-      "text": "진정한 용기는 다른 사람이 보고 있지 않을 때도 올바른 일을 하는 것이다.",
-      "author": "C.S. 루이스",
-      "category": "용기",
-      "timeOfDay": "",
+      "text": "당신은 자신이 생각하는 것보다 더 용감하고, 보이는 것보다 더 강하며, 느끼는 것보다 더 똑똑하다.",
+      "author": "A.A. 밀른",
+      "category": "자신감",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 39,
-      "text": "자신감은 성공의 첫 번째 비결이다.",
-      "author": "랄프 왈도 에머슨",
-      "category": "자신감",
-      "timeOfDay": "",
+      "text": "긍정적인 사고방식은 모든 것을 더 잘할 수 있게 해준다.",
+      "author": "지그 지글러",
+      "category": "긍정적 사고",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 40,
-      "text": "오늘이 인생의 첫날이라고 생각하라.",
-      "author": "애비 호프먼",
-      "category": "새로운 시작",
-      "timeOfDay": "",
+      "text": "성공의 유일한 비결은 절대 포기하지 않는 것이다.",
+      "author": "윌마 루돌프",
+      "category": "끈기",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 41,
-      "text": "저녁노을처럼 아름다운 하루의 마무리를 만들어보세요.",
-      "author": "하루의 시작",
-      "category": "마무리",
-      "timeOfDay": "evening",
+      "text": "오늘 하루도 당신다운 멋진 하루가 되기를 바랍니다.",
+      "author": "일상의 지혜",
+      "category": "응원",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 42,
-      "text": "기회는 준비된 마음에게만 온다.",
-      "author": "루이 파스퇴르",
-      "category": "기회",
-      "timeOfDay": "",
+      "text": "작은 노력들이 모여 큰 변화를 만듭니다.",
+      "author": "일상의 지혜",
+      "category": "노력",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 43,
-      "text": "아름다운 것을 보는 것이 아니라, 아름답게 보는 것이다.",
-      "author": "한국 속담",
-      "category": "관점",
-      "timeOfDay": "",
+      "text": "오늘의 당신은 어제의 당신보다 더 성장한 사람입니다.",
+      "author": "일상의 지혜",
+      "category": "성장",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 44,
-      "text": "실패는 성공의 어머니다.",
-      "author": "한국 속담",
-      "category": "실패",
-      "timeOfDay": "",
+      "text": "새로운 시작은 언제나 설레는 일입니다.",
+      "author": "일상의 지혜",
+      "category": "새로운 시작",
+      "timeOfDay": "morning",
       "season": "all",
       "createdAt": "2024-01-01"
     },
     {
       "id": 45,
-      "text": "꾸준히 하면 안 되는 일이 없다.",
-      "author": "한국 속담",
-      "category": "꾸준함",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 46,
-      "text": "새벽의 고요함 속에서 자신만의 시간을 가져보세요.",
-      "author": "하루의 시작",
-      "category": "새벽",
-      "timeOfDay": "night",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 47,
-      "text": "건강한 몸에 건전한 정신이 깃든다.",
-      "author": "유베날리스",
-      "category": "건강",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 48,
-      "text": "감사할 줄 아는 마음이 행복의 시작이다.",
-      "author": "멜로디 비티",
-      "category": "감사",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 49,
-      "text": "어제는 역사요, 내일은 미스터리다. 그러나 오늘은 선물이다.",
-      "author": "빌 키언",
-      "category": "현재",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 50,
-      "text": "사랑은 인생에서 가장 아름다운 꿈이다.",
-      "author": "알폰스 카르",
-      "category": "사랑",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 51,
-      "text": "희망은 깨어 있는 사람의 꿈이다.",
-      "author": "아리스토텔레스",
-      "category": "희망",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 52,
-      "text": "모든 성취는 시도에서 시작된다.",
-      "author": "존 F. 케네디",
-      "category": "도전",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 53,
-      "text": "오늘 아침, 거울 속 자신에게 응원의 메시지를 전해보세요.",
-      "author": "하루의 시작",
-      "category": "자기응원",
+      "text": "당신의 잠재력은 무한합니다. 그것을 믿으세요.",
+      "author": "일상의 지혜",
+      "category": "잠재력",
       "timeOfDay": "morning",
       "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 54,
-      "text": "진정한 행복은 자기 자신과 화해하는 것에서 시작된다.",
-      "author": "아리스토텔레스",
-      "category": "자아성찰",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 55,
-      "text": "어려움 없이는 큰 성과도 없다.",
-      "author": "볼테르",
-      "category": "어려움",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 56,
-      "text": "인생은 10%가 실제로 일어나는 일이고, 90%가 그것에 대한 당신의 반응이다.",
-      "author": "찰스 스윈돌",
-      "category": "태도",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 57,
-      "text": "가장 어두운 밤이 지나면 찬란한 아침이 온다.",
-      "author": "셰익스피어",
-      "category": "희망",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 58,
-      "text": "오늘 저녁, 하루 동안 만난 소중한 순간들을 되새겨보세요.",
-      "author": "하루의 시작",
-      "category": "회상",
-      "timeOfDay": "evening",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 59,
-      "text": "지혜로운 자는 기회를 만들어 내는 자다.",
-      "author": "베이컨",
-      "category": "지혜",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 60,
-      "text": "내가 더 멀리 볼 수 있었던 것은 거인의 어깨에 올라섰기 때문이다.",
-      "author": "뉴턴",
-      "category": "겸손",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 61,
-      "text": "독서는 완전한 사람을 만든다.",
-      "author": "베이컨",
-      "category": "독서",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 62,
-      "text": "가장 완벽한 복수는 용서이다.",
-      "author": "조시 빌링스",
-      "category": "용서",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 63,
-      "text": "평생 배우는 자세로 살아가라.",
-      "author": "간디",
-      "category": "배움",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 64,
-      "text": "오늘 하루가 당신 인생의 가장 중요한 하루다.",
-      "author": "헨리 데이빗 소로",
-      "category": "오늘",
-      "timeOfDay": "",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 65,
-      "text": "잠들기 전, 오늘 하루에 감사한 마음을 가져보세요.",
-      "author": "하루의 시작",
-      "category": "감사",
-      "timeOfDay": "night",
-      "season": "all",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 66,
-      "text": "봄이 왔습니다! 새싹처럼 새로운 시작을 해보세요. 🌱",
-      "author": "계절의 메시지",
-      "category": "새로운 시작",
-      "timeOfDay": "morning",
-      "season": "spring",
-      "createdAt": "2024-03-01"
-    },
-    {
-      "id": 67,
-      "text": "벚꽃이 피는 계절, 아름다운 순간들을 놓치지 마세요. 🌸",
-      "author": "계절의 메시지",
-      "category": "아름다움",
-      "timeOfDay": "",
-      "season": "spring",
-      "createdAt": "2024-04-01"
-    },
-    {
-      "id": 68,
-      "text": "따뜻한 봄바람처럼 마음도 따뜻하게 시작해보세요.",
-      "author": "계절의 메시지",
-      "category": "따뜻함",
-      "timeOfDay": "morning",
-      "season": "spring",
-      "createdAt": "2024-03-15"
-    },
-    {
-      "id": 69,
-      "text": "여름의 뜨거운 태양처럼 열정적인 하루를 보내세요! ☀️",
-      "author": "계절의 메시지",
-      "category": "열정",
-      "timeOfDay": "morning",
-      "season": "summer",
-      "createdAt": "2024-06-01"
-    },
-    {
-      "id": 70,
-      "text": "시원한 바다를 생각하며 마음의 여유를 찾아보세요. 🌊",
-      "author": "계절의 메시지",
-      "category": "여유",
-      "timeOfDay": "afternoon",
-      "season": "summer",
-      "createdAt": "2024-07-01"
-    },
-    {
-      "id": 71,
-      "text": "여름밤의 별을 바라보며 꿈을 키워보세요. ⭐",
-      "author": "계절의 메시지",
-      "category": "꿈",
-      "timeOfDay": "night",
-      "season": "summer",
-      "createdAt": "2024-08-01"
-    },
-    {
-      "id": 72,
-      "text": "가을의 단풍처럼 아름다운 변화를 받아들여보세요. 🍂",
-      "author": "계절의 메시지",
-      "category": "변화",
-      "timeOfDay": "",
-      "season": "autumn",
-      "createdAt": "2024-09-01"
-    },
-    {
-      "id": 73,
-      "text": "수확의 계절, 지금까지의 노력이 결실을 맺을 때입니다.",
-      "author": "계절의 메시지",
-      "category": "결실",
-      "timeOfDay": "",
-      "season": "autumn",
-      "createdAt": "2024-10-01"
-    },
-    {
-      "id": 74,
-      "text": "선선한 가을바람과 함께 마음도 정리해보세요.",
-      "author": "계절의 메시지",
-      "category": "성찰",
-      "timeOfDay": "evening",
-      "season": "autumn",
-      "createdAt": "2024-11-01"
-    },
-    {
-      "id": 75,
-      "text": "겨울의 고요함 속에서 내면의 평화를 찾아보세요. ❄️",
-      "author": "계절의 메시지",
-      "category": "평화",
-      "timeOfDay": "",
-      "season": "winter",
-      "createdAt": "2024-12-01"
-    },
-    {
-      "id": 76,
-      "text": "눈 내리는 아침, 새하얀 마음으로 시작해보세요. ⛄",
-      "author": "계절의 메시지",
-      "category": "순수함",
-      "timeOfDay": "morning",
-      "season": "winter",
-      "createdAt": "2024-01-15"
-    },
-    {
-      "id": 77,
-      "text": "따뜻한 차 한 잔으로 마음을 녹여보세요. ☕",
-      "author": "계절의 메시지",
-      "category": "따뜻함",
-      "timeOfDay": "afternoon",
-      "season": "winter",
-      "createdAt": "2024-02-01"
-    },
-    {
-      "id": 78,
-      "text": "새해가 밝았습니다! 새로운 다짐으로 시작하세요. 🎊",
-      "author": "특별한 날",
-      "category": "새해",
-      "timeOfDay": "morning",
-      "season": "winter",
-      "specialDay": "new-year",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 79,
-      "text": "크리스마스의 따뜻한 마음을 나누어보세요. 🎄",
-      "author": "특별한 날",
-      "category": "나눔",
-      "timeOfDay": "",
-      "season": "winter",
-      "specialDay": "christmas",
-      "createdAt": "2024-12-25"
-    },
-    {
-      "id": 80,
-      "text": "어린이날, 어린 시절의 순수한 마음을 되찾아보세요. 👶",
-      "author": "특별한 날",
-      "category": "순수함",
-      "timeOfDay": "",
-      "season": "spring",
-      "specialDay": "children-day",
-      "createdAt": "2024-05-05"
-    },
-    {
-      "id": 81,
-      "text": "월요병을 이겨내세요! 새로운 한 주의 첫 걸음입니다. 💪",
-      "author": "요일별 메시지",
-      "category": "동기부여",
-      "timeOfDay": "morning",
-      "season": "all",
-      "eventType": "weekly",
-      "eventTarget": "monday",
-      "createdAt": "2024-01-08"
-    },
-    {
-      "id": 82,
-      "text": "Happy TGIF! 한 주의 마지막, 오늘도 파이팅! 🎉",
-      "author": "요일별 메시지",
-      "category": "금요일",
-      "timeOfDay": "",
-      "season": "all",
-      "eventType": "weekly",
-      "eventTarget": "friday",
-      "createdAt": "2024-01-12"
-    },
-    {
-      "id": 83,
-      "text": "주말 모닝! 여유로운 하루를 만끽하세요. ☕",
-      "author": "요일별 메시지",
-      "category": "휴식",
-      "timeOfDay": "morning",
-      "season": "all",
-      "eventType": "weekly",
-      "eventTarget": "weekend",
-      "createdAt": "2024-01-13"
-    },
-    {
-      "id": 84,
-      "text": "새벽 5시의 고요함, 세상이 깨어나기 전의 특별한 시간입니다. 🌅",
-      "author": "시간대별 메시지",
-      "category": "새벽",
-      "timeOfDay": "dawn",
-      "season": "all",
-      "eventType": "hourly",
-      "eventTarget": "dawn",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 85,
-      "text": "점심시간! 맛있는 식사와 함께 에너지를 충전하세요. 🍽️",
-      "author": "시간대별 메시지",
-      "category": "휴식",
-      "timeOfDay": "afternoon",
-      "season": "all",
-      "eventType": "hourly",
-      "eventTarget": "lunch",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 86,
-      "text": "오후 3시, 달콤한 간식과 함께 잠시 휴식을 취해보세요. 🍪",
-      "author": "시간대별 메시지",
-      "category": "휴식",
-      "timeOfDay": "afternoon",
-      "season": "all",
-      "eventType": "hourly",
-      "eventTarget": "snack-time",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 87,
-      "text": "1월의 시작! 새로운 목표와 함께 힘찬 한 해를 시작하세요. 🎯",
-      "author": "월별 메시지",
-      "category": "새로운 시작",
-      "timeOfDay": "",
-      "season": "winter",
-      "eventType": "monthly", 
-      "eventTarget": "january",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 88,
-      "text": "6월의 초록, 자연과 함께 마음도 싱그럽게! 🌿",
-      "author": "월별 메시지",
-      "category": "자연",
-      "timeOfDay": "",
-      "season": "summer",
-      "eventType": "monthly",
-      "eventTarget": "june",
-      "createdAt": "2024-06-01"
-    },
-    {
-      "id": 89,
-      "text": "12월의 마무리, 한 해 동안 수고한 자신에게 박수를! 👏",
-      "author": "월별 메시지",
-      "category": "마무리",
-      "timeOfDay": "",
-      "season": "winter",
-      "eventType": "monthly",
-      "eventTarget": "december",
-      "createdAt": "2024-12-01"
-    },
-    {
-      "id": 90,
-      "text": "비 오는 날, 창밖을 바라보며 마음의 여유를 찾아보세요. 🌧️",
-      "author": "날씨별 메시지",
-      "category": "여유",
-      "timeOfDay": "",
-      "season": "all",
-      "eventType": "weather",
-      "eventTarget": "rainy",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 91,
-      "text": "눈 내리는 날, 하얀 세상 속에서 마음도 순수해집니다. ❄️",
-      "author": "날씨별 메시지", 
-      "category": "순수함",
-      "timeOfDay": "",
-      "season": "winter",
-      "eventType": "weather",
-      "eventTarget": "snowy",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 92,
-      "text": "맑은 하늘처럼 오늘도 상쾌한 기분으로! ☀️",
-      "author": "날씨별 메시지",
-      "category": "상쾌함",
-      "timeOfDay": "morning",
-      "season": "all",
-      "eventType": "weather",
-      "eventTarget": "sunny",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 93,
-      "text": "월말 정산, 한 달 동안의 성과를 돌아보는 소중한 시간입니다. 📊",
-      "author": "이벤트 메시지",
-      "category": "성찰",
-      "timeOfDay": "",
-      "season": "all",
-      "eventType": "monthly",
-      "eventTarget": "month-end",
-      "createdAt": "2024-01-31"
-    },
-    {
-      "id": 94,
-      "text": "월초의 새로운 시작! 이번 달 목표를 세워보세요. 🎯",
-      "author": "이벤트 메시지",
-      "category": "목표",
-      "timeOfDay": "",
-      "season": "all",
-      "eventType": "monthly",
-      "eventTarget": "month-start",
-      "createdAt": "2024-01-01"
-    },
-    {
-      "id": 95,
-      "text": "오늘은 보름달이 뜨는 날, 밤하늘을 올려다보세요. 🌕",
-      "author": "천체 이벤트",
-      "category": "자연",
-      "timeOfDay": "night",
-      "season": "all",
-      "eventType": "lunar",
-      "eventTarget": "full-moon",
       "createdAt": "2024-01-01"
     }
-  ],
-  "categories": [
-    "새로운 시작", "성장", "동기부여", "성공", "감사", "여유", "가능성", 
-    "휴식", "활력", "칭찬", "긍정", "꿈", "실행력", "에너지", "인내", 
-    "행복", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일", 
-    "일요일", "변화", "용기", "믿음", "건강", "미소", "노력", "시작", 
-    "성실함", "성취", "학습", "우정", "시간", "자신감", "마무리", "기회", 
-    "관점", "실패", "꾸준함", "새벽", "현재", "사랑", "희망", "도전", 
-    "자기응원", "자아성찰", "어려움", "태도", "회상", "지혜", "겸손", 
-    "독서", "용서", "배움", "오늘", "아름다움", "따뜻함", "열정", "결실", 
-    "성찰", "평화", "순수함", "새해", "나눔", "자연", "상쾌함", "목표"
-  ],
-  "eventTypes": {
-    "weekly": {
-      "name": "요일별 이벤트",
-      "targets": {
-        "monday": { "name": "월요일", "day": 1 },
-        "friday": { "name": "금요일", "day": 5 },
-        "weekend": { "name": "주말", "days": [0, 6] }
-      }
-    },
-    "hourly": {
-      "name": "시간대별 이벤트", 
-      "targets": {
-        "dawn": { "name": "새벽", "hours": [4, 5, 6] },
-        "lunch": { "name": "점심시간", "hours": [12, 13] },
-        "snack-time": { "name": "간식시간", "hours": [15, 16] }
-      }
-    },
-    "monthly": {
-      "name": "월별 이벤트",
-      "targets": {
-        "january": { "name": "1월", "month": 1 },
-        "june": { "name": "6월", "month": 6 },
-        "december": { "name": "12월", "month": 12 },
-        "month-start": { "name": "월초", "dates": [1, 2, 3] },
-        "month-end": { "name": "월말", "lastDays": 3 }
-      }
-    },
-    "weather": {
-      "name": "날씨별 이벤트",
-      "targets": {
-        "rainy": { "name": "비오는 날", "manual": true },
-        "snowy": { "name": "눈오는 날", "manual": true },
-        "sunny": { "name": "맑은 날", "manual": true }
-      }
-    },
-    "lunar": {
-      "name": "천체 이벤트",
-      "targets": {
-        "full-moon": { "name": "보름달", "manual": true }
-      }
-    }
-  },
-  "seasons": {
-    "spring": {
-      "name": "봄",
-      "months": [3, 4, 5],
-      "icon": "🌸",
-      "description": "새로운 시작의 계절"
-    },
-    "summer": {
-      "name": "여름", 
-      "months": [6, 7, 8],
-      "icon": "☀️",
-      "description": "열정과 활력의 계절"
-    },
-    "autumn": {
-      "name": "가을",
-      "months": [9, 10, 11], 
-      "icon": "🍂",
-      "description": "성찰과 결실의 계절"
-    },
-    "winter": {
-      "name": "겨울",
-      "months": [12, 1, 2],
-      "icon": "❄️", 
-      "description": "평화와 고요의 계절"
-    }
-  },
-  "specialDays": {
-    "new-year": {
-      "name": "새해",
-      "dates": ["01-01"],
-      "icon": "🎊"
-    },
-    "christmas": {
-      "name": "크리스마스",
-      "dates": ["12-25"],
-      "icon": "🎄"
-    },
-    "children-day": {
-      "name": "어린이날",
-      "dates": ["05-05"],
-      "icon": "👶"
-    }
-  },
-  "timeSlots": {
-    "morning": "06:00-11:59",
-    "afternoon": "12:00-17:59", 
-    "evening": "18:00-23:59",
-    "night": "00:00-05:59"
-  }
+  ]
 }
