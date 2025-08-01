@@ -133,15 +133,6 @@ CSS 변수를 수정하여 테마 변경:
   --text-primary: #1f2937;     /* 텍스트 색상 */
 }
 ```
-
-## 🤝 기여하기
-
-1. 저장소를 포크합니다
-2. 기능 브랜치를 생성합니다 (`git checkout -b feature/AmazingFeature`)
-3. 변경사항을 커밋합니다 (`git commit -m 'Add some AmazingFeature'`)
-4. 브랜치에 푸시합니다 (`git push origin feature/AmazingFeature`)
-5. Pull Request를 생성합니다
-
 ### 커밋 메시지 규칙
 
 ```bash
@@ -183,24 +174,7 @@ chore: 빌드 업무 수정, 패키지 매니저 수정
 - [ ] 소셜 기능
 - [ ] 프리미엄 기능
 
-## 📄 라이선스
-
-이 프로젝트는 MIT 라이선스 하에 있습니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
-
-## 🙏 감사의 말
-
-- 모든 기여자들께 감사드립니다
-- 피드백을 주신 사용자분들께 감사드립니다
-- 오픈소스 커뮤니티에 감사드립니다
 
 ## 📞 연락처
 
 - **이메일**: kimdan2@nate.com
-<!-- - **이슈 트래커**: [GitHub Issues](https://github.com/yourusername/daily-start-messages/issues)
-- **토론**: [GitHub Discussions](https://github.com/yourusername/daily-start-messages/discussions) -->
-
----
-
-**새로운 하루를 더욱 특별하게 만들어보세요! 🌅**
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/yourusername/daily-start-messages)
