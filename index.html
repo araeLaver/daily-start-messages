@@ -120,7 +120,7 @@
                     <div class="quote-content" id="quoteContent" style="display: none;">
                         <div class="quote-actions">
                             <button class="favorite-btn" id="favoriteBtn" aria-label="즐겨찾기 추가/제거">
-                                <span class="favorite-icon">🤍</span>
+                                <span class="favorite-icon">☆</span>
                             </button>
                         </div>
                         <blockquote class="quote-text" id="quoteText"></blockquote>
@@ -161,7 +161,7 @@
         <footer class="footer">
             <div class="date-display" id="dateDisplay"></div>
             <div class="message-counter">
-                <span id="messageCounter">1</span>번째 메시지
+                오늘 1번째 메시지
             </div>
         </footer>
     </div>
@@ -310,7 +310,7 @@
                 <div class="favorites-container">
                     <div class="favorites-empty" id="favoritesEmpty" style="display: none;">
                         <p>아직 즐겨찾기한 메시지가 없습니다.</p>
-                        <small>마음에 드는 메시지에서 🤍 버튼을 눌러보세요!</small>
+                        <small>마음에 드는 메시지에서 ☆ 버튼을 눌러보세요!</small>
                     </div>
                     <div class="favorites-list" id="favoritesList"></div>
                 </div>
@@ -1019,7 +1019,7 @@
                 favoritesContent.innerHTML = `
                     <div style="text-align: center; padding: 2rem; color: #6b7280;">
                         <p>아직 즐겨찾기에 추가된 메시지가 없습니다.</p>
-                        <p>마음에 드는 메시지를 ❤️ 버튼으로 추가해보세요!</p>
+                        <p>마음에 드는 메시지를 ☆ 버튼으로 추가해보세요!</p>
                     </div>
                 `;
             } else {
@@ -1068,7 +1068,7 @@
                 if (currentMessage && `msg_${currentMessage.id || currentMessageIndex}` === messageId) {
                     const favoriteIcon = document.querySelector('.favorite-icon');
                     if (favoriteIcon) {
-                        favoriteIcon.textContent = '🤍';
+                        favoriteIcon.textContent = '☆';
                     }
                 }
             }
@@ -1510,7 +1510,7 @@
             const favoriteIcon = document.querySelector('.favorite-icon');
             if (favoriteIcon) {
                 const messageId = `msg_${message.id || currentMessageIndex}`;
-                favoriteIcon.textContent = isFavorite(messageId) ? '❤️' : '🤍';
+                favoriteIcon.textContent = isFavorite(messageId) ? '★' : '☆';
             }
             
             // 리액션 UI 업데이트
@@ -2042,13 +2042,28 @@
             }
         }
 
-        // 일일 방문 추적
+        // 일일 방문 추적 및 메시지 카운팅
         function trackDailyVisit() {
             const today = new Date().toDateString();
             const visits = JSON.parse(localStorage.getItem('dailyVisits') || '{}');
             
             visits[today] = (visits[today] || 0) + 1;
             localStorage.setItem('dailyVisits', JSON.stringify(visits));
+            
+            // 메시지 카운팅 업데이트
+            updateMessageCounter();
+        }
+        
+        // 메시지 카운터 업데이트
+        function updateMessageCounter() {
+            const today = new Date().toDateString();
+            const visits = JSON.parse(localStorage.getItem('dailyVisits') || '{}');
+            const todayCount = visits[today] || 1;
+            
+            const counterElement = document.querySelector('.message-counter');
+            if (counterElement) {
+                counterElement.textContent = `오늘 ${todayCount}번째 메시지`;
+            }
         }
 
         // 즐겨찾기 토글
@@ -2161,7 +2176,7 @@
             if (!currentMessage) return;
             
             const messageId = `msg_${currentMessage.id || currentMessageIndex}`;
-            const isCurrentlyFavorited = icon.textContent === '❤️';
+            const isCurrentlyFavorited = icon.textContent === '★';
             
             if (!isCurrentlyFavorited) {
                 // 즐겨찾기 추가
@@ -2172,7 +2187,9 @@
                 });
                 
                 if (success) {
-                    icon.textContent = '❤️';
+                    icon.textContent = '★';
+                    icon.classList.add('favorite-added');
+                    setTimeout(() => icon.classList.remove('favorite-added'), 600);
                     console.log('즐겨찾기 추가됨');
                 } else {
                     console.log('이미 즐겨찾기에 있는 메시지입니다.');
@@ -2181,7 +2198,11 @@
                 // 즐겨찾기 제거
                 const success = removeFavorite(messageId);
                 if (success) {
-                    icon.textContent = '🤍';
+                    icon.classList.add('favorite-removed');
+                    setTimeout(() => {
+                        icon.textContent = '☆';
+                        icon.classList.remove('favorite-removed');
+                    }, 400);
                     console.log('즐겨찾기 제거됨');
                 }
             }
